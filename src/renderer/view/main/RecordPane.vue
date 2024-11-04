@@ -6,6 +6,7 @@
         :operational="isRecordOperational"
         :show-comment="showComment"
         :show-elapsed-time="showElapsedTime"
+        :sub-area-toggle-label="t.book"
         :elapsed-time-toggle-label="t.elapsedTime"
         :comment-toggle-label="t.commentsAndBookmarks"
         :opacity="appSettings.enableTransparent ? appSettings.recordOpacity : 1"
@@ -22,7 +23,11 @@
         @swap-with-next-branch="store.swapWithNextBranch()"
         @toggle-show-elapsed-time="onToggleElapsedTime"
         @toggle-show-comment="onToggleComment"
-      />
+      >
+        <template #sub-area>
+          <BookPanel class="full" />
+        </template>
+      </RecordView>
     </div>
     <div v-if="store.remoteRecordFileURL">
       <button class="wide" @click="store.loadRemoteRecordFile()">{{ t.fetchLatestData }}</button>
@@ -45,6 +50,7 @@ import {
   uninstallHotKeyForMainWindow,
 } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
+import BookPanel from "./BookPanel.vue";
 
 defineProps({
   showElapsedTime: {
@@ -84,6 +90,8 @@ onBeforeUnmount(() => {
   uninstallHotKeyForMainWindow(root.value);
 });
 
+const isRecordOperational = computed(() => store.appState === AppState.NORMAL);
+
 const onToggleElapsedTime = (enabled: boolean) => {
   appSettings.updateAppSettings({
     showElapsedTimeInRecordView: enabled,
@@ -95,10 +103,6 @@ const onToggleComment = (enabled: boolean) => {
     showCommentInRecordView: enabled,
   });
 };
-
-const isRecordOperational = computed(() => {
-  return store.appState === AppState.NORMAL;
-});
 </script>
 
 <style scoped>

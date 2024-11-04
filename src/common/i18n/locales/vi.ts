@@ -226,6 +226,7 @@ export const vi: Texts = {
   positionOfUSIOutput: "Định dạng thế cờ USI",
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
+  readOnlyThreshold: "読み専モード閾値", // TODO: translate
   usiProtocol: "Định dạng USI",
   translateOptionName: "Dịch tên tùy chọn",
   functionalOnJapaneseOnly: "Chỉ dùng cho bản tiếng Nhật",
@@ -257,7 +258,8 @@ export const vi: Texts = {
   mateShort: "M",
   displayPVShort: "Đi",
   evaluation: "Đánh giá",
-  eval: "Đ.giá",
+  rawScore: "Đ.giá",
+  score: "Đ.giá",
   estimatedWinRate: "Tỷ lệ thắng ước tính",
   evaluationAndEstimatedWinRateAndPV: "Đánh giá & tỷ lệ thắng ước tính & PV",
   swapEachTurnChange: "Đổi mỗi lượt",
@@ -441,6 +443,7 @@ export const vi: Texts = {
   backgroundColor: "Màu nền",
   dialogBackdrop: "Nền hộp thoại",
   record: "Kỳ phổ",
+  book: "定跡", // TODO: translate
   chart: "Đồ thị",
   analytics: "Phân tích",
   controlGroup: "Menu",
@@ -467,6 +470,14 @@ export const vi: Texts = {
   insert: "Chèn",
   bringForward: "Đưa lên trên",
   sendBackward: "Đẩy xuống dưới",
+  move: "指し手", // TODO: translate
+  bookMove: "定跡手", // TODO: translate
+  play: "着手", // TODO: translate
+  edit: "編集", // TODO: translate
+  freq: "出現頻度", // TODO: translate
+  frequency: "出現頻度", // TODO: translate
+  new: "新規", // TODO: translate
+  moveEntry: "登録手数", // TODO: translate
   updatedAt: "Cập nhật lúc",
   createdAt: "Tạo lúc",
   lastSent: "Gửi lần cuối",
@@ -629,6 +640,20 @@ export const vi: Texts = {
   sourceFormatsNotSpecified: "Định dạng nguồn chưa được đặt.",
   destinationDirectoryNotSpecified: "Đường dẫn đến chưa được đặt.",
   destinationFileNotSpecified: "Tệp đến chưa được đặt.",
+  anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
+    "保存していない内容は失われます。定跡を初期化しますか？", // TODO: translate
+  bookDataOpendAsReadOnlyModeBecauseOfLargeFile:
+    "定跡ファイルのサイズが大きいため読み込み専用モードで開きます。", // TODO: translate
+  youCanChangeFileSizeThresholdFromPreferencesDialog:
+    "アプリ設定からファイルサイズの閾値を変更できます。", // TODO: translate
+  bookMovesWereImported: "定跡データをインポートしました。", // TODO: translate
+  anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
+    "保存されていない定跡があります。破棄してアプリを終了しますか？", // TODO: translate
+  sourceRecordFileNotSet: "棋譜ファイルが指定されていません。", // TODO: translate
+  sfenFileImportIsNotSupported: ".sfen はサポートされていません。", // TODO: translate
+  sourceDirectoryNotSet: "フォルダを選択してください。", // TODO: translate
+  minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。", // TODO: translate
+  playerNameNotSet: "対局者名が設定されていません。", // TODO: translate
   totalNumber: (n: number) => `Tổng: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Vui lòng đăng nhập lại sau ${n} giây.`,
@@ -660,5 +685,17 @@ export const vi: Texts = {
   },
   latestVersionReleased(version: string) {
     return `Phiên bản mới nhất ${version} đã ra mắt!`;
+  },
+  doYouReallyWantToRemoveBookMove(name: string) {
+    return `定跡手 ${name} を削除します。よろしいですか？`; // TODO: translate
+  },
+  unexpectedRecordFileExtension(path: string) {
+    return `サポートされていない棋譜の拡張子です。 [${path}]`; // TODO: translate
+  },
+  fileNotFound(path: string) {
+    return `ファイルが見つかりません。 [${path}]`; // TODO: translate
+  },
+  directoryNotFound(path: string) {
+    return `フォルダが見つかりません。 [${path}]`; // TODO: translate
   },
 };

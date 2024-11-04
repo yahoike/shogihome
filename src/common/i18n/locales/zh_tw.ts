@@ -223,6 +223,7 @@ export const zh_tw: Texts = {
   positionOfUSIOutput: "USI 局面紀錄格式",
   movesOfUSIOutput: "USI 棋譜紀錄格式",
   onlySFEN: "只有 SFEN",
+  readOnlyThreshold: "読み専モード閾値", // TODO: translate
   usiProtocol: "USI協定",
   translateOptionName: "選項名稱翻譯",
   functionalOnJapaneseOnly: "只有在日文選擇時有效",
@@ -254,7 +255,8 @@ export const zh_tw: Texts = {
   mateShort: "詰",
   displayPVShort: "再現",
   evaluation: "評價值",
-  eval: "評價値",
+  rawScore: "評價値",
+  score: "評價値",
   estimatedWinRate: "期待勝率",
   evaluationAndEstimatedWinRateAndPV: "評價値・期待勝率・預測手順",
   swapEachTurnChange: "手番側有利時為正值",
@@ -438,6 +440,7 @@ export const zh_tw: Texts = {
   backgroundColor: "背景顏色",
   dialogBackdrop: "ダイアログ表示中の暗転", // TODO: translate
   record: "棋譜",
+  book: "定跡", // TODO: translate
   chart: "圖表",
   analytics: "解析",
   controlGroup: "選單",
@@ -464,6 +467,14 @@ export const zh_tw: Texts = {
   insert: "插入",
   bringForward: "前面へ", // TODO: translate
   sendBackward: "背面へ", // TODO: translate
+  move: "指し手", // TODO: translate
+  bookMove: "定跡手", // TODO: translate
+  play: "着手", // TODO: translate
+  edit: "編集", // TODO: translate
+  freq: "出現頻度", // TODO: translate
+  frequency: "出現頻度", // TODO: translate
+  new: "新規", // TODO: translate
+  moveEntry: "登録手数", // TODO: translate
   updatedAt: "更新時間",
   createdAt: "建立時間",
   lastSent: "最後送出",
@@ -618,6 +629,20 @@ export const zh_tw: Texts = {
   sourceFormatsNotSpecified: "輸入格式尚未被指定。",
   destinationDirectoryNotSpecified: "輸出格式尚未被指定。",
   destinationFileNotSpecified: "輸出檔案尚未被指定。",
+  anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
+    "保存していない内容は失われます。定跡を初期化しますか？", // TODO: translate
+  bookDataOpendAsReadOnlyModeBecauseOfLargeFile:
+    "定跡ファイルのサイズが大きいため読み込み専用モードで開きます。", // TODO: translate
+  youCanChangeFileSizeThresholdFromPreferencesDialog:
+    "アプリ設定からファイルサイズの閾値を変更できます。", // TODO: translate
+  bookMovesWereImported: "定跡データをインポートしました。", // TODO: translate
+  anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
+    "保存されていない定跡があります。破棄してアプリを終了しますか？", // TODO: translate
+  sourceRecordFileNotSet: "棋譜ファイルが指定されていません。", // TODO: translate
+  sfenFileImportIsNotSupported: ".sfen はサポートされていません。", // TODO: translate
+  sourceDirectoryNotSet: "フォルダを選択してください。", // TODO: translate
+  minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。", // TODO: translate
+  playerNameNotSet: "対局者名が設定されていません。", // TODO: translate
   totalNumber: (n: number) => `總計 ${n} 筆`,
   number: (n: number) => `${n} 筆`,
   tryToReloginToCSAServerNSecondsLater: (n) => `請在${n}秒後再次嘗試登入 CSA 伺服器。`,
@@ -649,5 +674,17 @@ export const zh_tw: Texts = {
   },
   latestVersionReleased(version: string) {
     return `最新版 ${version} 已經發布！`;
+  },
+  doYouReallyWantToRemoveBookMove(name: string) {
+    return `定跡手 ${name} を削除します。よろしいですか？`; // TODO: translate
+  },
+  unexpectedRecordFileExtension(path: string) {
+    return `サポートされていない棋譜の拡張子です。 [${path}]`; // TODO: translate
+  },
+  fileNotFound(path: string) {
+    return `ファイルが見つかりません。 [${path}]`; // TODO: translate
+  },
+  directoryNotFound(path: string) {
+    return `フォルダが見つかりません。 [${path}]`; // TODO: translate
   },
 };

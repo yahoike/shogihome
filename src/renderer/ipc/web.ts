@@ -11,6 +11,7 @@ import { defaultCSAGameSettingsHistory } from "@/common/settings/csa";
 import { defaultMateSearchSettings } from "@/common/settings/mate";
 import { defaultBatchConversionSettings } from "@/common/settings/conversion";
 import { getEmptyHistory } from "@/common/file/history";
+import { BookLoadingMode } from "@/common/book";
 import { VersionStatus } from "@/common/version";
 import { SessionStates } from "@/common/advanced/monitor";
 import { emptyLayoutProfileList } from "@/common/settings/layout";
@@ -146,6 +147,12 @@ export const webAPI: Bridge = {
   async saveUSIEngines(): Promise<void> {
     // Do Nothing
   },
+  async loadBookImportSettings(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async saveBookImportSettings(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
   onUpdateAppSettings(): void {
     // Do Nothing
   },
@@ -228,6 +235,38 @@ export const webAPI: Bridge = {
   },
   onOpenRecord(): void {
     // Do Nothing
+  },
+
+  // Book
+  async showOpenBookDialog(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async showSaveBookDialog(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async clearBook(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async openBook(): Promise<BookLoadingMode> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async saveBook(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async searchBookMoves(): Promise<string> {
+    return "[]";
+  },
+  async updateBookMove(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async removeBookMove(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async updateBookMoveOrder(): Promise<void> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
+  },
+  async importBookMoves(): Promise<string> {
+    throw new Error(t.thisFeatureNotAvailableOnWebApp);
   },
 
   // USI

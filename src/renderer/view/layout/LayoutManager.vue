@@ -63,6 +63,7 @@
           <select ref="newComponentType" size="1">
             <option value="Board">{{ t.board }}</option>
             <option value="Record">{{ t.record }}</option>
+            <option value="Book">{{ t.book }}</option>
             <option value="Chart">{{ t.chart }}</option>
             <option value="Analytics">{{ t.analytics }}</option>
             <option value="Comment">{{ t.comments }}</option>
@@ -76,6 +77,7 @@
           <div class="name">
             <span v-if="component.type === 'Board'">{{ t.board }}</span>
             <span v-if="component.type === 'Record'">{{ t.record }}</span>
+            <span v-if="component.type === 'Book'">{{ t.book }}</span>
             <span v-if="component.type === 'Chart'">{{ t.chart }}</span>
             <span v-if="component.type === 'Analytics'">{{ t.analytics }}</span>
             <span v-if="component.type === 'Comment'">{{ t.comments }}</span>
@@ -185,7 +187,7 @@
               <HorizontalSelector
                 :value="component.chartType"
                 :items="[
-                  { label: t.eval, value: EvaluationChartType.RAW },
+                  { label: t.rawScore, value: EvaluationChartType.RAW },
                   { label: t.estimatedWinRate, value: EvaluationChartType.WIN_RATE },
                 ]"
                 @change="(value) => updateCustomProfileComponent(index, 'chartType', value)"
@@ -245,7 +247,7 @@
             <span class="property">
               <ToggleButton
                 :value="!!component.showScoreColumn"
-                :label="t.eval"
+                :label="t.score"
                 @change="(value) => updateCustomProfileComponent(index, 'showScoreColumn', value)"
               />
             </span>
@@ -458,6 +460,15 @@ const insertCustomProfileComponent = () => {
         top: 0,
         width: 400,
         height: 500,
+      });
+      break;
+    case "Book":
+      components.unshift({
+        type: "Book",
+        left: 0,
+        top: 0,
+        width: 500,
+        height: 250,
       });
       break;
     case "Chart":

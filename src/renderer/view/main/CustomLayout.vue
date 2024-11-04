@@ -26,6 +26,7 @@
         :show-bottom-control="false"
         :show-branches="!!c.branches"
       />
+      <BookPanel v-else-if="c.type === 'Book'" class="full" />
       <div v-else-if="c.type === 'Analytics'" class="full tab-content">
         <EngineAnalytics
           :size="c.rect.size"
@@ -80,6 +81,7 @@ import ControlPane, { ControlGroup } from "./ControlPane.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import RecordComment from "@/renderer/view/tab/RecordComment.vue";
 import RecordInfo from "@/renderer/view/tab/RecordInfo.vue";
+import BookPanel from "./BookPanel.vue";
 
 const props = defineProps<{ profile: LayoutProfile }>();
 

@@ -47,7 +47,7 @@
               <td v-if="showMultiPvColumn" class="multipv-index">{{ t.rank }}</td>
               <td v-if="showDepthColumn" class="depth">{{ t.depth }}</td>
               <td v-if="showNodesColumn" class="nodes">{{ t.nodes }}</td>
-              <td v-if="showScoreColumn" class="score">{{ t.eval }}</td>
+              <td v-if="showScoreColumn" class="score">{{ t.score }}</td>
               <td v-if="showScoreColumn" class="score-flag"></td>
               <td class="text">{{ t.pv }}</td>
             </tr>

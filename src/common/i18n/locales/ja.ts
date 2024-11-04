@@ -226,6 +226,7 @@ export const ja: Texts = {
   positionOfUSIOutput: "USI の局面表記",
   movesOfUSIOutput: "USI の指し手表記",
   onlySFEN: "SFEN のみ",
+  readOnlyThreshold: "読み専モード閾値",
   usiProtocol: "USIプロトコル",
   translateOptionName: "オプション名を翻訳",
   functionalOnJapaneseOnly: "日本語選択時のみ有効",
@@ -257,7 +258,8 @@ export const ja: Texts = {
   mateShort: "詰",
   displayPVShort: "再現",
   evaluation: "評価値",
-  eval: "評価値",
+  rawScore: "評価値",
+  score: "評価値",
   estimatedWinRate: "期待勝率",
   evaluationAndEstimatedWinRateAndPV: "評価値・期待勝率・読み筋",
   swapEachTurnChange: "手番側有利がプラスの値",
@@ -441,6 +443,7 @@ export const ja: Texts = {
   backgroundColor: "背景色",
   dialogBackdrop: "ダイアログ表示中の暗転",
   record: "棋譜",
+  book: "定跡",
   chart: "グラフ",
   analytics: "解析",
   controlGroup: "メニュー",
@@ -467,6 +470,14 @@ export const ja: Texts = {
   insert: "挿入",
   bringForward: "前面へ",
   sendBackward: "背面へ",
+  move: "指し手",
+  bookMove: "定跡手",
+  play: "着手",
+  edit: "編集",
+  freq: "出現頻度",
+  frequency: "出現頻度",
+  new: "新規",
+  moveEntry: "登録手数",
   updatedAt: "更新日時",
   createdAt: "作成日時",
   lastSent: "最終送信",
@@ -632,6 +643,20 @@ export const ja: Texts = {
   sourceFormatsNotSpecified: "入力の対象フォーマットが指定されていません。",
   destinationDirectoryNotSpecified: "出力ディレクトリが指定されていません。",
   destinationFileNotSpecified: "出力ファイルが指定されていません。",
+  anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
+    "保存していない内容は失われます。定跡を初期化しますか？",
+  bookDataOpendAsReadOnlyModeBecauseOfLargeFile:
+    "定跡ファイルのサイズが大きいため読み込み専用モードで開きます。",
+  youCanChangeFileSizeThresholdFromPreferencesDialog:
+    "アプリ設定からファイルサイズの閾値を変更できます。",
+  bookMovesWereImported: "定跡データをインポートしました。",
+  anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
+    "保存されていない定跡があります。破棄してアプリを終了しますか？",
+  sourceRecordFileNotSet: "棋譜ファイルが指定されていません。",
+  sfenFileImportIsNotSupported: ".sfen はサポートされていません。",
+  sourceDirectoryNotSet: "フォルダを選択してください。",
+  minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。",
+  playerNameNotSet: "対局者名が設定されていません。",
   totalNumber: (n: number) => `合計 ${n} 件`,
   number: (n: number) => `${n} 件`,
   tryToReloginToCSAServerNSecondsLater: (n) => `CSAサーバーへのログインを${n}秒後に再試行します。`,
@@ -663,5 +688,17 @@ export const ja: Texts = {
   },
   latestVersionReleased(version: string) {
     return `最新版 ${version} がリリースされました！`;
+  },
+  doYouReallyWantToRemoveBookMove(name: string) {
+    return `定跡手 ${name} を削除します。よろしいですか？`;
+  },
+  unexpectedRecordFileExtension(path: string) {
+    return `サポートされていない棋譜の拡張子です。 [${path}]`;
+  },
+  fileNotFound(path: string) {
+    return `ファイルが見つかりません。 [${path}]`;
+  },
+  directoryNotFound(path: string) {
+    return `フォルダが見つかりません。 [${path}]`;
   },
 };
