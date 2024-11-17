@@ -1,7 +1,6 @@
 {
   "recommendations": [
     "Vue.volar",
-    "ms-vscode.vscode-typescript-next",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode"
   ]
