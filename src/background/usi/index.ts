@@ -104,7 +104,7 @@ function issueSessionID(): number {
 }
 
 const sessions = new Map<number, Session>();
-const engineRemoveDelay = 10e3;
+const engineRemoveDelay = 20e3;
 
 function isSessionExists(sessionID: number): boolean {
   return sessions.has(sessionID);
