@@ -102,7 +102,6 @@ export function createWindow() {
       }
       sendError(new Error(`${origin} ${e}`));
     });
-    win.show();
 
     // macOS では起動後に Finder からファイルを開こうとすると既に存在するプロセスに対して open-file イベントが発生する。
     app.on("open-file", (event, path) => {
