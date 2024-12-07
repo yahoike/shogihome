@@ -1,4 +1,4 @@
-import { requireElectron } from "@/background/helpers/portability";
+import { getElectron, requireElectron } from "@/background/helpers/portability";
 import { exists } from "./file";
 import { t } from "@/common/i18n";
 
@@ -20,4 +20,18 @@ export function showNotification(title: string, body: string) {
     body,
     timeoutType: "never",
   }).show();
+}
+
+export function preventAppSuspension(): number | undefined {
+  const electron = getElectron();
+  if (electron) {
+    return electron.powerSaveBlocker.start("prevent-app-suspension");
+  }
+}
+
+export function allowAppSuspension(id: number) {
+  const electron = getElectron();
+  if (electron) {
+    electron.powerSaveBlocker.stop(id);
+  }
 }

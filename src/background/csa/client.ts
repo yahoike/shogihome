@@ -72,10 +72,14 @@ export class Client {
   private blankLinePingTimeout: NodeJS.Timeout | null = null;
 
   constructor(
-    private sessionID: number,
+    private _sessionID: number,
     private _settings: CSAServerSettings,
     private logger: Logger,
   ) {}
+
+  get sessionID(): number {
+    return this._sessionID;
+  }
 
   get settings(): CSAServerSettings {
     return this._settings;
