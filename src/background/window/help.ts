@@ -1,5 +1,5 @@
 import { shell } from "electron";
-import { readStatus } from "@/background/version/check";
+import { readStatus } from "@/background/version";
 import { howToUseWikiPageURL, websiteURL } from "@/common/links/github";
 
 export function openWebsite(): void {

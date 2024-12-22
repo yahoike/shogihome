@@ -84,7 +84,7 @@ import {
 import { getAppPath } from "@/background/proc/env";
 import { fetchInitialRecordFileRequest } from "@/background/proc/args";
 import { isSupportedRecordFilePath } from "@/background/file/extensions";
-import { readStatus as readVersionStatus } from "@/background/version/check";
+import { readStatus as readVersionStatus } from "@/background/version";
 import { sendTestNotification } from "./debug";
 import { SessionStates } from "@/common/advanced/monitor";
 import { createCommandWindow } from "./prompt";

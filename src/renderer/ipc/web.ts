@@ -11,7 +11,7 @@ import { defaultCSAGameSettingsHistory } from "@/common/settings/csa";
 import { defaultMateSearchSettings } from "@/common/settings/mate";
 import { defaultBatchConversionSettings } from "@/common/settings/conversion";
 import { getEmptyHistory } from "@/common/file/history";
-import { VersionStatus } from "@/background/version/types";
+import { VersionStatus } from "@/common/version";
 import { SessionStates } from "@/common/advanced/monitor";
 import { emptyLayoutProfileList } from "@/common/settings/layout";
 import * as uri from "@/common/uri";

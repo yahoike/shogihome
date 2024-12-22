@@ -1,8 +1,8 @@
-import { checkUpdates } from "@/background/version/check";
+import { checkUpdates } from "@/background/version";
 import http from "node:http";
 import path from "node:path";
 import fs from "node:fs";
-import { Releases, VersionStatus } from "@/background/version/types";
+import { Releases, VersionStatus } from "@/common/version";
 import { getAppPath } from "@/background/proc/env";
 import * as log from "@/background/log";
 import * as electron from "@/background/helpers/electron";
