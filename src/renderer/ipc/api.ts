@@ -14,7 +14,7 @@ import { BatchConversionSettings } from "@/common/settings/conversion";
 import { BatchConversionResult } from "@/common/file/conversion";
 import { RecordFileHistory } from "@/common/file/history";
 import { InitialRecordFileRequest } from "@/common/file/record";
-import { VersionStatus } from "@/background/version/types";
+import { VersionStatus } from "@/common/version";
 import { SessionStates } from "@/common/advanced/monitor";
 import { PromptTarget } from "@/common/advanced/prompt";
 import { CommandHistory, CommandType } from "@/common/advanced/command";

@@ -13,7 +13,7 @@ import { buildWindowSettings } from "@/common/settings/window";
 import { getAppLogger } from "@/background/log";
 import { AppState } from "@/common/control/state";
 import { getPreloadPath, isDevelopment, isPreview, isTest } from "@/background/proc/env";
-import { checkUpdates } from "@/background/version/check";
+import { checkUpdates } from "@/background/version";
 import { setupMenu } from "@/background/window/menu";
 import { t } from "@/common/i18n";
 import { ghioDomain } from "@/common/links/github";

@@ -918,7 +918,7 @@ import HorizontalSelector from "@/renderer/view/primitive/HorizontalSelector.vue
 import { RecordFileFormat } from "@/common/file/record";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
-import { VersionStatus } from "@/background/version/types";
+import { VersionStatus } from "@/common/version";
 import { fileNameTemplateWikiPageURL, maxPVLengthSettingWikiPageURL } from "@/common/links/github";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";

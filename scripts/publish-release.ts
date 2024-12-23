@@ -1,7 +1,7 @@
 /* eslint-disable no-console,no-restricted-imports */
 import fs from "node:fs";
 import { createInterface } from "node:readline/promises";
-import { Releases } from "../src/background/version/types";
+import { Releases } from "../src/common/version";
 import * as semver from "semver";
 
 const releaseJSON = "docs/release.json";

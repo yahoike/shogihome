@@ -1,6 +1,6 @@
 /* eslint-disable no-console,no-restricted-imports */
 import fs from "node:fs";
-import { Releases } from "../src/background/version/types";
+import { Releases } from "../src/common/version";
 
 const releases = JSON.parse(fs.readFileSync("docs/release.json", "utf-8")) as Releases;
 const fileNames = ["index.html", "index.en.html", "index.zh_tw.html"];
