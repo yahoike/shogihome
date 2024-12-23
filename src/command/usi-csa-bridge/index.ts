@@ -101,10 +101,11 @@ import { RecordManager } from "@/renderer/store/record";
 import { CSAGameManager, loginRetryIntervalSeconds } from "@/renderer/store/csa";
 import { defaultPlayerBuilder } from "@/renderer/players/builder";
 import { getAppLogger } from "@/background/log";
-import { defaultRecordFileNameTemplate, generateRecordFileName } from "@/renderer/helpers/path";
+import { generateRecordFileName } from "@/renderer/helpers/path";
 import { RecordFileFormat } from "@/common/file/record";
 import { ordinal } from "@/common/helpers/string";
 import { exists } from "@/background/helpers/file";
+import { defaultRecordFileNameTemplate } from "@/common/file/path";
 
 // --------------------------------------------------------------------------------
 // Phase-4. コマンド固有の処理を実行します。

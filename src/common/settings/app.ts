@@ -1,7 +1,7 @@
 import { Language, t } from "@/common/i18n";
 import { LogLevel, LogType } from "@/common/log";
 import { RecordFileFormat } from "@/common/file/record";
-import { defaultRecordFileNameTemplate } from "@/renderer/helpers/path";
+import { defaultRecordFileNameTemplate } from "@/common/file/path";
 import { BoardLayoutType } from "./layout";
 
 export enum Thema {

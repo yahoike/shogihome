@@ -5,6 +5,7 @@ import {
   ImmutableRecordMetadata,
 } from "tsshogi";
 import { getDateString } from "@/common/helpers/datetime";
+import { defaultRecordFileNameTemplate } from "@/common/file/path";
 
 export function basename(path: string): string {
   return path.substring(Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\")) + 1);
@@ -45,8 +46,6 @@ function getDateStringByMeta(metadata: ImmutableRecordMetadata): string {
   }
   return getDateString().replaceAll("/", "");
 }
-
-export const defaultRecordFileNameTemplate = "{datetime}{_title}{_sente}{_gote}";
 
 export function generateRecordFileName(
   metadata: ImmutableRecordMetadata,
