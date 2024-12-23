@@ -29,6 +29,10 @@ type Record = {
   branches?: boolean;
 };
 
+type Book = {
+  type: "Book";
+};
+
 export enum EvaluationChartType {
   RAW = "raw",
   WIN_RATE = "winRate",
@@ -70,7 +74,17 @@ type ControlGroup2 = {
 };
 
 export type UIComponent = UIComponentCommon &
-  (Board | Record | Chart | Analytics | Comment | RecordInfo | ControlGroup1 | ControlGroup2);
+  (
+    | Board
+    | Record
+    | Book
+    | Chart
+    | Analytics
+    | Comment
+    | RecordInfo
+    | ControlGroup1
+    | ControlGroup2
+  );
 
 export type LayoutProfile = {
   uri: string;

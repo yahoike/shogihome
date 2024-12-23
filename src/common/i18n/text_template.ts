@@ -221,6 +221,7 @@ export type Texts = {
   positionOfUSIOutput: string;
   movesOfUSIOutput: string;
   onlySFEN: string;
+  readOnlyThreshold: string;
   usiProtocol: string;
   translateOptionName: string;
   functionalOnJapaneseOnly: string;
@@ -252,7 +253,8 @@ export type Texts = {
   mateShort: string;
   displayPVShort: string;
   evaluation: string;
-  eval: string;
+  rawScore: string;
+  score: string;
   estimatedWinRate: string;
   evaluationAndEstimatedWinRateAndPV: string;
   swapEachTurnChange: string;
@@ -436,6 +438,7 @@ export type Texts = {
   backgroundColor: string;
   dialogBackdrop: string;
   record: string;
+  book: string;
   chart: string;
   analytics: string;
   controlGroup: string;
@@ -462,6 +465,14 @@ export type Texts = {
   insert: string;
   bringForward: string;
   sendBackward: string;
+  move: string;
+  bookMove: string;
+  play: string;
+  edit: string;
+  freq: string;
+  frequency: string;
+  new: string;
+  moveEntry: string;
   updatedAt: string;
   createdAt: string;
   lastSent: string;
@@ -608,6 +619,16 @@ export type Texts = {
   sourceFormatsNotSpecified: string;
   destinationDirectoryNotSpecified: string;
   destinationFileNotSpecified: string;
+  anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData: string;
+  bookDataOpendAsReadOnlyModeBecauseOfLargeFile: string;
+  youCanChangeFileSizeThresholdFromPreferencesDialog: string;
+  bookMovesWereImported: string;
+  anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp: string;
+  sourceRecordFileNotSet: string;
+  sfenFileImportIsNotSupported: string;
+  sourceDirectoryNotSet: string;
+  minPlyMustBeLessThanMaxPly: string;
+  playerNameNotSet: string;
   totalNumber: (n: number) => string;
   number: (n: number) => string;
   tryToReloginToCSAServerNSecondsLater: (n: number) => string;
@@ -627,4 +648,8 @@ export type Texts = {
   noResponseFromEnginePleaseExtendTimeout: (seconds: number) => string;
   stableVersionReleased: (version: string) => string;
   latestVersionReleased: (version: string) => string;
+  doYouReallyWantToRemoveBookMove: (move: string) => string;
+  unexpectedRecordFileExtension: (path: string) => string;
+  fileNotFound: (path: string) => string;
+  directoryNotFound: (path: string) => string;
 };

@@ -226,6 +226,7 @@ export const en: Texts = {
   positionOfUSIOutput: "Position of USI Output",
   movesOfUSIOutput: "Moves of USI Output",
   onlySFEN: "Only SFEN",
+  readOnlyThreshold: "Read-Only Threshold",
   usiProtocol: "USI Protocol",
   translateOptionName: "Translate Option Name",
   functionalOnJapaneseOnly: "Functional on Japanese Only",
@@ -257,7 +258,8 @@ export const en: Texts = {
   mateShort: "M",
   displayPVShort: "Play",
   evaluation: "Evaluation",
-  eval: "Eval",
+  rawScore: "Raw Score",
+  score: "Score",
   estimatedWinRate: "Estimated Win Rate",
   evaluationAndEstimatedWinRateAndPV: "Evaluation & Estimated Win Rate & PV",
   swapEachTurnChange: "Swap Each Turn Change",
@@ -441,6 +443,7 @@ export const en: Texts = {
   backgroundColor: "Background Color",
   dialogBackdrop: "Dialog Backdrop",
   record: "Record",
+  book: "Book",
   chart: "Chart",
   analytics: "Analytics",
   controlGroup: "Control Group",
@@ -467,6 +470,14 @@ export const en: Texts = {
   insert: "Insert",
   bringForward: "Bring Forward",
   sendBackward: "Send Backward",
+  move: "Move",
+  bookMove: "Book Move",
+  play: "Play",
+  edit: "Edit",
+  freq: "Freq.",
+  frequency: "Frequency",
+  new: "New",
+  moveEntry: "Entry",
   updatedAt: "Updated At",
   createdAt: "Created At",
   lastSent: "Last Sent",
@@ -632,6 +643,20 @@ export const en: Texts = {
   sourceFormatsNotSpecified: "Source formats are not specified.",
   destinationDirectoryNotSpecified: "Destination directory is not specified.",
   destinationFileNotSpecified: "Destination file is not specified.",
+  anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
+    "Any unsaved data will be lost. Do you really want to reset book data?",
+  bookDataOpendAsReadOnlyModeBecauseOfLargeFile:
+    "Book data opened as read-only mode because of large file.",
+  youCanChangeFileSizeThresholdFromPreferencesDialog:
+    "You can change file size threshold from Preferences dialog.",
+  bookMovesWereImported: "Book moves were imported.",
+  anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
+    "Any book moves are unsaved. Do you really want to discard them and close the app?",
+  sourceRecordFileNotSet: "棋譜ファイルが指定されていません。",
+  sfenFileImportIsNotSupported: ".sfen はサポートされていません。",
+  sourceDirectoryNotSet: "入力ディレクトリが指定されていません。",
+  minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。",
+  playerNameNotSet: "対局者名が設定されていません。",
   totalNumber: (n: number) => `Total: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Try to relogin to the CSA server in ${n} seconds.`,
@@ -664,5 +689,17 @@ export const en: Texts = {
   },
   latestVersionReleased(version: string) {
     return `Latest version ${version} released!`;
+  },
+  doYouReallyWantToRemoveBookMove(name: string) {
+    return `Do you really want to remove the book move "${name}"?`;
+  },
+  unexpectedRecordFileExtension(path: string) {
+    return `Unexpected record file extension: [${path}]`;
+  },
+  fileNotFound(path: string) {
+    return `File not found. [${path}]`;
+  },
+  directoryNotFound(path: string) {
+    return `Directory not found. [${path}]`;
   },
 };

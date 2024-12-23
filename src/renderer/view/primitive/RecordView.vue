@@ -37,7 +37,10 @@
         </div>
       </div>
     </div>
-    <div v-if="showBranches" class="row branch-list-area">
+    <div v-if="showSubArea" class="row sub-area">
+      <slot name="sub-area"></slot>
+    </div>
+    <div v-else-if="showBranches" class="row branch-list-area">
       <!-- NOTE: 背景だけを透過させるために背景専用の要素を作る。 -->
       <div class="move-list-background" :style="{ opacity }"></div>
       <div ref="branchList" class="auto branch-list">
@@ -65,6 +68,17 @@
       </div>
     </div>
     <div v-if="showBottomControl" class="row wrap options">
+      <div v-if="subAreaToggleLabel" class="option">
+        <ToggleButton
+          :label="subAreaToggleLabel"
+          :value="showSubArea"
+          @change="
+            (enabled: boolean) => {
+              showSubArea = enabled;
+            }
+          "
+        />
+      </div>
       <div v-if="elapsedTimeToggleLabel" class="option">
         <ToggleButton
           :label="elapsedTimeToggleLabel"
@@ -106,6 +120,11 @@ const props = defineProps({
   showComment: {
     type: Boolean,
     required: false,
+  },
+  subAreaToggleLabel: {
+    type: String,
+    required: false,
+    default: undefined,
   },
   elapsedTimeToggleLabel: {
     type: String,
@@ -154,6 +173,7 @@ const emit = defineEmits<{
 
 const moveList = ref(null as HTMLDivElement | null);
 const branchList = ref(null as HTMLDivElement | null);
+const showSubArea = ref(false);
 
 const goBegin = () => {
   if (props.operational) {
@@ -270,6 +290,14 @@ onUpdated(() => {
   overflow-x: hidden;
   overflow-y: auto;
   color: var(--text-color);
+}
+.sub-area {
+  position: relative;
+  z-index: 1;
+  margin-top: 2px;
+  width: 100%;
+  height: calc(40% - 15px);
+  min-height: 40px;
 }
 .branch-list-area {
   position: relative;
