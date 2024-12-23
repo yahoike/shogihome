@@ -8,7 +8,7 @@ import {
   CSAServerSettings as CSAServerSettings,
 } from "@/common/settings/csa";
 import { PlayerSettings } from "@/common/settings/player";
-import { defaultRecordFileNameTemplate } from "@/renderer/helpers/path";
+import { defaultRecordFileNameTemplate } from "@/common/file/path";
 import { Color } from "tsshogi";
 
 export const playerURI = "es://usi-engine/test-engine";
