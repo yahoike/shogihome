@@ -22,6 +22,29 @@ module.exports = {
     "no-irregular-whitespace": "off",
     "vue/multi-word-component-names": "off",
     "import/no-cycle": 1,
+    "import/no-restricted-paths": [
+      "error",
+      {
+        zones: [
+          {
+            from: "./src/renderer",
+            target: "./src/background",
+          },
+          {
+            from: "./src/background",
+            target: "./src/renderer",
+          },
+          {
+            from: "./src/renderer",
+            target: "./src/common",
+          },
+          {
+            from: "./src/background",
+            target: "./src/common",
+          },
+        ],
+      },
+    ],
   },
   settings: {
     "import/resolver": {
