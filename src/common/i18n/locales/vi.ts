@@ -477,6 +477,7 @@ export const vi: Texts = {
   freq: "出現頻度", // TODO: translate
   frequency: "出現頻度", // TODO: translate
   new: "新規", // TODO: translate
+  duplicated: "重複", // TODO: translate
   moveEntry: "登録手数", // TODO: translate
   updatedAt: "Cập nhật lúc",
   createdAt: "Tạo lúc",

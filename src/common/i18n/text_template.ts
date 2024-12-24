@@ -472,6 +472,7 @@ export type Texts = {
   freq: string;
   frequency: string;
   new: string;
+  duplicated: string;
   moveEntry: string;
   updatedAt: string;
   createdAt: string;
