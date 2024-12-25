@@ -40,6 +40,7 @@ export type Texts = {
   deleteMoves: string;
   view: string;
   openLayoutManager: string;
+  openMonitorWindow: string;
   toggleFullScreen: string;
   defaultFontSize: string;
   increaseFontSize: string;
