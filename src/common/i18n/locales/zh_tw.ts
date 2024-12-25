@@ -42,6 +42,7 @@ export const zh_tw: Texts = {
   deleteMoves: "刪除現在位置後的棋譜",
   view: "表示",
   openLayoutManager: "開啟佈局管理員",
+  openMonitorWindow: "監視ウィンドウ", // TODO: translate
   toggleFullScreen: "切換全螢幕",
   defaultFontSize: "預設字體尺寸",
   increaseFontSize: "增加字體尺寸",

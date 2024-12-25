@@ -20,6 +20,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "index.html"),
         prompt: resolve(__dirname, "prompt.html"),
+        monitor: resolve(__dirname, "monitor.html"),
         "layout-manager": resolve(__dirname, "layout-manager.html"),
       },
     },

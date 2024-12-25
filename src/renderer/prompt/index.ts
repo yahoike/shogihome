@@ -11,7 +11,7 @@ import { createApp } from "vue";
 import PromptMain from "@/renderer/view/prompt/PromptMain.vue";
 import { useStore } from "./store";
 
-api.log(LogLevel.INFO, `start renderer process (prompt)`);
+api.log(LogLevel.INFO, "start renderer process (prompt)");
 
 setupIPC();
 

@@ -42,6 +42,7 @@ export const ja: Texts = {
   deleteMoves: "現在の位置から棋譜を削除",
   view: "表示",
   openLayoutManager: "レイアウトマネージャー",
+  openMonitorWindow: "監視ウィンドウ",
   toggleFullScreen: "全画面表示切り替え",
   defaultFontSize: "標準の文字サイズ",
   increaseFontSize: "文字を拡大",

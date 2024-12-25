@@ -43,6 +43,7 @@ export const en: Texts = {
   deleteMoves: "Delete Moves from Current Position",
   view: "View",
   openLayoutManager: "Open Layout Manager",
+  openMonitorWindow: "Open Monitor Window",
   toggleFullScreen: "Toggle Full Screen",
   defaultFontSize: "Default Font Size",
   increaseFontSize: "Increase Font Size",

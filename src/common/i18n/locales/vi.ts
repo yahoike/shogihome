@@ -42,6 +42,7 @@ export const vi: Texts = {
   deleteMoves: "Xóa từ nước hiện tại trở đi",
   view: "Hiển thị",
   openLayoutManager: "Mở trình quản lý bố cục",
+  openMonitorWindow: "監視ウィンドウ", // TODO: translate
   toggleFullScreen: "Bật/tắt toàn màn hình",
   defaultFontSize: "Cỡ chữ tiêu chuẩn",
   increaseFontSize: "Cỡ chữ lớn",

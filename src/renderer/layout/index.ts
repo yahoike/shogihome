@@ -11,7 +11,7 @@ import { setLanguage } from "@/common/i18n";
 import LayoutManager from "@/renderer/view/layout/LayoutManager.vue";
 import { createApp } from "vue";
 
-api.log(LogLevel.INFO, `start renderer process (layout manager)`);
+api.log(LogLevel.INFO, "start renderer process (layout manager)");
 
 const store = useStore();
 const appSettings = useAppSettings();

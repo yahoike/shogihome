@@ -30,6 +30,7 @@ import { createLayoutManagerWindow } from "./layout";
 import { licenseURL, thirdPartyLicenseURL } from "@/common/links/github";
 import { materialIconsGuideURL } from "@/common/links/google";
 import { openPath } from "@/background/helpers/electron";
+import { createMonitorWindow } from "./monitor";
 
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";
@@ -320,6 +321,12 @@ function createMenuTemplate(window: BrowserWindow) {
           accelerator: "CmdOrCtrl+L",
         },
         {
+          label: t.openMonitorWindow,
+          click: () => {
+            createMonitorWindow(window);
+          },
+        },
+        {
           type: "separator",
         },
         {
@@ -418,6 +425,12 @@ function createMenuTemplate(window: BrowserWindow) {
         },
         {
           type: "separator",
+        },
+        {
+          label: t.openMonitorWindow,
+          click: () => {
+            createMonitorWindow(window);
+          },
         },
         {
           label: t.logFile,
