@@ -477,6 +477,7 @@ export const en: Texts = {
   freq: "Freq.",
   frequency: "Frequency",
   new: "New",
+  duplicated: "Duplicated",
   moveEntry: "Entry",
   updatedAt: "Updated At",
   createdAt: "Created At",

@@ -103,6 +103,15 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 `);
   });
 
+  it("copy", async () => {
+    const copyFilePath = path.join(tmpdir, "copy.db");
+    await openBook("src/tests/testdata/book/yaneuraou.db");
+    await saveBook(copyFilePath);
+    const output = fs.readFileSync(copyFilePath, "utf-8");
+    const expected = fs.readFileSync("src/tests/testdata/book/yaneuraou-copy.db", "utf-8");
+    expect(output).toBe(expected);
+  });
+
   it("updateBookMoveOrder", async () => {
     await openBook("src/tests/testdata/book/yaneuraou.db");
     const sfen = "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1";

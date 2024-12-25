@@ -188,7 +188,7 @@ export class BookStore {
                   text: t.moveEntry,
                   children: [
                     `${t.new}: ${summary.entryCount}`,
-                    `${t.duplicate}: ${summary.duplicateCount}`,
+                    `${t.duplicated}: ${summary.duplicateCount}`,
                   ],
                 },
               ],

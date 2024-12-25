@@ -477,6 +477,7 @@ export const ja: Texts = {
   freq: "出現頻度",
   frequency: "出現頻度",
   new: "新規",
+  duplicated: "重複",
   moveEntry: "登録手数",
   updatedAt: "更新日時",
   createdAt: "作成日時",
