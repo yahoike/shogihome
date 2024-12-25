@@ -35,14 +35,27 @@ function newTimeoutError(timeoutSeconds: number): Error {
   return new Error(t.noResponseFromEnginePleaseExtendTimeout(timeoutSeconds));
 }
 
+function newUnexpectedError(message: string, lastReceived?: string): Error {
+  if (!lastReceived) {
+    return new Error(message);
+  }
+  return new Error(`${message}: ${t.lastReceived}=[${lastReceived}]`);
+}
+
 export function getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<USIEngine> {
   const sessionID = issueSessionID();
   return new Promise<USIEngine>((resolve, reject) => {
     const process = new EngineProcess(resolveEnginePath(path), sessionID, getUSILogger(), {
       timeout: timeoutSeconds * 1e3,
     })
-      .on("error", reject)
-      .on("close", () => reject(new Error(t.engineProcessWasClosedUnexpectedly)))
+      .on("error", (err) => {
+        const lastReceived = process.lastReceived?.command;
+        reject(newUnexpectedError(err.message, lastReceived));
+      })
+      .on("close", () => {
+        const lastReceived = process.lastReceived?.command;
+        reject(newUnexpectedError(t.engineProcessWasClosedUnexpectedly, lastReceived));
+      })
       .on("timeout", () => reject(newTimeoutError(timeoutSeconds)))
       .on("usiok", () => {
         resolve({
@@ -73,8 +86,14 @@ export function sendSetOptionCommand(
     const process = new EngineProcess(resolveEnginePath(path), sessionID, getUSILogger(), {
       timeout: timeoutSeconds * 1e3,
     })
-      .on("error", reject)
-      .on("close", () => reject(new Error(t.engineProcessWasClosedUnexpectedly)))
+      .on("error", (err) => {
+        const lastReceived = process.lastReceived?.command;
+        reject(newUnexpectedError(err.message, lastReceived));
+      })
+      .on("close", () => {
+        const lastReceived = process.lastReceived?.command;
+        reject(newUnexpectedError(t.engineProcessWasClosedUnexpectedly, lastReceived));
+      })
       .on("timeout", () => {
         reject(newTimeoutError(timeoutSeconds));
       })
@@ -137,7 +156,10 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
           sessions.delete(sessionID);
         }, engineRemoveDelay);
       })
-      .on("error", reject)
+      .on("error", (err) => {
+        const lastReceived = process.lastReceived?.command;
+        reject(newUnexpectedError(err.message, lastReceived));
+      })
       .on("timeout", () => reject(newTimeoutError(timeoutSeconds)))
       .on("bestmove", (usi, usiMove, ponder) => h.onUSIBestMove(sessionID, usi, usiMove, ponder))
       .on("checkmate", (position, moves) => {
@@ -162,11 +184,16 @@ export function setupPlayer(engine: USIEngine, timeoutSeconds: number): Promise<
 
 export function ready(sessionID: number): Promise<void> {
   const session = getSession(sessionID);
+  const process = session.process;
   return new Promise<void>((resolve, reject) => {
-    session.process.on("ready", resolve).on("error", reject);
-    const error = session.process.ready();
+    process.on("ready", resolve).on("error", (err) => {
+      const lastReceived = process.lastReceived?.command;
+      reject(newUnexpectedError(err.message, lastReceived));
+    });
+    const error = process.ready();
     if (error) {
-      reject(error);
+      const lastReceived = process.lastReceived?.command;
+      reject(newUnexpectedError(error.message, lastReceived));
     }
   });
 }

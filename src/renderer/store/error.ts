@@ -27,7 +27,7 @@ export class ErrorStore {
 
   add(e: unknown): void {
     let message = e instanceof Error ? e.message : "" + e;
-    message = message.replace(/^Error invoking remote method '[^']*': Error: /, "");
+    message = message.replace(/Error invoking remote method '[^']*': Error: /, "");
     const count = this.errorCounts[message] || 0;
     this.errorCounts[message] = count + 1;
   }
