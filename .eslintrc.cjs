@@ -50,5 +50,7 @@ module.exports = {
     "import/resolver": {
       typescript: true,
     },
+    "import/ignore": ["node_modules"],
   },
+  ignorePatterns: ["docs/webapp/", "docs/webapp-dev/", "dist/", "coverage/"],
 };
