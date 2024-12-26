@@ -108,7 +108,7 @@ function getMessageAttachmentsByGameResults(results: GameResults): Attachment[] 
           ],
         },
         {
-          text: "二項検定",
+          text: "二項検定", // TODO: i18n
           children: [
             `np > 5: ${statistics.npIsGreaterThan5 ? "True" : "False"}`,
             `${t.zValue}: ${statistics.zValue.toFixed(2)}`,
@@ -580,7 +580,7 @@ class Store {
       })
       .then(() => (this._appState = AppState.GAME))
       .catch((e) => {
-        useErrorStore().add("対局の初期化中にエラーが出ました: " + e);
+        useErrorStore().add(e);
       })
       .finally(() => {
         useBusyState().release();
@@ -634,7 +634,7 @@ class Store {
       })
       .then(() => (this._appState = AppState.CSA_GAME))
       .catch((e) => {
-        useErrorStore().add("対局の初期化中にエラーが出ました: " + e);
+        useErrorStore().add(e);
       })
       .finally(() => {
         useBusyState().release();
@@ -646,7 +646,7 @@ class Store {
       return;
     }
     if (this.csaGameManager.state === CSAGameState.GAME) {
-      useErrorStore().add("対局が始まっているため通信対局をキャンセルできませんでした。");
+      useErrorStore().add("対局が始まっているため通信対局をキャンセルできませんでした。"); // TODO: i18n
       return;
     }
     this.csaGameManager.logout();
@@ -867,7 +867,7 @@ class Store {
     }
     useBusyState().retain();
     if (!mateSearchSettings.usi) {
-      useErrorStore().add(new Error("エンジンが設定されていません。"));
+      useErrorStore().add(new Error(t.engineNotSelected));
       return;
     }
     api
@@ -881,7 +881,7 @@ class Store {
         }
       })
       .catch((e) => {
-        useErrorStore().add("詰将棋探索の初期化中にエラーが出ました: " + e);
+        useErrorStore().add(e);
       })
       .finally(() => {
         useBusyState().release();
@@ -1184,7 +1184,7 @@ class Store {
         }
       })
       .catch((e) => {
-        useErrorStore().add("棋譜の読み込み中にエラーが出ました: " + e);
+        useErrorStore().add("棋譜の読み込み中にエラーが出ました: " + e); // TODO: i18n
       })
       .finally(() => {
         useBusyState().release();
@@ -1399,7 +1399,7 @@ class Store {
       ...confirmation,
       onOk: () => {
         if (this.appState !== lastAppState) {
-          useErrorStore().add("確認ダイアログ表示中に他の操作が行われたため処理が中止されました。");
+          useErrorStore().add("確認ダイアログ表示中に他の操作が行われたため処理が中止されました。"); // TODO: i18n
           return;
         }
         confirmation.onOk();
