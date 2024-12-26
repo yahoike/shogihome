@@ -335,6 +335,7 @@ export const vi: Texts = {
   earlyPonder: "Tính nhanh",
   enginePath: "Đường dẫn phần mềm",
   openDirectory: "Mở đường dẫn",
+  replaceEnginePath: "エンジン再選択", // TODO: translate
   displayName: "Tên hiển thị",
   invoke: "Thực hiện",
   resetToEngineDefaultValues: "Đặt lại về giá trị ban đầu",
@@ -656,6 +657,8 @@ export const vi: Texts = {
   sourceDirectoryNotSet: "フォルダを選択してください。", // TODO: translate
   minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。", // TODO: translate
   playerNameNotSet: "対局者名が設定されていません。", // TODO: translate
+  incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
+    "互換性のないオプションがある場合それらは破棄されます。エンジンを置き換えますか？", // TODO: translate
   totalNumber: (n: number) => `Tổng: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Vui lòng đăng nhập lại sau ${n} giây.`,

@@ -332,6 +332,7 @@ export const zh_tw: Texts = {
   earlyPonder: "預先Ponder",
   enginePath: "場所",
   openDirectory: "開啟資料夾",
+  replaceEnginePath: "エンジン再選択", // TODO: translate
   displayName: "表示名稱",
   invoke: "執行",
   resetToEngineDefaultValues: "回復至引擎預設設定",
@@ -645,6 +646,8 @@ export const zh_tw: Texts = {
   sourceDirectoryNotSet: "フォルダを選択してください。", // TODO: translate
   minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。", // TODO: translate
   playerNameNotSet: "対局者名が設定されていません。", // TODO: translate
+  incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
+    "互換性のないオプションがある場合それらは破棄されます。エンジンを置き換えますか？", // TODO: translate
   totalNumber: (n: number) => `總計 ${n} 筆`,
   number: (n: number) => `${n} 筆`,
   tryToReloginToCSAServerNSecondsLater: (n) => `請在${n}秒後再次嘗試登入 CSA 伺服器。`,

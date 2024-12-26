@@ -27,6 +27,9 @@
             <div class="option-name">{{ t.enginePath }}</div>
             <div class="option-unchangeable">
               <div>{{ engine.path }}</div>
+              <button class="thin" @click="replaceEnginePath">
+                {{ t.replaceEnginePath }}
+              </button>
               <button class="thin" @click="openEngineDir">
                 {{ t.openDirectory }}
               </button>
@@ -220,6 +223,7 @@ import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import ComboBox from "@/renderer/view/primitive/ComboBox.vue";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import { useConfirmationStore } from "@/renderer/store/confirm";
 
 const props = defineProps({
   latest: {
@@ -251,6 +255,7 @@ const selectors = ref(
 const engine = ref(emptyUSIEngine());
 let defaultValueLoaded = false;
 let defaultValueApplied = false;
+
 busyState.retain();
 onMounted(async () => {
   showModalDialog(dialog.value, cancel);
@@ -269,6 +274,7 @@ onMounted(async () => {
     busyState.release();
   }
 });
+
 const options = computed(() =>
   Object.values(engine.value.options)
     .sort((a, b): number => (a.order < b.order ? -1 : 1))
@@ -290,6 +296,7 @@ const options = computed(() =>
       return ret;
     }),
 );
+
 onUpdated(() => {
   if (!defaultValueLoaded || defaultValueApplied) {
     return;
@@ -306,18 +313,49 @@ onUpdated(() => {
   }
   defaultValueApplied = true;
 });
+
 onBeforeUnmount(() => {
   uninstallHotKeyForDialog(dialog.value);
 });
+
 const updateFilter = () => {
   filterWords.value = String(filter.value.value)
     .trim()
     .split(/ +/)
     .filter((s) => s);
 };
+
 const openEngineDir = () => {
   api.openExplorer(engine.value.path);
 };
+
+const replaceEnginePath = async () => {
+  busyState.retain();
+  try {
+    const path = await api.showSelectUSIEngineDialog();
+    if (!path) {
+      return;
+    }
+    const timeoutSeconds = appSettings.engineTimeoutSeconds;
+    useConfirmationStore().show({
+      message: t.incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath,
+      onOk: async () => {
+        try {
+          const newEngine = await api.getUSIEngineInfo(path, timeoutSeconds);
+          mergeUSIEngine(newEngine, engine.value); // もとの設定を引き継ぐ
+          engine.value = newEngine;
+        } catch (e) {
+          useErrorStore().add(e);
+        }
+      },
+    });
+  } catch (e) {
+    useErrorStore().add(e);
+  } finally {
+    busyState.release();
+  }
+};
+
 const selectFile = async (name: string) => {
   busyState.retain();
   try {
@@ -332,6 +370,7 @@ const selectFile = async (name: string) => {
     busyState.release();
   }
 };
+
 const sendOption = async (name: string) => {
   busyState.retain();
   try {
@@ -343,6 +382,7 @@ const sendOption = async (name: string) => {
     busyState.release();
   }
 };
+
 const reset = () => {
   engineNameInput.value.value = engine.value.defaultName;
   enableEarlyPonder.value = engine.value.enableEarlyPonder;
@@ -356,6 +396,7 @@ const reset = () => {
     }
   });
 };
+
 const ok = () => {
   engine.value.name = engineNameInput.value.value;
   engine.value.enableEarlyPonder = enableEarlyPonder.value;
@@ -378,6 +419,7 @@ const ok = () => {
   });
   emit("ok", engine.value);
 };
+
 const cancel = () => {
   emit("cancel");
 };
@@ -437,6 +479,9 @@ const cancel = () => {
 }
 .option button {
   vertical-align: top;
+}
+.option button:not(:last-child) {
+  margin-right: 5px;
 }
 .option-default-value {
   padding: 0.3em;
