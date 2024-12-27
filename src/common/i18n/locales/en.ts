@@ -335,6 +335,7 @@ export const en: Texts = {
   earlyPonder: "Early Pondering",
   enginePath: "Engine Path",
   openDirectory: "Open Directory",
+  replaceEnginePath: "Replace Engine Path",
   displayName: "Display Name",
   invoke: "Invoke",
   resetToEngineDefaultValues: "Reset to default values",
@@ -659,6 +660,8 @@ export const en: Texts = {
   sourceDirectoryNotSet: "Source directory is not set.",
   minPlyMustBeLessThanMaxPly: "Min ply must be less than max ply.",
   playerNameNotSet: "Player name is not set.",
+  incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
+    "Incompatible options will be discarded. Do you really want to replace the engine path?",
   totalNumber: (n: number) => `Total: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Try to relogin to the CSA server in ${n} seconds.`,

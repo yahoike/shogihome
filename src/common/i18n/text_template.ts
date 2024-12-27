@@ -330,6 +330,7 @@ export type Texts = {
   earlyPonder: string;
   enginePath: string;
   openDirectory: string;
+  replaceEnginePath: string;
   displayName: string;
   invoke: string;
   resetToEngineDefaultValues: string;
@@ -631,6 +632,7 @@ export type Texts = {
   sourceDirectoryNotSet: string;
   minPlyMustBeLessThanMaxPly: string;
   playerNameNotSet: string;
+  incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath: string;
   totalNumber: (n: number) => string;
   number: (n: number) => string;
   tryToReloginToCSAServerNSecondsLater: (n: number) => string;

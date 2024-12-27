@@ -335,6 +335,7 @@ export const ja: Texts = {
   earlyPonder: "早期Ponder",
   enginePath: "場所",
   openDirectory: "フォルダを開く",
+  replaceEnginePath: "エンジン再選択",
   displayName: "表示名",
   invoke: "実行",
   resetToEngineDefaultValues: "エンジンの既定値に戻す",
@@ -659,6 +660,8 @@ export const ja: Texts = {
   sourceDirectoryNotSet: "フォルダを選択してください。",
   minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。",
   playerNameNotSet: "対局者名が設定されていません。",
+  incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
+    "互換性のないオプションがある場合それらは破棄されます。エンジンを置き換えますか？",
   totalNumber: (n: number) => `合計 ${n} 件`,
   number: (n: number) => `${n} 件`,
   tryToReloginToCSAServerNSecondsLater: (n) => `CSAサーバーへのログインを${n}秒後に再試行します。`,
