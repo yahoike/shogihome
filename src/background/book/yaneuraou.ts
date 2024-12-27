@@ -6,7 +6,6 @@ import {
   Book,
   BookEntry,
   BookMove,
-  compareMoves,
   IDX_COMMENTS,
   IDX_COUNT,
   IDX_DEPTH,
@@ -160,10 +159,6 @@ export async function loadYaneuraOuBook(input: Readable): Promise<Book> {
   });
 
   await events.once(reader, "close");
-
-  for (const entry of Object.values(entries)) {
-    entry.moves.sort(compareMoves);
-  }
   return { entries, entryCount, duplicateCount };
 }
 
@@ -340,7 +335,5 @@ export async function searchBookMovesOnTheFly(
     }
     moves.push(parsed.move);
   }
-
-  moves.sort(compareMoves);
   return moves;
 }
