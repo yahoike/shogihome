@@ -175,7 +175,7 @@ export class CSAGameManager {
     );
     // サーバーへのログインと対局開始を試みる。
     // NOTICE: エラーの場合は自動的にリトライするのでこの関数の呼び元にはエラーを伝搬しない。
-    this._login().catch(this.onError);
+    this.doLogin().catch(this.onError);
   }
 
   private async relogin(): Promise<void> {
@@ -190,12 +190,12 @@ export class CSAGameManager {
         this.recordManager.updateSearchInfo(SearchInfoSenderType.OPPONENT, info),
       );
     }
-    await this._login();
+    await this.doLogin();
   }
 
-  private async _login(): Promise<void> {
+  private async doLogin(): Promise<void> {
     if (!this.player) {
-      throw new Error("CSAGameManager#relogin: player is not initialized");
+      throw new Error("CSAGameManager#login: player is not initialized");
     }
     try {
       // プレイヤーに対局開始を通知する。
@@ -213,7 +213,7 @@ export class CSAGameManager {
     } catch (e) {
       this._state = CSAGameState.LOGIN_FAILED;
       this.close(ReloginBehavior.RELOGIN_WITH_INTERVAL);
-      throw new Error(`CSAGameManager#relogin: ${t.failedToStartNewGame}: ${e}`);
+      throw new Error(`CSAGameManager#login: ${t.failedToStartNewGame}: ${e}`);
     }
   }
 
