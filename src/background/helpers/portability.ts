@@ -3,7 +3,12 @@
  * Electron が存在しない場合は例外が投げられます。
  */
 export function requireElectron() {
-  return require("electron");
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const electron = require("electron");
+  if (typeof electron !== "object") {
+    throw new Error("Electron is not available");
+  }
+  return electron;
 }
 
 /**
