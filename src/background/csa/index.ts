@@ -41,7 +41,9 @@ function registerClient(client: Client): void {
   clients.set(client.sessionID, client);
   if (powerSaveBlockID === undefined) {
     powerSaveBlockID = preventAppSuspension();
-    getAppLogger().info("prevent app suspension: blocker=%d", powerSaveBlockID);
+    if (powerSaveBlockID !== undefined) {
+      getAppLogger().info("prevent app suspension: blocker=%d", powerSaveBlockID);
+    }
   }
 }
 
