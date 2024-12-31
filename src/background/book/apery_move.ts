@@ -63,19 +63,19 @@ export function toAperyMove(usi: string): number {
     const piece = Piece.newBySFEN(from[0]) as Piece;
     apFrom = toAperyHand(piece.type) + 81 - 1;
   } else {
-    const square = Square.parseSFENSquare(from) as Square;
+    const square = Square.newByUSI(from) as Square;
     apFrom = toAperySquare(square);
   }
-  const apTo = toAperySquare(Square.parseSFENSquare(to) as Square);
+  const apTo = toAperySquare(Square.newByUSI(to) as Square);
   return (promote << 14) | (apFrom << 7) | apTo;
 }
 
 export function fromAperyMove(value: number): string {
-  const to = fromAperySquare(value & 0x7f).sfen;
+  const to = fromAperySquare(value & 0x7f).usi;
   const apFrom = (value >> 7) & 0x7f;
   const from =
     apFrom < 81
-      ? fromAperySquare(apFrom).sfen
+      ? fromAperySquare(apFrom).usi
       : pieceTypeToSFEN(fromAperyHand(apFrom - 81 + 1)) + "*";
   const promote = ((value >> 14) & 1) === 1 ? "+" : "";
   return from + to + promote;
