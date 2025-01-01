@@ -18,7 +18,7 @@ export type YaneBook = BookCommon & {
 
 export type AperyBook = BookCommon & {
   format: BookFormatApery;
-  aperyEntries: { [hash: string]: BookEntry };
+  aperyEntries: Map<bigint, BookEntry>;
 };
 
 export type Book = YaneBook | AperyBook;

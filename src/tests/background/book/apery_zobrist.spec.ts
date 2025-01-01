@@ -29,7 +29,8 @@ describe("apery_zobrist", () => {
       },
     ];
     for (const { sfen, wants } of testCases) {
-      expect(hash(sfen)).toBe(wants);
+      const wantsBigInt = Buffer.from(wants, "hex").readBigUInt64LE();
+      expect(hash(sfen)).toBe(wantsBigInt);
     }
   });
 });

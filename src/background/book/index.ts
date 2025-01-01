@@ -49,7 +49,7 @@ function retrieveEntry(book: InMemoryBook, sfen: string): BookEntry | undefined 
     case "yane2016":
       return book.yaneEntries[sfen];
     case "apery":
-      return book.aperyEntries[aperyHash(sfen)];
+      return book.aperyEntries.get(aperyHash(sfen));
   }
 }
 
@@ -199,7 +199,7 @@ export async function searchBookMoves(sfen: string): Promise<BookMove[]> {
       }
     case "apery":
       if (book.type === "in-memory") {
-        const moves = book.aperyEntries[aperyHash(sfen)]?.moves || [];
+        const moves = book.aperyEntries.get(aperyHash(sfen))?.moves || [];
         return moves.map(arrayMoveToCommonBookMove);
       } else {
         const moves = await searchAperyBookMovesOnTheFly(sfen, book.file, book.size);
@@ -243,15 +243,15 @@ export function updateBookMove(sfen: string, move: BookMove): void {
       throw new Error("Apery book does not support opponent-move, depth, or comment"); // FIXME: i18n
     }
     const hash = aperyHash(sfen);
-    const entry = book.aperyEntries[hash];
+    const entry = book.aperyEntries.get(hash);
     if (entry) {
       updateBookEntry(entry, move);
     } else {
-      book.aperyEntries[hash] = {
+      book.aperyEntries.set(hash, {
         comment: "",
         moves: [commonBookMoveToArray(move)],
         minPly: 0,
-      };
+      });
       book.entryCount++;
     }
   }

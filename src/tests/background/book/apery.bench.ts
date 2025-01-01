@@ -16,7 +16,7 @@ describe("background/book/apery", async () => {
     const file = fs.createReadStream(book10mPath);
     try {
       const book = await loadAperyBook(file);
-      expect(book.aperyEntries["0000000000000000"]).not.toBeUndefined();
+      expect(book.aperyEntries.get(BigInt(0))).not.toBeUndefined();
     } finally {
       file.close();
     }

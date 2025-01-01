@@ -12,9 +12,9 @@ import { hash } from "./apery_zobrist";
 //   3. 16bits: Count
 //   4. 32bits: Score
 
-function encodeEntry(hash: string, move: BookMove): Buffer {
+function encodeEntry(hash: bigint, move: BookMove): Buffer {
   const binary = Buffer.alloc(16);
-  binary.write(hash, 0, 8, "hex");
+  binary.writeBigUInt64LE(hash, 0);
   const aperyMove = toAperyMove(move[IDX_USI]);
   binary.writeUInt16LE(aperyMove, 8);
   binary.writeUInt16LE(move[IDX_COUNT] || 0, 10);
@@ -22,8 +22,8 @@ function encodeEntry(hash: string, move: BookMove): Buffer {
   return binary;
 }
 
-function decodeEntry(binary: Buffer, offset: number = 0): { hash: string; bookMove: BookMove } {
-  const hash = binary.toString("hex", offset, offset + 8);
+function decodeEntry(binary: Buffer, offset: number = 0): { hash: bigint; bookMove: BookMove } {
+  const hash = binary.readBigUInt64LE(offset);
   const move = binary.readUInt16LE(offset + 8);
   const count = binary.readUInt16LE(offset + 10);
   const score = binary.readInt32LE(offset + 12);
@@ -36,7 +36,7 @@ function decodeEntry(binary: Buffer, offset: number = 0): { hash: string; bookMo
 
 export async function loadAperyBook(input: Readable): Promise<AperyBook> {
   return new Promise((resolve, reject) => {
-    const entries: { [hash: string]: BookEntry } = {};
+    const entries = new Map<bigint, BookEntry>();
     let entryCount = 0;
     let duplicateCount = 0;
 
@@ -47,7 +47,7 @@ export async function loadAperyBook(input: Readable): Promise<AperyBook> {
       }
       for (let offset = 0; offset < chunk.length; offset += 16) {
         const { hash, bookMove } = decodeEntry(chunk, offset);
-        const entry = entries[hash];
+        const entry = entries.get(hash);
         if (entry) {
           if (entry.moves.some((m) => m[IDX_USI] === bookMove[IDX_USI])) {
             duplicateCount++;
@@ -55,11 +55,11 @@ export async function loadAperyBook(input: Readable): Promise<AperyBook> {
             entry.moves.push(bookMove);
           }
         } else {
-          entries[hash] = {
+          entries.set(hash, {
             comment: "",
             moves: [bookMove],
             minPly: 0,
-          };
+          });
           entryCount++;
         }
       }
@@ -72,21 +72,12 @@ export async function loadAperyBook(input: Readable): Promise<AperyBook> {
   });
 }
 
-function compareHash(a: string, b: string): number {
-  for (let i = 14; i >= 0; i -= 2) {
-    const aByte = a.slice(i, i + 2);
-    const bByte = b.slice(i, i + 2);
-    if (aByte < bByte) {
-      return -1;
-    } else if (aByte > bByte) {
-      return 1;
-    }
-  }
-  return 0;
+function compareHash(a: bigint, b: bigint): number {
+  return a < b ? -1 : a > b ? 1 : 0;
 }
 
 async function binarySearch(
-  key: string,
+  key: bigint,
   file: fs.promises.FileHandle,
   size: number,
 ): Promise<number> {
@@ -98,7 +89,7 @@ async function binarySearch(
     const mid = Math.floor((begin + end) / 2);
     for (let offset = mid - (mid % 16); offset >= begin; offset -= 16) {
       await file.read(buffer, 0, 8, offset);
-      const comp = compareHash(key, buffer.toString("hex"));
+      const comp = compareHash(key, buffer.readBigUInt64LE());
       if (comp < 0) {
         end = mid;
         break;
@@ -128,7 +119,7 @@ export async function searchAperyBookMovesOnTheFly(
   for (; offset < size; offset += 16) {
     const buffer = Buffer.alloc(16);
     await file.read(buffer, 0, 16, offset);
-    if (buffer.toString("hex", 0, 8) !== key) {
+    if (buffer.readBigUInt64LE() !== key) {
       break;
     }
     bookMoves.push(decodeEntry(buffer).bookMove);
@@ -141,8 +132,10 @@ export async function storeAperyBook(book: AperyBook, output: Writable): Promise
     output.on("finish", resolve);
     output.on("error", reject);
 
-    for (const key of Object.keys(book.aperyEntries).sort((a, b) => compareHash(a, b))) {
-      const entry = book.aperyEntries[key];
+    const keys = book.aperyEntries.keys();
+    const orderedKeys = Array.from(keys).sort(compareHash);
+    for (const key of orderedKeys) {
+      const entry = book.aperyEntries.get(key) as BookEntry;
       for (const move of entry.moves) {
         output.write(encodeEntry(key, move));
       }
