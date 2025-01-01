@@ -1,5 +1,6 @@
 import path from "node:path";
 import fs from "node:fs";
+import crypto from "node:crypto";
 import {
   clearBook,
   getBookFormat,
@@ -13,8 +14,19 @@ import {
 } from "@/background/book";
 import { getTempPathForTesting } from "@/background/proc/env";
 import { defaultBookImportSettings, PlayerCriteria, SourceType } from "@/common/settings/book";
+import { createTestAperyBookFile } from "@/tests/mock/book";
 
 const tmpdir = path.join(getTempPathForTesting(), "book");
+
+function sha256File(filePath: string) {
+  return new Promise((resolve, reject) => {
+    const hash = crypto.createHash("sha256");
+    const stream = fs.createReadStream(filePath);
+    stream.on("data", (chunk) => hash.update(chunk));
+    stream.on("end", () => resolve(hash.digest("hex")));
+    stream.on("error", reject);
+  });
+}
 
 describe("background/book", () => {
   beforeAll(() => {
@@ -238,6 +250,18 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
       await saveBook(copyFilePath);
       const output = fs.readFileSync(copyFilePath, "hex");
       const expected = fs.readFileSync("src/tests/testdata/book/apery.bin", "hex");
+      expect(output).toBe(expected);
+    });
+
+    it("apery large", async () => {
+      // チャンクの境界処理をテストするために大きなファイルを作成
+      const sourcePath = path.join(tmpdir, "source.bin");
+      await createTestAperyBookFile(sourcePath, 1_000_000); // 1MB
+      await openBook(sourcePath);
+      const copyFilePath = path.join(tmpdir, "copy-large.bin");
+      await saveBook(copyFilePath);
+      const output = await sha256File(copyFilePath);
+      const expected = await sha256File(sourcePath);
       expect(output).toBe(expected);
     });
   });
