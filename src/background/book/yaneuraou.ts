@@ -163,41 +163,44 @@ export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
 }
 
 export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Promise<void> {
-  output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
-  if (book.format !== "yane2016") {
-    throw new Error("Invalid book format: " + book.format);
-  }
-  for (const sfen of Object.keys(book.yaneEntries).sort()) {
-    const entry = book.yaneEntries[sfen];
-    output.write(SFENMarker + sfen + "\n");
-    if (entry.comment) {
-      for (const commentLine of entry.comment.split("\n")) {
-        output.write(CommentMarker1 + commentLine + "\n");
-      }
+  return new Promise((resolve, reject) => {
+    output.on("finish", resolve);
+    output.on("error", reject);
+
+    output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
+    if (book.format !== "yane2016") {
+      throw new Error("Invalid book format: " + book.format);
     }
-    for (const move of entry.moves) {
-      output.write(
-        move[IDX_USI] +
-          " " +
-          (move[IDX_USI2] || MOVE_NONE) +
-          " " +
-          (move[IDX_SCORE] != undefined ? move[IDX_SCORE].toFixed(0) : "") +
-          " " +
-          (move[IDX_DEPTH] != undefined ? move[IDX_DEPTH].toFixed(0) : "") +
-          " " +
-          (move[IDX_COUNT] != undefined ? move[IDX_COUNT].toFixed(0) : "") +
-          "\n",
-      );
-      if (move[IDX_COMMENTS]) {
-        for (const commentLine of move[IDX_COMMENTS].split("\n")) {
+    for (const sfen of Object.keys(book.yaneEntries).sort()) {
+      const entry = book.yaneEntries[sfen];
+      output.write(SFENMarker + sfen + "\n");
+      if (entry.comment) {
+        for (const commentLine of entry.comment.split("\n")) {
           output.write(CommentMarker1 + commentLine + "\n");
         }
       }
+      for (const move of entry.moves) {
+        output.write(
+          move[IDX_USI] +
+            " " +
+            (move[IDX_USI2] || MOVE_NONE) +
+            " " +
+            (move[IDX_SCORE] != undefined ? move[IDX_SCORE].toFixed(0) : "") +
+            " " +
+            (move[IDX_DEPTH] != undefined ? move[IDX_DEPTH].toFixed(0) : "") +
+            " " +
+            (move[IDX_COUNT] != undefined ? move[IDX_COUNT].toFixed(0) : "") +
+            "\n",
+        );
+        if (move[IDX_COMMENTS]) {
+          for (const commentLine of move[IDX_COMMENTS].split("\n")) {
+            output.write(CommentMarker1 + commentLine + "\n");
+          }
+        }
+      }
     }
-  }
-  output.end();
-
-  await events.once(output, "finish");
+    output.end();
+  });
 }
 
 export async function validateBookPositionOrdering(input: Readable): Promise<boolean> {
