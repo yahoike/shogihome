@@ -1,5 +1,4 @@
 import fs from "node:fs";
-import events from "node:events";
 import { Readable, Writable } from "node:stream";
 import { AperyBook, BookEntry, BookMove, IDX_COUNT, IDX_SCORE, IDX_USI } from "./types";
 import { fromAperyMove, toAperyMove } from "./apery_move";
@@ -23,11 +22,11 @@ function encodeEntry(hash: string, move: BookMove): Buffer {
   return binary;
 }
 
-function decodeEntry(binary: Buffer): { hash: string; bookMove: BookMove } {
-  const hash = binary.subarray(0, 8).toString("hex");
-  const move = binary.subarray(8, 10).readUInt16LE();
-  const count = binary.subarray(10, 12).readUInt16LE();
-  const score = binary.subarray(12, 16).readInt32LE();
+function decodeEntry(binary: Buffer, offset: number = 0): { hash: string; bookMove: BookMove } {
+  const hash = binary.toString("hex", offset, offset + 8);
+  const move = binary.readUInt16LE(offset + 8);
+  const count = binary.readUInt16LE(offset + 10);
+  const score = binary.readInt32LE(offset + 12);
   const usi = fromAperyMove(move);
   return {
     hash,
@@ -36,39 +35,41 @@ function decodeEntry(binary: Buffer): { hash: string; bookMove: BookMove } {
 }
 
 export async function loadAperyBook(input: Readable): Promise<AperyBook> {
-  const entries: { [hash: string]: BookEntry } = {};
-  let entryCount = 0;
-  let duplicateCount = 0;
+  return new Promise((resolve, reject) => {
+    const entries: { [hash: string]: BookEntry } = {};
+    let entryCount = 0;
+    let duplicateCount = 0;
 
-  let leftover = Buffer.alloc(0) as Buffer<ArrayBufferLike>;
-  input.on("data", (chunk: Buffer) => {
-    chunk = Buffer.concat([leftover, chunk]);
-    let offset = 0;
-    while (offset + 16 <= chunk.length) {
-      const { hash, bookMove } = decodeEntry(chunk.subarray(offset, offset + 16));
-      const entry = entries[hash];
-      if (entry) {
-        if (entry.moves.some((m) => m[IDX_USI] === bookMove[IDX_USI])) {
-          duplicateCount++;
-        } else {
-          entry.moves.push(bookMove);
-        }
-      } else {
-        entries[hash] = {
-          comment: "",
-          moves: [bookMove],
-          minPly: 0,
-        };
-        entryCount++;
+    input.on("data", (chunk: Buffer) => {
+      if (chunk.length % 16 !== 0) {
+        input.destroy(new Error("Invalid Apery book format"));
+        return;
       }
+      for (let offset = 0; offset < chunk.length; offset += 16) {
+        const { hash, bookMove } = decodeEntry(chunk, offset);
+        const entry = entries[hash];
+        if (entry) {
+          if (entry.moves.some((m) => m[IDX_USI] === bookMove[IDX_USI])) {
+            duplicateCount++;
+          } else {
+            entry.moves.push(bookMove);
+          }
+        } else {
+          entries[hash] = {
+            comment: "",
+            moves: [bookMove],
+            minPly: 0,
+          };
+          entryCount++;
+        }
+      }
+    });
 
-      offset += 16;
-    }
-    leftover = chunk.subarray(offset);
+    input.on("end", () => {
+      resolve({ format: "apery", aperyEntries: entries, entryCount, duplicateCount });
+    });
+    input.on("error", reject);
   });
-
-  await events.once(input, "end");
-  return { format: "apery", aperyEntries: entries, entryCount, duplicateCount };
 }
 
 function compareHash(a: string, b: string): number {
@@ -127,7 +128,7 @@ export async function searchAperyBookMovesOnTheFly(
   for (; offset < size; offset += 16) {
     const buffer = Buffer.alloc(16);
     await file.read(buffer, 0, 16, offset);
-    if (buffer.subarray(0, 8).toString("hex") !== key) {
+    if (buffer.toString("hex", 0, 8) !== key) {
       break;
     }
     bookMoves.push(decodeEntry(buffer).bookMove);
@@ -136,12 +137,16 @@ export async function searchAperyBookMovesOnTheFly(
 }
 
 export async function storeAperyBook(book: AperyBook, output: Writable): Promise<void> {
-  for (const key of Object.keys(book.aperyEntries).sort((a, b) => compareHash(a, b))) {
-    const entry = book.aperyEntries[key];
-    for (const move of entry.moves) {
-      output.write(encodeEntry(key, move));
+  return new Promise((resolve, reject) => {
+    output.on("finish", resolve);
+    output.on("error", reject);
+
+    for (const key of Object.keys(book.aperyEntries).sort((a, b) => compareHash(a, b))) {
+      const entry = book.aperyEntries[key];
+      for (const move of entry.moves) {
+        output.write(encodeEntry(key, move));
+      }
     }
-  }
-  output.end();
-  await events.once(output, "finish");
+    output.end();
+  });
 }

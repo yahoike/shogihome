@@ -108,7 +108,7 @@ async function openBookInMemory(path: string, size: number): Promise<void> {
         book = await loadYaneuraOuBook(file);
         break;
       case "apery":
-        file = fs.createReadStream(path);
+        file = fs.createReadStream(path, { highWaterMark: 128 * 1024 });
         book = await loadAperyBook(file);
         break;
     }
