@@ -1,7 +1,5 @@
 import { BookMove as CommonBookMove } from "@/common/book";
 
-export const MOVE_NONE = "none";
-
 export type Book = {
   entries: { [sfen: string]: BookEntry };
   entryCount: number;

@@ -12,11 +12,14 @@ import {
   IDX_SCORE,
   IDX_USI,
   IDX_USI2,
-  MOVE_NONE,
 } from "./types";
 import { getAppLogger } from "@/background/log";
 
 const YANEURAOU_BOOK_HEADER_V100 = "#YANEURAOU-DB2016 1.00";
+
+const MOVE_NONE = "none";
+const SCORE_NONE = "none";
+const DEPTH_NONE = "none";
 
 const SFENMarker = "sfen ";
 const CommentMarker1 = "#";
@@ -89,8 +92,9 @@ function parseLine(line: string): Line {
       move: [
         columns[0], // usi
         columns[1] === MOVE_NONE ? undefined : columns[1], // usi2
-        columns[2] ? parseInt(columns[2], 10) : undefined, // score
-        columns[3] ? parseInt(columns[3], 10) : undefined, // depth
+        // ShogiHome v1.20.0 は score と depth の省略時に空文字を出力する実装なので空文字も判定に含める。
+        columns[2] === SCORE_NONE || columns[2] === "" ? undefined : parseInt(columns[2], 10), // score
+        columns[3] === DEPTH_NONE || columns[3] === "" ? undefined : parseInt(columns[3], 10), // depth
         columns[4] ? parseInt(columns[4], 10) : undefined, // counts
         commentIndex < line.length ? line.slice(commentIndex).replace(/^(#|\/\/)/, "") : "", // comment
       ],
@@ -182,9 +186,13 @@ export async function storeYaneuraOuBook(book: Book, output: Writable): Promise<
             " " +
             (move[IDX_USI2] || MOVE_NONE) +
             " " +
-            (move[IDX_SCORE] != undefined ? move[IDX_SCORE].toFixed(0) : "") +
+            // やねうら王や BookConv は連続するスペースをまとめて読み込むので、
+            // 値の省略時には空文字列ではなく 1 文字以上の出力が必要である。
+            // やねうら王のブログではその場合の書き方を言及していないが、
+            // 数値として解析できない文字列であれば実装上は問題ないことがわかっている。
+            (move[IDX_SCORE] != undefined ? move[IDX_SCORE].toFixed(0) : SCORE_NONE) +
             " " +
-            (move[IDX_DEPTH] != undefined ? move[IDX_DEPTH].toFixed(0) : "") +
+            (move[IDX_DEPTH] != undefined ? move[IDX_DEPTH].toFixed(0) : DEPTH_NONE) +
             " " +
             (move[IDX_COUNT] != undefined ? move[IDX_COUNT].toFixed(0) : "") +
             "\n",
