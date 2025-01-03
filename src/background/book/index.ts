@@ -82,12 +82,16 @@ async function openBookOnTheFly(path: string, size: number): Promise<void> {
   getAppLogger().info("Loading book on-the-fly: path=%s size=%d", path, size);
   const format = getFormatByPath(path);
   const file = await fs.promises.open(path, "r");
-  if (
-    format === "yane2016" &&
-    !(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))
-  ) {
-    file.close();
-    throw new Error("Book is not ordered by position"); // FIXME: i18n
+  try {
+    if (
+      format === "yane2016" &&
+      !(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))
+    ) {
+      throw new Error("Book is not ordered by position"); // FIXME: i18n
+    }
+  } catch (e) {
+    await file.close();
+    throw e;
   }
   replaceBook({
     type: "on-the-fly",

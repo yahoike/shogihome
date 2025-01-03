@@ -6,8 +6,8 @@
       <table class="list">
         <thead>
           <tr>
-            <td class="number">No.</td>
-            <td class="text">{{ t.bookMove }}</td>
+            <td class="order">No.</td>
+            <td class="move">{{ t.bookMove }}</td>
             <td v-show="playable" class="menu">{{ t.play }}</td>
             <td v-show="editable" class="menu">{{ t.edit }}</td>
             <td v-show="editable" class="menu">{{ t.remove }}</td>
@@ -20,8 +20,9 @@
         </thead>
         <tbody>
           <tr v-for="(entry, index) of moveList" :key="entry.usi">
-            <td class="number">
+            <td class="order">
               <select
+                v-if="editable"
                 :value="index"
                 @change="
                   (elem) =>
@@ -32,8 +33,9 @@
                   {{ i }}
                 </option>
               </select>
+              <span v-else>{{ index + 1 }}.</span>
             </td>
-            <td class="text">
+            <td class="move">
               <span>{{ formatMove(position, entry.move) }}</span>
             </td>
             <td v-show="playable" class="menu">
@@ -193,6 +195,14 @@ table.list > tbody > tr > td > * {
 }
 td.menu {
   text-align: center;
+}
+td.order {
+  text-align: right;
+  width: 3em;
+}
+td.move {
+  text-align: left;
+  width: 8em;
 }
 td.text {
   text-align: left;
