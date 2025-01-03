@@ -67,9 +67,13 @@ export async function openBook(
   if (options && size > options.onTheFlyThresholdMB * 1024 * 1024) {
     getAppLogger().info("Loading book on-the-fly: path=%s size=%d", path, size);
     const file = await fs.promises.open(path, "r");
-    if (!(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))) {
-      file.close();
-      throw new Error("Book is not ordered by position"); // FIXME: i18n
+    try {
+      if (!(await validateBookPositionOrdering(file.createReadStream({ autoClose: false })))) {
+        throw new Error("Book is not ordered by position"); // FIXME: i18n
+      }
+    } catch (e) {
+      await file.close();
+      throw e;
     }
     return replaceBook({
       type: "on-the-fly",
