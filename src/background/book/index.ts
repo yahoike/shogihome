@@ -192,23 +192,14 @@ export function clearBook(): void {
 }
 
 export async function searchBookMoves(sfen: string): Promise<BookMove[]> {
-  switch (book.format) {
-    case "yane2016":
-      if (book.type === "in-memory") {
-        const moves = book.yaneEntries[sfen]?.moves || [];
-        return moves.map(arrayMoveToCommonBookMove);
-      } else {
-        const moves = await searchYaneuraOuBookMovesOnTheFly(sfen, book.file, book.size);
-        return moves.map(arrayMoveToCommonBookMove);
-      }
-    case "apery":
-      if (book.type === "in-memory") {
-        const moves = book.aperyEntries.get(aperyHash(sfen))?.moves || [];
-        return moves.map(arrayMoveToCommonBookMove);
-      } else {
-        const moves = await searchAperyBookMovesOnTheFly(sfen, book.file, book.size);
-        return moves.map(arrayMoveToCommonBookMove);
-      }
+  if (book.type === "in-memory") {
+    const moves = retrieveEntry(book, sfen)?.moves || [];
+    return moves.map(arrayMoveToCommonBookMove);
+  } else {
+    const searchFunc =
+      book.format === "yane2016" ? searchYaneuraOuBookMovesOnTheFly : searchAperyBookMovesOnTheFly;
+    const moves = await searchFunc(sfen, book.file, book.size);
+    return moves.map(arrayMoveToCommonBookMove);
   }
 }
 
