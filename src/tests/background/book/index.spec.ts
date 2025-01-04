@@ -110,6 +110,39 @@ describe("background/book", () => {
           expect(moves[2].usi).toBe("2c2d");
           expect(moves[2].score).toBe(-100);
           expect(moves[2].count).toBe(8);
+
+          const singleMoveCases = [
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL w - 2",
+            "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b - 3",
+            "lnsgkgsnl/1r5b1/pppppp2p/6pp1/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5",
+            "lnsgkgsnl/1r5b1/pppppp2p/6pp1/9/2P4P1/PP1PPPP1P/1B1K3R1/LNSG1GSNL w - 6",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1pp1/9/2P4P1/PP1PPPP1P/1B1K3R1/LNSG1GSNL b - 7",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1pp1/7P1/2P6/PP1PPPP1P/1B1K3R1/LNSG1GSNL w - 8",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1p2/7p1/2P6/PP1PPPP1P/1B1K3R1/LNSG1GSNL b p 9",
+            "lnsgkgsnl/1r5b1/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1B1K5/LNSG1GSNL w Pp 10",
+            "lnsgkgsnl/1r7/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1+b1K5/LNSG1GSNL b Pbp 11",
+            "lnsgkgsnl/1r7/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL w BPbp 12",
+            "lnsgkgsnl/7r1/pppp1p2p/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL b BPbp 13",
+            "lnsgkgsnl/7r1/pppp1p1Pp/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL w Bbp 14",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p2/7R1/2P6/PP1PPPP1P/1S1K5/LN1G1GSNL b Bbp 15",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p2/7R1/2P6/PP1PPPP1P/1SK6/LN1G1GSNL w Bbp 16",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p1b/7R1/2P6/PP1PPPP1P/1SK6/LN1G1GSNL b Bp 17",
+            "lnsgkgsnl/4r4/pppp1p1Pp/4p1p1b/5R3/2P6/PP1PPPP1P/1SK6/LN1G1GSNL w Bp 18",
+          ];
+          for (const sfen of singleMoveCases) {
+            const moves = await searchBookMoves(sfen);
+            expect(moves).toHaveLength(1);
+          }
+
+          const notFoundCases = [
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2",
+            "lnsgk1snl/4r1g2/pppp1p1Pp/4p1p1b/5R3/2P6/PP1PPPP1P/1SK6/LN1G1GSNL b Bp 19",
+          ];
+          for (const sfen of notFoundCases) {
+            const moves = await searchBookMoves(sfen);
+            expect(moves).toHaveLength(0);
+          }
         });
       }
     });
@@ -140,12 +173,12 @@ describe("background/book", () => {
     const output = fs.readFileSync(tempFilePath, "utf-8");
     expect(output).toBe(`#YANEURAOU-DB2016 1.00
 sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/2P7/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1
-3c3d 6g6f -32  
+3c3d 6g6f -32 none 
 sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
 2g2f 8c8d 42 20 123
 #ibisha
 #popular
-7g7f 3c3d   
+7g7f 3c3d none none 
 `);
   });
 
