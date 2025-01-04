@@ -166,15 +166,15 @@ export async function loadYaneuraOuBook(input: Readable): Promise<YaneBook> {
   return { format: "yane2016", yaneEntries: entries, entryCount, duplicateCount };
 }
 
-export async function storeYaneuraOuBook(book: YaneBook, output: Writable): Promise<void> {
+export function storeYaneuraOuBook(book: YaneBook, output: Writable): Promise<void> {
+  if (book.format !== "yane2016") {
+    return Promise.reject(new Error(`Expected book format "yane2016" but got "${book.format}"`));
+  }
   return new Promise((resolve, reject) => {
     output.on("finish", resolve);
     output.on("error", reject);
 
     output.write(YANEURAOU_BOOK_HEADER_V100 + "\n");
-    if (book.format !== "yane2016") {
-      throw new Error("Invalid book format: " + book.format);
-    }
     for (const sfen of Object.keys(book.yaneEntries).sort()) {
       const entry = book.yaneEntries[sfen];
       output.write(SFENMarker + sfen + "\n");
