@@ -225,6 +225,7 @@ export const vi: Texts = {
   autoSavingDirectory: "Thư mục lưu tự động",
   recordFileName: "Tên tệp kỳ phổ",
   select: "Chọn",
+  shuffle: "シャッフル", // TODO: translate
   csaV3Output: "CSA V3 で出力", // TODO: translate
   positionOfUSIOutput: "Định dạng thế cờ USI",
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
@@ -282,6 +283,7 @@ export const vi: Texts = {
   swapSenteGote: "Đổi Tiên/Hậu",
   pieceToss: "振り駒", // TODO: translate
   currentPosition: "Thế cờ hiện tại",
+  positionList: "局面集", // TODO: translate
   enableEngineTimeout: "Bật hết giờ phần mềm",
   setDifferentTimeForGote: "Đặt thời gian khác cho Hậu",
   nextTurn: "Lượt đi",
@@ -294,6 +296,7 @@ export const vi: Texts = {
   numberOfThreads: "Luồng",
   multiPV: "Nhiều biến",
   startPosition: "Thế cờ ban đầu",
+  beginFromThisPosition: "この局面から開始", // TODO: translate
   maxMoves: "Số nước tối đa",
   gameRepetition: "Lặp lại thế cờ",
   jishogi: "Bế tắc",

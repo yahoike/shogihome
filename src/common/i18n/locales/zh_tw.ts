@@ -222,6 +222,7 @@ export const zh_tw: Texts = {
   autoSavingDirectory: "棋譜自動保存地點",
   recordFileName: "棋譜檔案名稱",
   select: "選擇",
+  shuffle: "シャッフル", // TODO: translate
   csaV3Output: "CSA V3 で出力", // TODO: translate
   positionOfUSIOutput: "USI 局面紀錄格式",
   movesOfUSIOutput: "USI 棋譜紀錄格式",
@@ -279,6 +280,7 @@ export const zh_tw: Texts = {
   swapSenteGote: "先後交換",
   pieceToss: "振り駒", // TODO: translate
   currentPosition: "現在局面",
+  positionList: "局面集", // TODO: translate
   enableEngineTimeout: "開啟引擎時間限制",
   setDifferentTimeForGote: "先後手時間不相同",
   nextTurn: "手番",
@@ -291,6 +293,7 @@ export const zh_tw: Texts = {
   numberOfThreads: "執行緒數",
   multiPV: "多重PV",
   startPosition: "開始局面",
+  beginFromThisPosition: "この局面から開始", // TODO: translate
   maxMoves: "最大手數",
   gameRepetition: "連續對局",
   jishogi: "持將棋",
