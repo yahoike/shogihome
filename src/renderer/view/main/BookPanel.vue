@@ -4,7 +4,7 @@
       <BookView
         class="book-list"
         :position="store.record.position"
-        :moves="bookMoves"
+        :moves="bookStore.moves"
         :playable="store.isMovableByUser"
         :editable="bookEditable"
         @play="playBookMove"
@@ -44,6 +44,7 @@ import { humanPlayer } from "@/renderer/players/human";
 import { t } from "@/common/i18n";
 import { useConfirmationStore } from "@/renderer/store/confirm";
 import BookView from "@/renderer/view/primitive/BookView.vue";
+import { useErrorStore } from "@/renderer/store/error";
 
 const store = useStore();
 const bookStore = useBookStore();
@@ -51,7 +52,6 @@ const bookStore = useBookStore();
 const isBookOperational = computed(
   () => store.appState === AppState.NORMAL && bookStore.mode === "in-memory",
 );
-const bookMoves = computed(() => bookStore.moves);
 const bookEditable = computed(() => bookStore.mode === "in-memory");
 const editingData = ref<
   BookMove & {
@@ -85,7 +85,7 @@ const playBookMove = (move: Move) => {
 };
 
 const editBookMove = (move: Move) => {
-  const target = bookMoves.value.find((bm) => bm.usi === move.usi);
+  const target = bookStore.moves.find((bm) => bm.usi === move.usi);
   if (!target) {
     return;
   }
@@ -111,15 +111,19 @@ const updateBookMoveOrder = (move: Move, order: number) => {
   bookStore.updateMoveOrder(store.record.position.sfen, move.usi, order);
 };
 
-const onEditBookMove = (data: EditResult) => {
+const onEditBookMove = async (data: EditResult) => {
   if (!editingData.value) {
     return;
   }
-  bookStore.updateMove(editingData.value.sfen, {
-    usi: editingData.value.usi,
-    ...data,
-  });
-  editingData.value = undefined;
+  try {
+    await bookStore.updateMove(editingData.value.sfen, {
+      usi: editingData.value.usi,
+      ...data,
+    });
+    editingData.value = undefined;
+  } catch (e) {
+    useErrorStore().add(e);
+  }
 };
 
 const onCancelEditBookMove = () => {

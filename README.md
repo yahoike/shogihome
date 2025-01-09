@@ -43,9 +43,9 @@ https://github.com/sunfish-shogi/shogihome/wiki
 
 ![スクリーンショット1](docs/screenshots/screenshot001.png)
 
-![スクリーンショット2](docs/screenshots/screenshot002.png)
-
 ![スクリーンショット3](docs/screenshots/screenshot003.png)
+
+![モバイル](docs/screenshots/mobile001.png)
 
 ## ダウンロード
 
