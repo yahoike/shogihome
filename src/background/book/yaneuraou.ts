@@ -121,6 +121,9 @@ export async function loadYaneuraOuBook(input: Readable): Promise<Book> {
   let entryCount = 0;
   let duplicateCount = 0;
   reader.on("line", (line) => {
+    if (lineNo === 0) {
+      line = line.replace(/^\uFEFF/, "");
+    }
     const parsed = parseLine(line);
     switch (parsed.type) {
       case "comment":
@@ -253,8 +256,18 @@ function readLineFromBuffer(buffer: Buffer, size: number, offset: number = 0): s
 }
 
 function findSFENMarker(buffer: Buffer, size: number, isFileHead: boolean): number {
-  if (isFileHead && checkSFENMarker(0, buffer)) {
-    return 0;
+  if (isFileHead) {
+    // 通常はファイルの先頭にヘッダーがあるが、いきなり SFEN が来ても扱えるようにする。
+    if (checkSFENMarker(0, buffer)) {
+      return 0;
+    } else if (
+      buffer[0] === 0xef &&
+      buffer[1] === 0xbb &&
+      buffer[2] === 0xbf &&
+      checkSFENMarker(3, buffer)
+    ) {
+      return 3;
+    }
   }
   for (let i = 0; i < size - (SFENMarker.length + 1); i++) {
     if ((buffer[i] === LF || buffer[i] === CR) && checkSFENMarker(i + 1, buffer)) {
@@ -285,8 +298,9 @@ async function binarySearch(
       if (read.bytesRead === 0) {
         break;
       }
-      sfenOffset = head + findSFENMarker(buffer, read.bytesRead, head === 0);
-      if (sfenOffset >= 0) {
+      const offset = findSFENMarker(buffer, read.bytesRead, head === 0);
+      if (offset >= 0) {
+        sfenOffset = head + offset;
         break;
       }
       head += bufferSize - (SFENMarker.length + 1);
@@ -341,10 +355,11 @@ export async function searchBookMovesOnTheFly(
     if (parsed.type === "comment") {
       // On-the-fly ではコメント行を無視する。
       continue;
-    } else if (parsed.type !== "move") {
+    } else if (parsed.type === "move") {
+      moves.push(parsed.move);
+    } else {
       break;
     }
-    moves.push(parsed.move);
   }
   return moves;
 }

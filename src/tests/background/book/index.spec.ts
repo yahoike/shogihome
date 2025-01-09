@@ -25,47 +25,60 @@ describe("background/book", () => {
   });
 
   describe("openBook", () => {
+    const sources = [
+      "src/tests/testdata/book/yaneuraou.db",
+      "src/tests/testdata/book/yaneuraou-crlf.db",
+      "src/tests/testdata/book/yaneuraou-bom-crlf.db",
+      "src/tests/testdata/book/yaneuraou-no-header.db",
+      "src/tests/testdata/book/yaneuraou-bom-no-header.db",
+    ];
     const patterns = [
       { options: { onTheFlyThresholdMB: 0.001 }, mode: "in-memory" },
       { options: { onTheFlyThresholdMB: 0.0005 }, mode: "on-the-fly" },
     ];
     for (const pattern of patterns) {
-      it(`mode=${pattern.mode}`, async () => {
-        const mode = await openBook("src/tests/testdata/book/yaneuraou.db", pattern.options);
-        expect(mode).toBe(pattern.mode);
+      for (const source of sources) {
+        it(`mode=${pattern.mode} source=${source}`, async () => {
+          const mode = await openBook(source, pattern.options);
+          expect(mode).toBe(pattern.mode);
 
-        const moves = await searchBookMoves(
-          "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
-        );
-        expect(moves).toHaveLength(5);
-        expect(moves[0].usi).toBe("2g2f");
-        expect(moves[0].usi2).toBe("3c3d");
-        expect(moves[0].score).toBe(63);
-        expect(moves[0].depth).toBe(27);
-        expect(moves[1].usi).toBe("7g7f");
-        expect(moves[1].usi2).toBeUndefined();
-        expect(moves[1].score).toBe(20);
-        expect(moves[1].depth).toBe(25);
-        expect(moves[2].usi).toBe("5g5f");
-        expect(moves[3].usi).toBe("2h7h");
-        expect(moves[4].usi).toBe("3g3f");
-        const moves2 = await searchBookMoves(
-          "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
-        );
-        expect(moves2).toHaveLength(3);
-        const moves3 = await searchBookMoves(
-          "r6nl/l3gbks1/2ns1g1p1/ppppppp1p/7P1/PSPPPPP1P/1P1G2N1L/1KGB1S2R/LN7 w - 1",
-        );
-        expect(moves3).toHaveLength(0);
+          const moves = await searchBookMoves(
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1",
+          );
+          expect(moves).toHaveLength(5);
+          expect(moves[0].usi).toBe("2g2f");
+          expect(moves[0].usi2).toBe("3c3d");
+          expect(moves[0].score).toBe(63);
+          expect(moves[0].depth).toBe(27);
+          expect(moves[1].usi).toBe("7g7f");
+          expect(moves[1].usi2).toBeUndefined();
+          expect(moves[1].score).toBe(20);
+          expect(moves[1].depth).toBe(25);
+          expect(moves[2].usi).toBe("5g5f");
+          expect(moves[3].usi).toBe("2h7h");
+          expect(moves[4].usi).toBe("3g3f");
+          const moves2 = await searchBookMoves(
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
+          );
+          expect(moves2).toHaveLength(3);
+          const moves3 = await searchBookMoves(
+            "r6nl/l3gbks1/2ns1g1p1/ppppppp1p/7P1/PSPPPPP1P/1P1G2N1L/1KGB1S2R/LN7 w - 1",
+          );
+          expect(moves3).toHaveLength(0);
+          const moves4 = await searchBookMoves(
+            "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w - 1",
+          );
+          expect(moves4).toHaveLength(3);
 
-        // comments
-        expect(moves[0].comment).toBe(
-          // In on-the-fly mode, comment-only lines will be ignored.
-          pattern.mode === "in-memory" ? "multi line comment 1\nmulti line comment 2" : "",
-        );
-        expect(moves[1].comment).toBe("single line comment");
-        expect(moves[2].comment).toBe("");
-      });
+          // comments
+          expect(moves[0].comment).toBe(
+            // In on-the-fly mode, comment-only lines will be ignored.
+            pattern.mode === "in-memory" ? "multi line comment 1\nmulti line comment 2" : "",
+          );
+          expect(moves[1].comment).toBe("single line comment");
+          expect(moves[2].comment).toBe("");
+        });
+      }
     }
   });
 
