@@ -224,6 +224,7 @@ export const vi: Texts = {
   autoSavingDirectory: "Thư mục lưu tự động",
   recordFileName: "Tên tệp kỳ phổ",
   select: "Chọn",
+  csaV3Output: "CSA V3 で出力", // TODO: translate
   positionOfUSIOutput: "Định dạng thế cờ USI",
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
@@ -476,6 +477,7 @@ export const vi: Texts = {
   bookMove: "定跡手", // TODO: translate
   play: "着手", // TODO: translate
   edit: "編集", // TODO: translate
+  addMoves: "指し手追加", // TODO: translate
   freq: "出現頻度", // TODO: translate
   frequency: "出現頻度", // TODO: translate
   new: "新規", // TODO: translate
