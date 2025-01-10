@@ -552,7 +552,7 @@
           </div>
           <!-- CSA V3 で出力 -->
           <div class="form-item">
-            <div class="form-item-label-wide">CSA V3 で出力</div>
+            <div class="form-item-label-wide">{{ t.csaV3Output }}</div>
             <ToggleButton
               :value="original.useCSAV3"
               @change="(checked: boolean) => (update.useCSAV3 = checked)"

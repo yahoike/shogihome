@@ -220,6 +220,7 @@ export type Texts = {
   autoSavingDirectory: string;
   recordFileName: string;
   select: string;
+  csaV3Output: string;
   positionOfUSIOutput: string;
   movesOfUSIOutput: string;
   onlySFEN: string;
@@ -472,6 +473,7 @@ export type Texts = {
   bookMove: string;
   play: string;
   edit: string;
+  addMoves: string;
   freq: string;
   frequency: string;
   new: string;

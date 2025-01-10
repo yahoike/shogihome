@@ -222,6 +222,7 @@ export const zh_tw: Texts = {
   autoSavingDirectory: "棋譜自動保存地點",
   recordFileName: "棋譜檔案名稱",
   select: "選擇",
+  csaV3Output: "CSA V3 で出力", // TODO: translate
   positionOfUSIOutput: "USI 局面紀錄格式",
   movesOfUSIOutput: "USI 棋譜紀錄格式",
   onlySFEN: "只有 SFEN",
@@ -474,6 +475,7 @@ export const zh_tw: Texts = {
   bookMove: "定跡手", // TODO: translate
   play: "着手", // TODO: translate
   edit: "編集", // TODO: translate
+  addMoves: "指し手追加", // TODO: translate
   freq: "出現頻度", // TODO: translate
   frequency: "出現頻度", // TODO: translate
   new: "新規", // TODO: translate
