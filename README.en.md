@@ -53,8 +53,9 @@ You can download any version from [Releases](https://github.com/sunfish-shogi/sh
 
 ## Bug Reports / Suggestions
 
-If you have a GitHub account, please create an Issue or a Pull Request.
-If you want to make large changes, please create an Issue before development.
+If you have a GitHub account, you can create an issue or a pull request.
+For large changes, please open an issue to discuss them before starting development.
+Make sure to use the provided templates when creating new issues or pull requests.
 
 If not, please send messages through the [Web Form](https://form.run/@sunfish-shogi-1650819491).
 
