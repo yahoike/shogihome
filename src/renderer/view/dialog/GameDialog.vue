@@ -122,7 +122,7 @@
                 <option value="current">{{ t.currentPosition }}</option>
                 <option value="list">{{ t.positionList }}</option>
                 <option :value="InitialPositionType.STANDARD">
-                  {{ t.nonHandicap }}
+                  {{ t.noHandicap }}
                 </option>
                 <option :value="InitialPositionType.HANDICAP_LANCE">
                   {{ t.lanceHandicap }}

@@ -377,7 +377,7 @@ export const ja: Texts = {
   hashUsage: "Hash使用率",
   stop: "停止",
   resume: "再開",
-  nonHandicap: "平手",
+  noHandicap: "平手",
   lanceHandicap: "香落ち",
   rightLanceHandicap: "右香落ち",
   bishopHandicap: "角落ち",

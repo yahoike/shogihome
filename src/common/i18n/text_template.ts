@@ -372,7 +372,7 @@ export type Texts = {
   hashUsage: string;
   stop: string;
   resume: string;
-  nonHandicap: string;
+  noHandicap: string;
   lanceHandicap: string;
   rightLanceHandicap: string;
   bishopHandicap: string;

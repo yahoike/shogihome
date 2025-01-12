@@ -377,7 +377,7 @@ export const en: Texts = {
   hashUsage: "Hash Usage",
   stop: "Stop",
   resume: "Resume",
-  nonHandicap: "Non-Handicap",
+  noHandicap: "No Handicap",
   lanceHandicap: "Lance Handicap",
   rightLanceHandicap: "Right Lance Handicap",
   bishopHandicap: "Bishop Handicap",
