@@ -441,6 +441,7 @@ export const ja: Texts = {
   mistakeThreshold: "悪手の閾値",
   blunderThreshold: "大悪手の閾値",
   maxPVLength: "読み筋表示手数",
+  commentFormat: "コメントの形式",
   gothic: "ゴシック体",
   mincho: "明朝体",
   appVersion: "アプリバージョン",
