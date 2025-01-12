@@ -220,6 +220,7 @@ export type Texts = {
   autoSavingDirectory: string;
   recordFileName: string;
   select: string;
+  shuffle: string;
   csaV3Output: string;
   positionOfUSIOutput: string;
   movesOfUSIOutput: string;
@@ -277,6 +278,7 @@ export type Texts = {
   swapSenteGote: string;
   pieceToss: string;
   currentPosition: string;
+  positionList: string;
   enableEngineTimeout: string;
   setDifferentTimeForGote: string;
   nextTurn: string;
@@ -289,6 +291,7 @@ export type Texts = {
   numberOfThreads: string;
   multiPV: string;
   startPosition: string;
+  beginFromThisPosition: string;
   maxMoves: string;
   gameRepetition: string;
   jishogi: string;
