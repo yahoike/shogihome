@@ -436,6 +436,7 @@ export type Texts = {
   mistakeThreshold: string;
   blunderThreshold: string;
   maxPVLength: string;
+  commentFormat: string;
   gothic: string;
   mincho: string;
   appVersion: string;

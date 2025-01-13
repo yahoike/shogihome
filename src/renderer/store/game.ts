@@ -16,7 +16,7 @@ import {
   SpecialMoveType,
   Square,
 } from "tsshogi";
-import { CommentBehavior } from "@/common/settings/analysis";
+import { CommentBehavior } from "@/common/settings/comment";
 import { RecordManager, SearchInfoSenderType } from "./record";
 import { Clock } from "./clock";
 import { defaultPlayerBuilder, PlayerBuilder } from "@/renderer/players/builder";
@@ -30,6 +30,7 @@ import {
   Z_VALUE_95,
   Z_VALUE_99,
 } from "@/common/statistics";
+import { useAppSettings } from "./settings";
 
 enum GameState {
   IDLE = "idle",
@@ -513,8 +514,10 @@ export class GameManager {
     }
     // コメントを追加する。
     if (info && this.settings.enableComment) {
+      const appSettings = useAppSettings();
       this.recordManager.appendSearchComment(
         SearchInfoSenderType.PLAYER,
+        appSettings.searchCommentFormat,
         info,
         CommentBehavior.APPEND,
       );

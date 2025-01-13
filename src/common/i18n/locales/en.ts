@@ -441,6 +441,7 @@ export const en: Texts = {
   mistakeThreshold: "Mistake Threshold",
   blunderThreshold: "Blunder Threshold",
   maxPVLength: "Max PV Length",
+  commentFormat: "Comment Format",
   gothic: "Gothic",
   mincho: "Mincho",
   appVersion: "App Version",

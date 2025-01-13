@@ -441,6 +441,7 @@ export const vi: Texts = {
   mistakeThreshold: "Ngưỡng nước sai lầm",
   blunderThreshold: "Ngưỡng nước sai lầm ngớ ngẩn",
   maxPVLength: "PV表示手数", // TODO: translate
+  commentFormat: "コメントの形式", // TODO: translate
   gothic: "Gothic",
   mincho: "Minh thể",
   appVersion: "Phiên bản ứng dụng",

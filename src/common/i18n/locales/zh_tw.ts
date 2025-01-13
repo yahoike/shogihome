@@ -438,6 +438,7 @@ export const zh_tw: Texts = {
   mistakeThreshold: "惡手閾値",
   blunderThreshold: "大惡手閾値",
   maxPVLength: "PV表示手数", // TODO: translate
+  commentFormat: "コメントの形式", // TODO: translate
   gothic: "黑體",
   mincho: "明體",
   appVersion: "軟體版本",
