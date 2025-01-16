@@ -40,3 +40,10 @@ onUnmounted(() => {
   window.removeEventListener("resize", updateSize);
 });
 </script>
+
+<style scoped>
+.root {
+  color: var(--main-color);
+  background-color: var(--main-bg-color);
+}
+</style>

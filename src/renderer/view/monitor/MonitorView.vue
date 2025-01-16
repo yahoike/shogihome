@@ -248,6 +248,7 @@ function closeCSA(session: CSASessionState) {
   flex-direction: row;
 }
 .headers > * {
+  color: var(--text-color);
   background-color: var(--text-bg-color);
   padding: 1px 5px;
   margin-right: 5px;
@@ -256,6 +257,7 @@ function closeCSA(session: CSASessionState) {
   margin-right: auto;
 }
 .main {
+  color: var(--text-color);
   background-color: var(--text-bg-color);
   overflow: auto;
 }
@@ -266,7 +268,6 @@ function closeCSA(session: CSASessionState) {
 .entry {
   font-size: 12px;
   text-align: left;
-  background-color: var(--text-bg-color);
 }
 .entry > * {
   white-space: nowrap;
