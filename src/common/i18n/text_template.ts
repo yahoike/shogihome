@@ -289,7 +289,7 @@ export type Texts = {
   searchEngine: string;
   ponder: string;
   numberOfThreads: string;
-  multiPV: string;
+  suggestionsCount: string;
   startPosition: string;
   beginFromThisPosition: string;
   maxMoves: string;

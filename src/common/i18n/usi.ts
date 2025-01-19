@@ -12,7 +12,7 @@ const ja: USIOptionNameMap = {
   NumberOfThreads: "スレッド数",
   thread_num_per_gpu: "GPUあたりのスレッド数",
   ThreadIdOffset: "スレッドIDオフセット",
-  MultiPV: "マルチPV",
+  MultiPV: "マルチPV(候補手の表示件数)",
   BookFile: "定跡ファイル",
   Book_File: "定跡ファイル",
   Book_Enable: "定跡あり",

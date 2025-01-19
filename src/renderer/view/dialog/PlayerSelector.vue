@@ -29,7 +29,7 @@
         <span class="player-info-value">{{ threadState || "---" }}</span>
       </div>
       <div v-if="displayMultiPvState" class="row player-info">
-        <span class="player-info-key">{{ t.multiPV }}:</span>
+        <span class="player-info-key">{{ t.suggestionsCount }}:</span>
         <span class="player-info-value">{{ multiPVState || "---" }}</span>
       </div>
       <button

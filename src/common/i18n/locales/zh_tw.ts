@@ -291,7 +291,7 @@ export const zh_tw: Texts = {
   searchEngine: "引擎",
   ponder: "對方手番時運算 (Ponder)",
   numberOfThreads: "執行緒數",
-  multiPV: "多重PV",
+  suggestionsCount: "多重PV", // TODO: 日本語が「マルチPV」から「候補手の数」へ変更されたのでそれを反映したい。
   startPosition: "開始局面",
   beginFromThisPosition: "この局面から開始", // TODO: translate
   maxMoves: "最大手數",

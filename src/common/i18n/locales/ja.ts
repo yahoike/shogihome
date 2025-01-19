@@ -294,7 +294,7 @@ export const ja: Texts = {
   searchEngine: "エンジン",
   ponder: "先読み(Ponder)",
   numberOfThreads: "スレッド数",
-  multiPV: "マルチPV",
+  suggestionsCount: "候補手の数",
   startPosition: "開始局面",
   beginFromThisPosition: "この局面から開始",
   maxMoves: "最大手数",
