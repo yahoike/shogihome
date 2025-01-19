@@ -132,6 +132,11 @@ type NoMateCallback = (position: string) => void;
 type InfoCallback = (position: string, info: USIInfoCommand) => void;
 type CommandCallback = (command: Command) => void;
 
+type ReservedSetOptionCommand = {
+  name: string;
+  value?: string | number;
+};
+
 type ReservedGoCommand = {
   position: string;
   timeState?: TimeState;
@@ -188,6 +193,7 @@ export class EngineProcess {
   private _state = State.WaitingForUSIOK;
   private _currentPosition = "";
   private invalidBestMoveCount = 0;
+  private reservedSetOptionCommands: ReservedSetOptionCommand[] = [];
   private reservedGoCommand?: ReservedGoCommand;
   private launchTimeout?: NodeJS.Timeout;
   private quitTimeout?: NodeJS.Timeout;
@@ -338,11 +344,30 @@ export class EngineProcess {
   }
 
   setOption(name: string, value?: string | number): void {
+    if (
+      this.state === State.WaitingForBestMove ||
+      this.state === State.WaitingForPonderBestMove ||
+      this.state === State.WaitingForCheckmate
+    ) {
+      this.reservedSetOptionCommands.push({ name, value });
+    } else {
+      this.setOptionImmediately(name, value);
+    }
+  }
+
+  private setOptionImmediately(name: string, value?: string | number): void {
     if (value !== undefined) {
       this.send(`setoption name ${name} value ${value}`);
     } else {
       this.send(`setoption name ${name}`);
     }
+  }
+
+  private flushReservedSetOptionCommands(): void {
+    for (const setoption of this.reservedSetOptionCommands) {
+      this.setOptionImmediately(setoption.name, setoption.value);
+    }
+    this.reservedSetOptionCommands = [];
   }
 
   ready(): Error | undefined {
@@ -700,12 +725,15 @@ export class EngineProcess {
   }
 
   private onBestMove(args: string): void {
+    this.flushReservedSetOptionCommands();
+
+    // 前回の終局までに受け取れなかった bestmove を無視する。
     if (this.invalidBestMoveCount > 0) {
-      // 前回の終局までに受け取れなかった bestmove を無視する。
       this.invalidBestMoveCount--;
       this.logger.warn("sid=%d: onBestMove: ignore bestmove: %s", this.sessionID, args);
       return;
     }
+
     if (this.state !== State.WaitingForBestMove && this.state !== State.WaitingForPonderBestMove) {
       this.logger.warn("sid=%d: onBestMove: unexpected state: %s", this.sessionID, this.state);
       return;
@@ -722,6 +750,8 @@ export class EngineProcess {
   }
 
   private onCheckmate(args: string): void {
+    this.flushReservedSetOptionCommands();
+
     if (this.state !== State.WaitingForCheckmate) {
       this.logger.warn("sid=%d: onCheckmate: unexpected state: %s", this.sessionID, this.state);
       return;

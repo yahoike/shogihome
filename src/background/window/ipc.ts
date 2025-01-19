@@ -32,13 +32,14 @@ import { AppState, ResearchState } from "@/common/control/state";
 import {
   gameover as usiGameover,
   getUSIEngineInfo as usiGetUSIEngineInfo,
+  setOption as usiSetOption,
   go as usiGo,
   goPonder as usiGoPonder,
   goInfinite as usiGoInfinite,
   goMate as usiGoMate,
   ponderHit as usiPonderHit,
   quit as usiQuit,
-  sendSetOptionCommand as usiSendSetOptionCommand,
+  sendOptionButtonSignal as usiSendOptionButtonSignal,
   setupPlayer as usiSetupPlayer,
   ready as usiReady,
   stop as usiStop,
@@ -680,10 +681,10 @@ ipcMain.handle(
 );
 
 ipcMain.handle(
-  Background.SEND_USI_SET_OPTION,
+  Background.SEND_USI_OPTION_BUTTON_SIGNAL,
   async (event, path: string, name: string, timeoutSeconds: number) => {
     validateIPCSender(event.senderFrame);
-    await usiSendSetOptionCommand(path, name, timeoutSeconds);
+    await usiSendOptionButtonSignal(path, name, timeoutSeconds);
   },
 );
 
@@ -697,6 +698,14 @@ ipcMain.handle(Background.USI_READY, async (event, sessionID: number) => {
   validateIPCSender(event.senderFrame);
   return await usiReady(sessionID);
 });
+
+ipcMain.handle(
+  Background.USI_SET_OPTION,
+  (event, sessionID: number, name: string, value: string) => {
+    validateIPCSender(event.senderFrame);
+    usiSetOption(sessionID, name, value);
+  },
+);
 
 ipcMain.handle(
   Background.USI_GO,

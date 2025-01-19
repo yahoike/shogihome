@@ -76,7 +76,7 @@ export function getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<
   });
 }
 
-export function sendSetOptionCommand(
+export function sendOptionButtonSignal(
   path: string,
   name: string,
   timeoutSeconds: number,
@@ -196,6 +196,11 @@ export function ready(sessionID: number): Promise<void> {
       reject(newUnexpectedError(error.message, lastReceived));
     }
   });
+}
+
+export function setOption(sessionID: number, name: string, value: string): void {
+  const session = getSession(sessionID);
+  session.process.setOption(name, value);
 }
 
 function buildTimeState(color: Color, timeStates: TimeStates): TimeState {

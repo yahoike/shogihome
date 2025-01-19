@@ -9,6 +9,9 @@ import {
   USIEngines,
   validateUSIEngine,
   compareUSIEngineOptions,
+  getUSIEnginePonder,
+  getUSIEngineThreads,
+  getUSIEngineMultiPV,
 } from "@/common/settings/usi";
 import { testUSIEngine } from "@/tests/mock/usi";
 
@@ -76,6 +79,204 @@ describe("settings/usi", () => {
       }),
     ).toBe("");
     expect(getUSIEngineOptionCurrentValue(null)).toBeUndefined();
+  });
+
+  it("getUSIEnginePonder", () => {
+    const testCases: { options: { [name: string]: USIEngineOption }; expected: boolean }[] = [
+      {
+        options: {
+          USI_Ponder: {
+            name: "USI_Ponder",
+            type: "check",
+            order: 1,
+            default: "true",
+            value: "false",
+          },
+        },
+        expected: false,
+      },
+      {
+        options: {
+          USI_Ponder: {
+            name: "USI_Ponder",
+            type: "check",
+            order: 1,
+            default: "false",
+            value: "true",
+          },
+        },
+        expected: true,
+      },
+      {
+        options: {
+          USI_Ponder: {
+            name: "USI_Ponder",
+            type: "check",
+            order: 1,
+            default: "true",
+          },
+        },
+        expected: true,
+      },
+      {
+        options: {
+          Foo: {
+            name: "Foo",
+            type: "check",
+            order: 1,
+            default: "true",
+            value: "false",
+          },
+        },
+        expected: false,
+      },
+    ];
+    for (const testCase of testCases) {
+      const engine: USIEngine = {
+        uri: "dummy",
+        name: "My Test Engine",
+        defaultName: "Test Engine",
+        author: "Author",
+        path: "/path/to/engine",
+        options: testCase.options,
+        enableEarlyPonder: false,
+      };
+      expect(getUSIEnginePonder(engine)).toBe(testCase.expected);
+    }
+  });
+
+  it("getUSIEngineThreads", () => {
+    const testCases: {
+      options: { [name: string]: USIEngineOption };
+      expected: number | undefined;
+    }[] = [
+      {
+        options: {
+          Threads: {
+            name: "Threads",
+            type: "spin",
+            order: 1,
+            default: 4,
+            value: 2,
+          },
+        },
+        expected: 2,
+      },
+      {
+        options: {
+          Threads: {
+            name: "Threads",
+            type: "spin",
+            order: 1,
+            default: 4,
+          },
+        },
+        expected: 4,
+      },
+      {
+        options: {
+          NumberOfThreads: {
+            name: "NumberOfThreads",
+            type: "spin",
+            order: 1,
+            default: 4,
+            value: 2,
+          },
+        },
+        expected: 2,
+      },
+      {
+        options: {
+          Foo: {
+            name: "Foo",
+            type: "spin",
+            order: 1,
+            default: 4,
+            value: 2,
+          },
+        },
+        expected: undefined,
+      },
+    ];
+    for (const testCase of testCases) {
+      const engine: USIEngine = {
+        uri: "dummy",
+        name: "My Test Engine",
+        defaultName: "Test Engine",
+        author: "Author",
+        path: "/path/to/engine",
+        options: testCase.options,
+        enableEarlyPonder: false,
+      };
+      expect(getUSIEngineThreads(engine)).toBe(testCase.expected);
+    }
+  });
+
+  it("getUSIEngineMultiPV", () => {
+    const testCases: {
+      options: { [name: string]: USIEngineOption };
+      expected: number | undefined;
+    }[] = [
+      {
+        options: {
+          MultiPV: {
+            name: "MultiPV",
+            type: "spin",
+            order: 1,
+            default: 4,
+            value: 2,
+          },
+        },
+        expected: 2,
+      },
+      {
+        options: {
+          MultiPV: {
+            name: "MultiPV",
+            type: "spin",
+            order: 1,
+            default: 4,
+          },
+        },
+        expected: 4,
+      },
+      {
+        options: {
+          USI_MultiPV: {
+            name: "USI_MultiPV",
+            type: "spin",
+            order: 1,
+            default: 4,
+            value: 2,
+          },
+        },
+        expected: 2,
+      },
+      {
+        options: {
+          Foo: {
+            name: "Foo",
+            type: "spin",
+            order: 1,
+            default: 4,
+            value: 2,
+          },
+        },
+        expected: undefined,
+      },
+    ];
+    for (const testCase of testCases) {
+      const engine: USIEngine = {
+        uri: "dummy",
+        name: "My Test Engine",
+        defaultName: "Test Engine",
+        author: "Author",
+        path: "/path/to/engine",
+        options: testCase.options,
+        enableEarlyPonder: false,
+      };
+      expect(getUSIEngineMultiPV(engine)).toBe(testCase.expected);
+    }
   });
 
   it("duplicateEngine", () => {

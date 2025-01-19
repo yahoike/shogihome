@@ -7,6 +7,7 @@ import {
   researchSettingsSecondaryEngines,
 } from "@/tests/mock/research";
 import { Mocked } from "vitest";
+import { USIEngine, USIEngineOption } from "@/common/settings/usi";
 
 vi.mock("@/renderer/ipc/api");
 
@@ -21,7 +22,8 @@ describe("store/research", () => {
   it("unlimited", async () => {
     vi.useFakeTimers();
     mockAPI.usiLaunch.mockResolvedValueOnce(100);
-    mockAPI.usiGo.mockResolvedValue();
+    mockAPI.usiGoInfinite.mockResolvedValue();
+    mockAPI.usiStop.mockResolvedValue();
     const manager = new ResearchManager();
     await manager.launch(researchSettings);
     expect(mockAPI.usiLaunch).toBeCalledWith(researchSettings.usi, 10);
@@ -46,7 +48,8 @@ describe("store/research", () => {
   it("max5Seconds", async () => {
     vi.useFakeTimers();
     mockAPI.usiLaunch.mockResolvedValueOnce(100);
-    mockAPI.usiGo.mockResolvedValue();
+    mockAPI.usiGoInfinite.mockResolvedValue();
+    mockAPI.usiStop.mockResolvedValue();
     const manager = new ResearchManager();
     await manager.launch(researchSettingsMax5Seconds);
     const record = new Record();
@@ -62,7 +65,7 @@ describe("store/research", () => {
   it("secondaryEngines", async () => {
     vi.useFakeTimers();
     mockAPI.usiLaunch.mockResolvedValue(100);
-    mockAPI.usiGo.mockResolvedValue();
+    mockAPI.usiGoInfinite.mockResolvedValue();
     const manager = new ResearchManager();
     await manager.launch(researchSettingsSecondaryEngines);
     expect(mockAPI.usiLaunch).toBeCalledTimes(3);
@@ -82,7 +85,7 @@ describe("store/research", () => {
     mockAPI.usiLaunch.mockResolvedValueOnce(101);
     mockAPI.usiLaunch.mockResolvedValueOnce(102);
     mockAPI.usiLaunch.mockResolvedValueOnce(103);
-    mockAPI.usiGo.mockResolvedValue();
+    mockAPI.usiGoInfinite.mockResolvedValue();
     const manager = new ResearchManager();
     await manager.launch(researchSettingsSecondaryEngines);
     const record = new Record();
@@ -109,5 +112,65 @@ describe("store/research", () => {
     expect(manager.isPaused(102)).toBeFalsy();
     expect(manager.isPaused(103)).toBeFalsy();
     expect(mockAPI.usiGoInfinite).toBeCalledTimes(6);
+  });
+
+  it("multiPV", async () => {
+    vi.useFakeTimers();
+    mockAPI.usiLaunch.mockResolvedValueOnce(101);
+    mockAPI.usiGoInfinite.mockResolvedValue();
+    mockAPI.usiStop.mockResolvedValue();
+    mockAPI.usiSetOption.mockResolvedValue();
+    const manager = new ResearchManager();
+    await manager.launch({
+      ...researchSettings,
+      usi: {
+        ...(researchSettings.usi as USIEngine),
+        options: {
+          MultiPV: {
+            name: "MultiPV",
+            order: 1,
+            type: "spin",
+            default: 1,
+            value: 4,
+          } as USIEngineOption,
+        },
+      },
+    });
+    const record = new Record();
+    manager.updatePosition(record);
+    vi.runOnlyPendingTimers();
+    expect(mockAPI.usiGoInfinite).toBeCalledTimes(1);
+    expect(mockAPI.usiStop).not.toBeCalled();
+    expect(manager.getMultiPV(101)).toBe(4);
+
+    vi.useRealTimers();
+    manager.setMultiPV(101, 2);
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(mockAPI.usiGoInfinite).toBeCalledTimes(2);
+    expect(mockAPI.usiStop).toBeCalledTimes(1);
+    expect(manager.getMultiPV(101)).toBe(2);
+  });
+
+  it("multiPV not available", async () => {
+    vi.useFakeTimers();
+    mockAPI.usiLaunch.mockResolvedValueOnce(101);
+    mockAPI.usiGoInfinite.mockResolvedValue();
+    mockAPI.usiStop.mockResolvedValue();
+    mockAPI.usiSetOption.mockResolvedValue();
+    const manager = new ResearchManager();
+    await manager.launch(researchSettings); // without MultiPV option
+    const record = new Record();
+    manager.updatePosition(record);
+    vi.runOnlyPendingTimers();
+    expect(mockAPI.usiGoInfinite).toBeCalledTimes(1);
+    expect(mockAPI.usiStop).not.toBeCalled();
+    expect(manager.getMultiPV(101)).toBeUndefined();
+
+    vi.useRealTimers();
+    manager.setMultiPV(101, 2); // should be ignored
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(mockAPI.usiGoInfinite).toBeCalledTimes(1);
+    expect(mockAPI.usiStop).toBeCalledTimes(0);
+    expect(manager.getMultiPV(101)).toBeUndefined();
   });
 });

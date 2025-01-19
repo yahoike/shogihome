@@ -75,40 +75,12 @@ describe("background/usi/engine", () => {
     expect(engine.name).toBe("DummyEngine");
     expect(engine.author).toBe("Ryosuke Kubo");
     expect(engine.engineOptions).toStrictEqual({
-      USI_Hash: {
-        name: "USI_Hash",
-        type: "spin",
-        default: 32,
-        order: 1,
-      },
-      USI_Ponder: {
-        name: "USI_Ponder",
-        type: "check",
-        default: "true",
-        order: 2,
-      },
-      StringA: {
-        name: "StringA",
-        type: "string",
-        default: "foo",
-        order: 100,
-      },
-      StringB: {
-        name: "StringB",
-        type: "string",
-        order: 101,
-      },
-      CheckA: {
-        name: "CheckA",
-        type: "check",
-        default: "true",
-        order: 102,
-      },
-      CheckB: {
-        name: "CheckB",
-        type: "check",
-        order: 103,
-      },
+      USI_Hash: { name: "USI_Hash", type: "spin", default: 32, order: 1 },
+      USI_Ponder: { name: "USI_Ponder", type: "check", default: "true", order: 2 },
+      StringA: { name: "StringA", type: "string", default: "foo", order: 100 },
+      StringB: { name: "StringB", type: "string", order: 101 },
+      CheckA: { name: "CheckA", type: "check", default: "true", order: 102 },
+      CheckB: { name: "CheckB", type: "check", order: 103 },
       ComboA: {
         name: "ComboA",
         type: "combo",
@@ -123,25 +95,9 @@ describe("background/usi/engine", () => {
         vars: ["default", "quux", "corge"],
         order: 105,
       },
-      Filename: {
-        name: "Filename",
-        type: "filename",
-        default: "/path/to/file",
-        order: 106,
-      },
-      SpinA: {
-        name: "SpinA",
-        type: "spin",
-        order: 107,
-      },
-      SpinB: {
-        name: "SpinB",
-        type: "spin",
-        default: 8,
-        min: -20,
-        max: 30,
-        order: 108,
-      },
+      Filename: { name: "Filename", type: "filename", default: "/path/to/file", order: 106 },
+      SpinA: { name: "SpinA", type: "spin", order: 107 },
+      SpinB: { name: "SpinB", type: "spin", default: 8, min: -20, max: 30, order: 108 },
     });
     engine.quit();
     expect(mockChildProcess.prototype.send).toBeCalledTimes(2);
@@ -155,53 +111,14 @@ describe("background/usi/engine", () => {
   it("set-options", async () => {
     const engine = new EngineProcess("/path/to/engine", 123, log4js.getLogger(), {
       engineOptions: [
-        {
-          name: "USI_Hash",
-          type: "spin",
-          order: 1,
-          value: 32,
-        },
-        {
-          name: "USI_Ponder",
-          type: "check",
-          order: 2,
-          value: "true",
-        },
-        {
-          name: "StringA",
-          type: "string",
-          default: "foo",
-          order: 100,
-        },
-        {
-          name: "StringB",
-          type: "string",
-          default: "bar",
-          order: 101,
-          value: "baz",
-        },
-        {
-          name: "StringC",
-          type: "string",
-          order: 102,
-        },
-        {
-          name: "Filename",
-          type: "filename",
-          order: 103,
-          value: "/path/to/file",
-        },
-        {
-          name: "Spin",
-          type: "spin",
-          order: 104,
-          value: -81,
-        },
-        {
-          name: "Button",
-          type: "button",
-          order: 105,
-        },
+        { name: "USI_Hash", type: "spin", order: 1, value: 32 },
+        { name: "USI_Ponder", type: "check", order: 2, value: "true" },
+        { name: "StringA", type: "string", default: "foo", order: 100 },
+        { name: "StringB", type: "string", default: "bar", order: 101, value: "baz" },
+        { name: "StringC", type: "string", order: 102 },
+        { name: "Filename", type: "filename", order: 103, value: "/path/to/file" },
+        { name: "Spin", type: "spin", order: 104, value: -81 },
+        { name: "Button", type: "button", order: 105 },
       ],
     });
     const handlers = bindHandlers(engine);
@@ -597,5 +514,34 @@ describe("background/usi/engine", () => {
     expect(handlers.bestmove).not.toBeCalled(); // 1 局目で要求していた bestmove は無視される。
     onReceive("bestmove 2g2f ponder 8c8d");
     expect(handlers.bestmove).lastCalledWith("position test02", "2g2f", "8c8d");
+  });
+
+  it("setoption_reservation", async () => {
+    const engine = new EngineProcess("/path/to/engine", 123, log4js.getLogger(), {});
+    const handlers = bindHandlers(engine);
+    engine.launch();
+    const onReceive = getChildProcessHandler(mockChildProcess, "receive");
+    onReceive("id name DummyEngine");
+    onReceive("usiok");
+
+    engine.ready();
+    onReceive("readyok");
+    expect(handlers.ready).toBeCalledTimes(1);
+    engine.go("position test01", {
+      btime: 60e3,
+      wtime: 60e3,
+      byoyomi: 0,
+      binc: 5e3,
+      winc: 5e3,
+    });
+    engine.stop();
+    engine.setOption("USI_Hash", 64); // should be reserved
+    engine.setOption("MultiPV", 3); // should be reserved
+    expect(mockChildProcess.prototype.send).toBeCalledTimes(6);
+    expect(mockChildProcess.prototype.send).nthCalledWith(6, "stop"); // only stop command should be sent
+    onReceive("bestmove 7g7f ponder 3c3d");
+    expect(mockChildProcess.prototype.send).toBeCalledTimes(8);
+    expect(mockChildProcess.prototype.send).nthCalledWith(7, "setoption name USI_Hash value 64");
+    expect(mockChildProcess.prototype.send).lastCalledWith("setoption name MultiPV value 3");
   });
 });

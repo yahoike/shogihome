@@ -258,6 +258,15 @@
                 @change="(value) => updateCustomProfileComponent(index, 'showPlayButton', value)"
               />
             </span>
+            <span class="property">
+              <ToggleButton
+                :value="!!component.showSuggestionsCount"
+                :label="t.suggestionsCount"
+                @change="
+                  (value) => updateCustomProfileComponent(index, 'showSuggestionsCount', value)
+                "
+              />
+            </span>
           </div>
           <div v-if="component.type === 'Comment'">
             <span class="property">

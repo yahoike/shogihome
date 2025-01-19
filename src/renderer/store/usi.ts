@@ -53,21 +53,30 @@ export class USIPlayerMonitor {
   public currentMove?: string;
   public currentMoveText?: string;
   public ponderMove?: string;
+  public refreshOnNextUpdate = false;
 
   constructor(
     public sessionID: number,
     public name: string,
   ) {}
 
+  /**
+   * Returns latest iteration group.
+   */
   get latestIteration(): USIIteration[] {
     const result: USIIteration[] = [];
     const multiPVSet = new Set();
     const moveSet = new Set();
     for (const iteration of this.iterations) {
       const move = iteration.pv ? iteration.pv[0] : undefined;
-      if (!multiPVSet.has(iteration.multiPV) && !moveSet.has(move)) {
+      // Break if the same multiPV index is found twice.
+      if (move && multiPVSet.has(iteration.multiPV)) {
+        break;
+      }
+      multiPVSet.add(iteration.multiPV);
+      // Add the iteration if not already added.
+      if (!moveSet.has(move)) {
         result.push(iteration);
-        multiPVSet.add(iteration.multiPV);
         moveSet.add(move);
       }
     }
@@ -77,7 +86,7 @@ export class USIPlayerMonitor {
   }
 
   update(sfen: string, update: USIInfoCommand, maxPVTextLength: number, ponderMove?: Move): void {
-    if (this.sfen !== sfen) {
+    if (this.sfen !== sfen || this.refreshOnNextUpdate) {
       this.sfen = sfen;
       this.nodes = undefined;
       this.nps = undefined;
@@ -86,6 +95,7 @@ export class USIPlayerMonitor {
       this.currentMove = undefined;
       this.currentMoveText = undefined;
       this.ponderMove = undefined;
+      this.refreshOnNextUpdate = false;
     }
     const position = Position.newBySFEN(sfen);
     if (!position) {
@@ -152,6 +162,13 @@ export class USIPlayerMonitor {
       this.iterations.unshift(iteration);
     }
     this.ponderMove = ponderMove && formatMove(position, ponderMove);
+  }
+
+  endIteration(sfen: string) {
+    if (this.sfen !== sfen) {
+      return;
+    }
+    this.refreshOnNextUpdate = true;
   }
 }
 
@@ -229,5 +246,13 @@ export class USIMonitor {
       return a.sessionID - b.sessionID;
     });
     return monitor;
+  }
+
+  endIteration(sessionID: number, position: ImmutablePosition) {
+    const monitor = this._sessions.find((session) => session.sessionID === sessionID);
+    if (monitor) {
+      this.dequeue(); // flush the queue
+      monitor.endIteration(position.sfen);
+    }
   }
 }

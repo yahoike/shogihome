@@ -174,6 +174,84 @@ describe("store/index", () => {
     expect(store.usiMonitors[1].latestIteration[0].score).toBe(-89);
   });
 
+  it("updateUSIInfo with multipv", () => {
+    vi.useFakeTimers();
+    const usi = "position startpos moves 7g7f";
+    const store = createStore();
+    store.pasteRecord(usi);
+
+    store.updateUSIInfo(101, usi, "Engine A", {
+      depth: 11,
+      scoreCP: 198,
+      multipv: 1,
+      pv: ["8c8d", "2g2f"],
+    });
+    store.updateUSIInfo(101, usi, "Engine A", {
+      depth: 11,
+      scoreCP: 170,
+      multipv: 2,
+      pv: ["3c3e", "2g2f"],
+    });
+    store.updateUSIInfo(101, usi, "Engine A", {
+      depth: 11,
+      scoreCP: 169,
+      multipv: 3,
+      pv: ["5c5d", "2g2f"],
+    });
+    vi.runOnlyPendingTimers();
+    expect(store.usiMonitors[0].latestIteration).toHaveLength(3);
+    expect(store.usiMonitors[0].latestIteration[0].score).toBe(198);
+    expect(store.usiMonitors[0].latestIteration[1].score).toBe(170);
+    expect(store.usiMonitors[0].latestIteration[2].score).toBe(169);
+
+    store.updateUSIInfo(101, usi, "Engine A", {
+      depth: 12,
+      scoreCP: 187,
+      multipv: 1,
+      pv: ["8c8d", "2g2f"],
+    });
+    store.updateUSIInfo(101, usi, "Engine A", {
+      depth: 12,
+      scoreCP: 181,
+      multipv: 2,
+      pv: ["3c3e", "2g2f"],
+    });
+    vi.runOnlyPendingTimers();
+    expect(store.usiMonitors[0].latestIteration).toHaveLength(3);
+    expect(store.usiMonitors[0].latestIteration[0].score).toBe(187);
+    expect(store.usiMonitors[0].latestIteration[1].score).toBe(181);
+    expect(store.usiMonitors[0].latestIteration[2].score).toBe(169); // 3rd move is not updated
+
+    store.updateUSIInfo(101, usi, "Engine A", {
+      depth: 13,
+      scoreCP: 210,
+      multipv: 1,
+      pv: ["8c8d", "2g2f"],
+    });
+    store.updateUSIInfo(101, usi, "Engine A", {
+      depth: 13,
+      scoreCP: 152,
+      multipv: 2,
+      pv: ["3c3e", "2g2f"],
+    });
+    vi.runOnlyPendingTimers();
+    // 3rd move is ignored because it is not updated in the two previous iterations
+    expect(store.usiMonitors[0].latestIteration).toHaveLength(2);
+    expect(store.usiMonitors[0].latestIteration[0].score).toBe(210);
+    expect(store.usiMonitors[0].latestIteration[1].score).toBe(152);
+
+    store.updateUSIInfo(101, usi, "Engine A", {
+      depth: 13,
+      scoreCP: 231,
+      multipv: 1,
+      pv: ["3c3e", "2g2f"],
+    });
+    vi.runOnlyPendingTimers();
+    // 3c3e is promoted to the best move
+    expect(store.usiMonitors[0].latestIteration).toHaveLength(1);
+    expect(store.usiMonitors[0].latestIteration[0].score).toBe(231);
+  });
+
   it("candidates", async () => {
     vi.useFakeTimers();
     const usi = "position startpos moves 7g7f";

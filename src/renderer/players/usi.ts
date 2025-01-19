@@ -1,10 +1,18 @@
 import api from "@/renderer/ipc/api";
 import { parseUSIPV, USIInfoCommand } from "@/common/game/usi";
-import { getUSIEngineOptionCurrentValue, USIEngine, USIPonder } from "@/common/settings/usi";
+import {
+  getUSIEngineMultiPV,
+  getUSIEnginePonder,
+  MultiPV,
+  USIEngine,
+  USIMultiPV,
+} from "@/common/settings/usi";
 import { Color, ImmutablePosition, Move, Position } from "tsshogi";
 import { Player, SearchInfo, SearchHandler, MateHandler } from "./player";
 import { GameResult } from "@/common/game/result";
 import { TimeStates } from "@/common/game/time";
+
+type onReceiveUSIBestMoveHandler = (sessionID: number, usi: string, usiMove: string) => void;
 
 type onUpdateUSIInfoHandler = (
   sessionID: number,
@@ -13,8 +21,13 @@ type onUpdateUSIInfoHandler = (
   info: USIInfoCommand,
 ) => void;
 
+let onReceiveUSIBestMove: onReceiveUSIBestMoveHandler = () => {};
 let onUpdateUSIInfo: onUpdateUSIInfoHandler = () => {};
 let onUpdateUSIPonderInfo: onUpdateUSIInfoHandler = () => {};
+
+export function setOnReceiveUSIBestMoveHandler(handler: onReceiveUSIBestMoveHandler) {
+  onReceiveUSIBestMove = handler;
+}
 
 export function setOnUpdateUSIInfoHandler(handler: onUpdateUSIInfoHandler) {
   onUpdateUSIInfo = handler;
@@ -34,6 +47,7 @@ export class USIPlayer implements Player {
   private inPonder = false;
   private info?: SearchInfo;
   private usiInfoTimeout?: number;
+  private customMultiPV?: number;
 
   constructor(
     private engine: USIEngine,
@@ -88,8 +102,7 @@ export class USIPlayer implements Player {
     timeStates: TimeStates,
   ): Promise<void> {
     // エンジンの USI_Ponder オプションが無効なら何もしない。
-    const ponderSetting = getUSIEngineOptionCurrentValue(this.engine.options[USIPonder]);
-    if (ponderSetting !== "true") {
+    if (!getUSIEnginePonder(this.engine)) {
       return;
     }
     // 連続して Ponder を開始しない。
@@ -290,12 +303,29 @@ export class USIPlayer implements Player {
       this.onSearchInfo?.(this.info);
     }
   }
+
+  get multiPV(): number | undefined {
+    return this.customMultiPV || getUSIEngineMultiPV(this.engine);
+  }
+
+  async setMultiPV(multiPV: number): Promise<void> {
+    const option = this.engine.options[USIMultiPV] || this.engine.options[MultiPV];
+    if (!option || option.type !== "spin") {
+      throw new Error("The engine does not support MultiPV option.");
+    }
+    if ((option.min && multiPV < option.min) || (option.max && multiPV > option.max)) {
+      throw new Error("The MultiPV value is out of range.");
+    }
+    await api.usiSetOption(this.sessionID, option.name, multiPV.toFixed(0));
+    this.customMultiPV = multiPV;
+  }
 }
 
 const usiPlayers: { [sessionID: number]: USIPlayer } = {};
 
 export function onUSIBestMove(sessionID: number, usi: string, usiMove: string, ponder?: string) {
   usiPlayers[sessionID]?.onBestMove(usi, usiMove, ponder);
+  onReceiveUSIBestMove(sessionID, usi, usiMove);
 }
 
 export function onUSICheckmate(sessionID: number, usi: string, usiMoves: string[]) {
@@ -326,8 +356,8 @@ export function onUSIInfo(sessionID: number, usi: string, info: USIInfoCommand) 
   if (!player) {
     return;
   }
-  onUpdateUSIInfo(sessionID, usi, player.name, info);
   player.onUSIInfo(usi, info);
+  onUpdateUSIInfo(sessionID, usi, player.name, info);
 }
 
 export function onUSIPonderInfo(sessionID: number, usi: string, info: USIInfoCommand) {
@@ -335,8 +365,8 @@ export function onUSIPonderInfo(sessionID: number, usi: string, info: USIInfoCom
   if (!player) {
     return;
   }
-  onUpdateUSIPonderInfo(sessionID, usi, player.name, info);
   player.onUSIInfo(usi, info);
+  onUpdateUSIPonderInfo(sessionID, usi, player.name, info);
 }
 
 export function isActiveUSIPlayerSession(sessionID: number): boolean {

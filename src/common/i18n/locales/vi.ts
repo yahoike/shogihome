@@ -666,6 +666,9 @@ export const vi: Texts = {
   playerNameNotSet: "対局者名が設定されていません。", // TODO: translate
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
     "互換性のないオプションがある場合それらは破棄されます。エンジンを置き換えますか？", // TODO: translate
+  largeSuggestionsCountMayCausePerformanceDegradation:
+    "候補手を増やしすぎると動作が重くなる可能性があります。", // TODO: translate
+  doYouReallyWantToIncreaseTheSuggestionsCount: "本当に候補手の数を増やしますか？", // TODO: translate
   totalNumber: (n: number) => `Tổng: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Vui lòng đăng nhập lại sau ${n} giây.`,

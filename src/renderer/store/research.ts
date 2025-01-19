@@ -27,6 +27,7 @@ type UpdateSearchInfoCallback = (type: SearchInfoSenderType, info: SearchInfo) =
 type Engine = {
   usi: USIPlayer;
   timer?: NodeJS.Timeout;
+  paused: boolean;
 };
 
 export class ResearchManager {
@@ -39,7 +40,6 @@ export class ResearchManager {
   private onError: ErrorCallback = () => {
     /* noop */
   };
-  private pausedEngineMap: { [sessionID: number]: boolean } = {};
   private record?: ImmutableRecord;
   private lazyPositionUpdate = new Lazy();
   private synced = true;
@@ -80,13 +80,15 @@ export class ResearchManager {
     const appSettings = useAppSettings();
     const usiEngines = [settings.usi, ...(settings.secondaries?.map((s) => s.usi) || [])];
     this.engines = usiEngines.map((usi, index) => {
+      const usiEngine = usi as USIEngine;
       const type = getSenderTypeByIndex(index);
       return {
-        usi: new USIPlayer(usi as USIEngine, appSettings.engineTimeoutSeconds, (info) => {
+        usi: new USIPlayer(usiEngine, appSettings.engineTimeoutSeconds, (info) => {
           if (type !== undefined && this.synced) {
             this.onUpdateSearchInfo(type, info);
           }
         }),
+        paused: false,
       };
     });
 
@@ -112,7 +114,7 @@ export class ResearchManager {
       }
       // 一時停止中のエンジンを除いて探索を開始する。
       this.engines.forEach((engine) => {
-        if (this.pausedEngineMap[engine.usi.sessionID]) {
+        if (engine.paused) {
           return;
         }
         engine.usi.startResearch(record.position, record.usi).catch((e) => {
@@ -129,7 +131,7 @@ export class ResearchManager {
   }
 
   isPaused(sessionID: number): boolean {
-    return this.pausedEngineMap[sessionID] || false;
+    return this.engines.find((engine) => engine.usi.sessionID === sessionID)?.paused || false;
   }
 
   pause(sessionID: number) {
@@ -137,7 +139,7 @@ export class ResearchManager {
     if (!engine) {
       return;
     }
-    this.pausedEngineMap[sessionID] = true;
+    engine.paused = true;
     engine.usi.stop().catch((e) => {
       this.onError(e);
     });
@@ -148,7 +150,7 @@ export class ResearchManager {
     if (!engine) {
       return;
     }
-    this.pausedEngineMap[sessionID] = false;
+    engine.paused = false;
     if (this.record) {
       engine.usi.startResearch(this.record.position, this.record.usi).catch((e) => {
         this.onError(e);
@@ -156,6 +158,34 @@ export class ResearchManager {
       // タイマーを初期化する。
       this.setupTimer(engine);
     }
+  }
+
+  getMultiPV(sessionID: number): number | undefined {
+    return this.engines.find((engine) => engine.usi.sessionID === sessionID)?.usi.multiPV;
+  }
+
+  setMultiPV(sessionID: number, multiPV: number) {
+    const engine = this.engines.find((engine) => engine.usi.sessionID === sessionID);
+    if (!engine?.usi.multiPV) {
+      return;
+    }
+    // Send stop command to let the engine change the multiPV.
+    // Then, start the search again.
+    engine.usi
+      .setMultiPV(multiPV)
+      .then(() => engine.usi.stop())
+      .then(() => {
+        if (this.record && !engine.paused) {
+          engine.usi.startResearch(this.record.position, this.record.usi).catch((e) => {
+            this.onError(e);
+          });
+          // タイマーを初期化する。
+          this.setupTimer(engine);
+        }
+      })
+      .catch((e) => {
+        this.onError(e);
+      });
   }
 
   isSessionExists(sessionID: number): boolean {
@@ -179,7 +209,6 @@ export class ResearchManager {
     Promise.allSettled(this.engines.map((engine) => engine.usi.close()))
       .then(() => {
         this.engines = [];
-        this.pausedEngineMap = {};
         this.ready = false;
       })
       .catch((e) => {

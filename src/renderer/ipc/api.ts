@@ -84,9 +84,10 @@ export interface API {
   // USI
   showSelectUSIEngineDialog(): Promise<string>;
   getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<USIEngine>;
-  sendUSISetOption(path: string, name: string, timeoutSeconds: number): Promise<void>;
+  sendUSIOptionButtonSignal(path: string, name: string, timeoutSeconds: number): Promise<void>;
   usiLaunch(engine: USIEngine, timeoutSeconds: number): Promise<number>;
   usiReady(sessionID: number): Promise<void>;
+  usiSetOption(sessionID: number, name: string, value: string): Promise<void>;
   usiGo(sessionID: number, usi: string, timeStates: TimeStates): Promise<void>;
   usiGoPonder(sessionID: number, usi: string, timeStates: TimeStates): Promise<void>;
   usiPonderHit(sessionID: number, timeStates: TimeStates): Promise<void>;
