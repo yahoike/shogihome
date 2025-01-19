@@ -19,15 +19,21 @@
               <span class="datetime">{{ getDateTimeString(new Date(entry.time)) }}</span>
             </span>
             <span class="right">
-              <button v-if="entry.userFilePath" @click="open(entry.userFilePath)">
+              <button v-if="entry.class === HistoryClass.USER" @click="open(entry.userFilePath)">
                 {{ t.open }}
               </button>
-              <button v-if="entry.backupFileName" @click="restore(entry.backupFileName)">
+              <button
+                v-if="entry.class === HistoryClass.BACKUP"
+                @click="restoreV1(entry.backupFileName)"
+              >
+                {{ t.restore }}
+              </button>
+              <button v-if="entry.class === HistoryClass.BACKUP_V2" @click="restoreV2(entry.kif)">
                 {{ t.restore }}
               </button>
             </span>
           </div>
-          <div v-if="entry.userFilePath" class="file-path">
+          <div v-if="entry.class === HistoryClass.USER" class="file-path">
             {{ entry.userFilePath }}
           </div>
         </div>
@@ -85,8 +91,12 @@ const open = (path: string) => {
   store.openRecord(path);
 };
 
-const restore = (name: string) => {
-  store.restoreFromBackup(name);
+const restoreV1 = (name: string) => {
+  store.restoreFromBackupV1(name);
+};
+
+const restoreV2 = (kif: string) => {
+  store.restoreFromBackupV2(kif);
 };
 
 const clear = () => {
