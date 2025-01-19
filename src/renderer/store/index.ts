@@ -1281,7 +1281,7 @@ class Store {
     }
   }
 
-  restoreFromBackup(name: string): void {
+  restoreFromBackupV1(name: string): void {
     if (this.appState !== AppState.RECORD_FILE_HISTORY_DIALOG || useBusyState().isBusy) {
       return;
     }
@@ -1304,6 +1304,21 @@ class Store {
       .finally(() => {
         useBusyState().release();
       });
+  }
+
+  restoreFromBackupV2(kif: string): void {
+    if (this.appState !== AppState.RECORD_FILE_HISTORY_DIALOG || useBusyState().isBusy) {
+      return;
+    }
+    const err = this.recordManager.importRecord(kif, {
+      type: RecordFormatType.KIF,
+      markAsSaved: true,
+    });
+    if (err) {
+      useErrorStore().add(err);
+      return;
+    }
+    this._appState = AppState.NORMAL;
   }
 
   get remoteRecordFileURL() {

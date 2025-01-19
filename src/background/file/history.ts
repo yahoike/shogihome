@@ -83,7 +83,9 @@ export function addHistory(path: string): void {
   lock.acquire("history", async () => {
     try {
       const history = await getHistoryWithoutLock();
-      history.entries = history.entries.filter((e) => e.userFilePath !== path);
+      history.entries = history.entries.filter(
+        (e) => e.class !== HistoryClass.USER || e.userFilePath !== path,
+      );
       history.entries.push({
         id: issueEntryID(),
         time: new Date().toISOString(),
@@ -112,18 +114,12 @@ export function clearHistory(): Promise<void> {
 
 export function saveBackup(kif: string): Promise<void> {
   return lock.acquire("history", async () => {
-    const unixTime = new Date().getTime();
-    const random = Math.floor(Math.random() * 10000);
-    const fileName = `${unixTime}-${random}.kifu`;
-    const filePath = path.join(backupDir, fileName);
     const history = await getHistoryWithoutLock();
-    await fs.mkdir(backupDir, { recursive: true });
-    await fs.writeFile(filePath, kif);
     history.entries.push({
       id: issueEntryID(),
       time: new Date().toISOString(),
-      class: HistoryClass.BACKUP,
-      backupFileName: fileName,
+      class: HistoryClass.BACKUP_V2,
+      kif,
     });
     trancate(history);
     await saveHistories(history);
