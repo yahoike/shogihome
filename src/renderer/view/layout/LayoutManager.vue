@@ -226,7 +226,7 @@
             <span class="property">
               <ToggleButton
                 :value="!!component.showMultiPvColumn"
-                :label="t.multiPV"
+                :label="t.rank"
                 @change="(value) => updateCustomProfileComponent(index, 'showMultiPvColumn', value)"
               />
             </span>

@@ -294,7 +294,7 @@ export const vi: Texts = {
   searchEngine: "Phần mềm",
   ponder: "Đọc trước",
   numberOfThreads: "Luồng",
-  multiPV: "Nhiều biến",
+  suggestionsCount: "Nhiều biến", // TODO: 日本語が「マルチPV」から「候補手の数」へ変更されたのでそれを反映したい。
   startPosition: "Thế cờ ban đầu",
   beginFromThisPosition: "この局面から開始", // TODO: translate
   maxMoves: "Số nước tối đa",

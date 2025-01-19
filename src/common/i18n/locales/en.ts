@@ -294,7 +294,7 @@ export const en: Texts = {
   searchEngine: "Search Engine",
   ponder: "Ponder",
   numberOfThreads: "Threads",
-  multiPV: "Multi PV",
+  suggestionsCount: "Suggestions Count",
   startPosition: "Position",
   beginFromThisPosition: "Begin from this position",
   maxMoves: "Max Moves",
