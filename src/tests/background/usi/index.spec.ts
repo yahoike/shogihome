@@ -8,8 +8,9 @@ import {
   isActiveSessionExists,
   ponderHit,
   ready,
-  sendSetOptionCommand,
+  sendOptionButtonSignal,
   setHandlers,
+  setOption,
   setupPlayer,
 } from "@/background/usi";
 import { ChildProcess } from "@/background/usi/process";
@@ -78,8 +79,8 @@ describe("background/usi/index", () => {
     onClose();
   });
 
-  it("sendSetOptionCommand", async () => {
-    const promise = sendSetOptionCommand("path/to/engine", "myopt", 10);
+  it("sendOptionButtonSignal", async () => {
+    const promise = sendOptionButtonSignal("path/to/engine", "myopt", 10);
     const onReceive = getChildProcessHandler("receive");
     const onClose = getChildProcessHandler("close");
     expect(mockChildProcess.prototype.send).lastCalledWith("usi");
@@ -87,6 +88,22 @@ describe("background/usi/index", () => {
     await promise;
     expect(mockChildProcess.prototype.send).nthCalledWith(2, "setoption name myopt");
     expect(mockChildProcess.prototype.send).lastCalledWith("quit");
+    onClose();
+  });
+
+  it("setOption", async () => {
+    const setupPromise = setupPlayer(testUSIEngine, 10);
+    const onReceive = getChildProcessHandler("receive");
+    const onClose = getChildProcessHandler("close");
+    onReceive("usiok");
+    const sessionID = await setupPromise;
+    const readyPromise = ready(sessionID);
+    onReceive("readyok");
+    await readyPromise;
+
+    setOption(sessionID, "Foo", "foo");
+
+    expect(mockChildProcess.prototype.send).lastCalledWith("setoption name Foo value foo");
     onClose();
   });
 

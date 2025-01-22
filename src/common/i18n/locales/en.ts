@@ -669,6 +669,10 @@ export const en: Texts = {
   playerNameNotSet: "Player name is not set.",
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
     "Incompatible options will be discarded. Do you really want to replace the engine path?",
+  largeSuggestionsCountMayCausePerformanceDegradation:
+    "Large suggestions count may cause performance degradation.",
+  doYouReallyWantToIncreaseTheSuggestionsCount:
+    "Do you really want to increase the suggestions count?",
   totalNumber: (n: number) => `Total: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Try to relogin to the CSA server in ${n} seconds.`,

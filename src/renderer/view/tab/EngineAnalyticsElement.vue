@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="full column root" :class="{ paused }">
-      <div v-if="showHeader && canBePaused" class="overlay-control row reverse">
+      <div v-if="showHeader && isResearchSession" class="overlay-control row reverse">
         <button v-if="paused" @click="onUnpause">
           <Icon :icon="IconType.RESUME" />
           <span>{{ t.resume }}</span>
@@ -105,21 +105,47 @@
             </tr>
           </tbody>
         </table>
+        <div
+          v-if="showSuggestionsCount && isResearchSession && !historyMode && multiPV"
+          class="multi-pv-control"
+        >
+          <span>{{ t.suggestionsCount }}</span>
+          <input
+            ref="multiPVInput"
+            type="number"
+            min="1"
+            :value="multiPV"
+            @input="updateMultiPV(0)"
+          />
+          <button @click="updateMultiPV(1)">
+            <Icon :icon="IconType.ARROW_DROP" /><span>+1</span>
+          </button>
+          <button @click="updateMultiPV(-1)">
+            <Icon :icon="IconType.ARROW_UP" /><span>-1</span>
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
+<script lang="ts">
+const suggestionsCountLimit = 10;
+let ignoreSuggestionsCountLimit = false;
+</script>
+
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { USIIteration, USIPlayerMonitor } from "@/renderer/store/usi";
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { EvaluationViewFrom } from "@/common/settings/app";
 import { Color, Move, Position } from "tsshogi";
 import { useAppSettings } from "@/renderer/store/settings";
 import { useStore } from "@/renderer/store";
+import { readInputAsNumber } from "@/renderer/helpers/form";
+import { useConfirmationStore } from "@/renderer/store/confirm";
 
 const props = defineProps({
   historyMode: { type: Boolean, required: true },
@@ -132,13 +158,22 @@ const props = defineProps({
   showNodesColumn: { type: Boolean, default: true },
   showScoreColumn: { type: Boolean, default: true },
   showPlayButton: { type: Boolean, default: true },
-  canBePaused: { type: Boolean, required: false, default: false },
+  showSuggestionsCount: { type: Boolean, default: true },
 });
 
 const store = useStore();
+const multiPVInput = ref();
+
+const isResearchSession = computed(() => {
+  return store.isResearchEngineSessionID(props.info.sessionID);
+});
 
 const paused = computed(() => {
   return store.isPausedResearchEngine(props.info.sessionID);
+});
+
+const multiPV = computed(() => {
+  return store.getResearchMultiPV(props.info.sessionID);
 });
 
 const enableHighlight = computed(() => {
@@ -188,6 +223,39 @@ const onPause = () => {
 
 const onUnpause = () => {
   store.unpauseResearchEngine(props.info.sessionID);
+};
+
+const updateMultiPV = (add: number) => {
+  const value = readInputAsNumber(multiPVInput.value);
+  if (!value) {
+    return;
+  }
+  const newValue = value + add;
+
+  // Confirm if the suggestions count is too large
+  if (
+    !ignoreSuggestionsCountLimit &&
+    multiPV.value &&
+    newValue > multiPV.value &&
+    newValue > suggestionsCountLimit
+  ) {
+    useConfirmationStore().show({
+      message: `${t.largeSuggestionsCountMayCausePerformanceDegradation} ${t.doYouReallyWantToIncreaseTheSuggestionsCount}`,
+      onOk: () => {
+        // Ignore the limit and update the value
+        ignoreSuggestionsCountLimit = true;
+        store.setResearchMultiPV(props.info.sessionID, newValue);
+      },
+      onCancel: () => {
+        // Restore the value
+        multiPVInput.value.value = multiPV.value?.toFixed(0) || "";
+      },
+    });
+    return;
+  }
+
+  // Otherwise, update the value
+  store.setResearchMultiPV(props.info.sessionID, newValue);
 };
 </script>
 
@@ -301,5 +369,17 @@ button {
 }
 button span {
   line-height: 19px;
+}
+.multi-pv-control {
+  font-size: 12px;
+  text-align: left;
+}
+.multi-pv-control > * {
+  margin: 0px 0px 0px 5px;
+}
+.multi-pv-control input {
+  width: 40px;
+  font-size: 12px;
+  text-align: right;
 }
 </style>

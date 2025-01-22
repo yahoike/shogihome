@@ -54,6 +54,7 @@ type Analytics = {
   showNodesColumn?: boolean;
   showScoreColumn?: boolean;
   showPlayButton?: boolean;
+  showSuggestionsCount?: boolean;
 };
 
 type Comment = {

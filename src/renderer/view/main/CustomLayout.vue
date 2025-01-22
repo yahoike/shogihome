@@ -38,6 +38,7 @@
           :show-nodes-column="!!c.showNodesColumn"
           :show-score-column="!!c.showScoreColumn"
           :show-play-button="!!c.showPlayButton"
+          :show-suggestions-count="!!c.showSuggestionsCount"
         />
       </div>
       <EvaluationChart

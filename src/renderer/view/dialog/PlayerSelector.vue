@@ -64,12 +64,10 @@ import {
   USIEngine,
   ImmutableUSIEngines,
   USIPonder,
-  USIMultiPV,
-  Threads,
-  NumberOfThreads,
-  MultiPV,
   USIEngines,
   USIEngineLabel,
+  getUSIEngineThreads,
+  getUSIEngineMultiPV,
 } from "@/common/settings/usi";
 import api from "@/renderer/ipc/api";
 import { useErrorStore } from "@/renderer/store/error";
@@ -145,9 +143,7 @@ const threadState = computed(() => {
   if (!engine) {
     return null;
   }
-  const threads =
-    getUSIEngineOptionCurrentValue(engine.options[Threads]) ||
-    getUSIEngineOptionCurrentValue(engine.options[NumberOfThreads]);
+  const threads = getUSIEngineThreads(engine);
   return threads;
 });
 
@@ -159,9 +155,7 @@ const multiPVState = computed(() => {
   if (!engine) {
     return null;
   }
-  const multiPV =
-    getUSIEngineOptionCurrentValue(engine.options[USIMultiPV]) ||
-    getUSIEngineOptionCurrentValue(engine.options[MultiPV]);
+  const multiPV = getUSIEngineMultiPV(engine);
   return multiPV;
 });
 

@@ -71,6 +71,25 @@ export function getUSIEngineOptionCurrentValue(
   return option.default;
 }
 
+export function getUSIEnginePonder(engine: USIEngine): boolean {
+  const value = getUSIEngineOptionCurrentValue(engine.options[USIPonder]);
+  return value === "true";
+}
+
+export function getUSIEngineThreads(engine: USIEngine): number | undefined {
+  const value =
+    getUSIEngineOptionCurrentValue(engine.options[Threads]) ||
+    getUSIEngineOptionCurrentValue(engine.options[NumberOfThreads]);
+  return value as number | undefined;
+}
+
+export function getUSIEngineMultiPV(engine: USIEngine): number | undefined {
+  const value =
+    getUSIEngineOptionCurrentValue(engine.options[USIMultiPV]) ||
+    getUSIEngineOptionCurrentValue(engine.options[MultiPV]);
+  return value as number | undefined;
+}
+
 export type USIEngineOptions = { [name: string]: USIEngineOption };
 
 export enum USIEngineLabel {

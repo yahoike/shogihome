@@ -669,6 +669,9 @@ export const ja: Texts = {
   playerNameNotSet: "対局者名が設定されていません。",
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
     "互換性のないオプションがある場合それらは破棄されます。エンジンを置き換えますか？",
+  largeSuggestionsCountMayCausePerformanceDegradation:
+    "候補手を増やしすぎると動作が重くなる可能性があります。",
+  doYouReallyWantToIncreaseTheSuggestionsCount: "本当に候補手の数を増やしますか？",
   totalNumber: (n: number) => `合計 ${n} 件`,
   number: (n: number) => `${n} 件`,
   tryToReloginToCSAServerNSecondsLater: (n) => `CSAサーバーへのログインを${n}秒後に再試行します。`,

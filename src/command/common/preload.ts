@@ -12,6 +12,7 @@ import {
 } from "@/background/csa";
 import {
   ready as usiReady,
+  setOption as usiSetOption,
   go as usiGo,
   setHandlers as setUSIHandlers,
   setupPlayer as usiSetupPlayer,
@@ -216,7 +217,7 @@ export function preload(config: Config) {
     async getUSIEngineInfo(): Promise<string> {
       throw new Error("This feature is not available on command line tool");
     },
-    async sendUSISetOption(): Promise<void> {
+    async sendUSIOptionButtonSignal(): Promise<void> {
       // Do Nothing
     },
     async usiLaunch(json: string, timeoutSeconds: number): Promise<number> {
@@ -225,6 +226,9 @@ export function preload(config: Config) {
     },
     async usiReady(sessionID: number): Promise<void> {
       return await usiReady(sessionID);
+    },
+    async usiSetOption(sessionID: number, name: string, value: string): Promise<void> {
+      usiSetOption(sessionID, name, value);
     },
     async usiGo(sessionID: number, usi: string, timeStates: string): Promise<void> {
       usiGo(sessionID, usi, JSON.parse(timeStates));

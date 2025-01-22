@@ -57,7 +57,11 @@ import { t } from "@/common/i18n";
 import { MateSearchManager } from "./mate";
 import { detectUnsupportedRecordProperties } from "@/renderer/helpers/record";
 import { RecordFileFormat, detectRecordFileFormatByPath } from "@/common/file/record";
-import { setOnUpdateUSIInfoHandler, setOnUpdateUSIPonderInfoHandler } from "@/renderer/players/usi";
+import {
+  setOnReceiveUSIBestMoveHandler,
+  setOnUpdateUSIInfoHandler,
+  setOnUpdateUSIPonderInfoHandler,
+} from "@/renderer/players/usi";
 import { useErrorStore } from "./error";
 import { useBusyState } from "./busy";
 import { Confirmation, useConfirmationStore } from "./confirm";
@@ -207,6 +211,7 @@ class Store {
       .on("notImplemented", this.onNotImplemented.bind(refs))
       .on("noMate", this.onNoMate.bind(refs))
       .on("error", this.onCheckmateError.bind(refs));
+    setOnReceiveUSIBestMoveHandler(this.endUSIInfoIteration.bind(refs));
     setOnUpdateUSIInfoHandler(this.updateUSIInfo.bind(refs));
     setOnUpdateUSIPonderInfoHandler(this.updateUSIPonderInfo.bind(refs));
   }
@@ -518,6 +523,21 @@ class Store {
 
   unpauseResearchEngine(sessionID: number): void {
     this.researchManager.unpause(sessionID);
+  }
+
+  getResearchMultiPV(sessionID: number): number | undefined {
+    return this.researchManager.getMultiPV(sessionID);
+  }
+
+  setResearchMultiPV(sessionID: number, multiPV: number): void {
+    this.researchManager.setMultiPV(sessionID, multiPV);
+  }
+
+  endUSIInfoIteration(sessionID: number, usi: string): void {
+    if (this.recordManager.record.usi !== usi) {
+      return;
+    }
+    this.usiMonitor.endIteration(sessionID, this.recordManager.record.position);
   }
 
   updateUSIInfo(sessionID: number, usi: string, name: string, info: USIInfoCommand): void {

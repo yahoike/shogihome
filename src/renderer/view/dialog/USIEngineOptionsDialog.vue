@@ -143,7 +143,7 @@
                 <button
                   v-if="option.type === 'button'"
                   class="thin"
-                  @click="sendOption(option.name)"
+                  @click="sendOptionButtonSignal(option.name)"
                 >
                   {{ t.invoke }}
                 </button>
@@ -371,11 +371,11 @@ const selectFile = async (name: string) => {
   }
 };
 
-const sendOption = async (name: string) => {
+const sendOptionButtonSignal = async (name: string) => {
   busyState.retain();
   try {
     const timeoutSeconds = appSettings.engineTimeoutSeconds;
-    await api.sendUSISetOption(engine.value.path, name, timeoutSeconds);
+    await api.sendUSIOptionButtonSignal(engine.value.path, name, timeoutSeconds);
   } catch (e) {
     useErrorStore().add(e);
   } finally {

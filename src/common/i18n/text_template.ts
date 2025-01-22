@@ -640,6 +640,8 @@ export type Texts = {
   minPlyMustBeLessThanMaxPly: string;
   playerNameNotSet: string;
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath: string;
+  largeSuggestionsCountMayCausePerformanceDegradation: string;
+  doYouReallyWantToIncreaseTheSuggestionsCount: string;
   totalNumber: (n: number) => string;
   number: (n: number) => string;
   tryToReloginToCSAServerNSecondsLater: (n: number) => string;

@@ -181,14 +181,21 @@ const api: Bridge = {
   async getUSIEngineInfo(path: string, timeoutSeconds: number): Promise<string> {
     return await ipcRenderer.invoke(Background.GET_USI_ENGINE_INFO, path, timeoutSeconds);
   },
-  async sendUSISetOption(path: string, name: string, timeoutSeconds: number): Promise<void> {
-    await ipcRenderer.invoke(Background.SEND_USI_SET_OPTION, path, name, timeoutSeconds);
+  async sendUSIOptionButtonSignal(
+    path: string,
+    name: string,
+    timeoutSeconds: number,
+  ): Promise<void> {
+    await ipcRenderer.invoke(Background.SEND_USI_OPTION_BUTTON_SIGNAL, path, name, timeoutSeconds);
   },
   async usiLaunch(json: string, timeoutSeconds: number): Promise<number> {
     return await ipcRenderer.invoke(Background.LAUNCH_USI, json, timeoutSeconds);
   },
   async usiReady(sessionID: number): Promise<void> {
     await ipcRenderer.invoke(Background.USI_READY, sessionID);
+  },
+  async usiSetOption(sessionID: number, name: string, value: string): Promise<void> {
+    await ipcRenderer.invoke(Background.USI_SET_OPTION, sessionID, name, value);
   },
   async usiGo(sessionID: number, usi: string, timeStatesJSON: string): Promise<void> {
     await ipcRenderer.invoke(Background.USI_GO, sessionID, usi, timeStatesJSON);
