@@ -65,7 +65,7 @@ export function setup(): void {
       bridge.onClosable();
     }
   });
-  bridge.onSendError((e: Error) => {
+  bridge.onSendError((e: string) => {
     useErrorStore().add(e);
   });
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

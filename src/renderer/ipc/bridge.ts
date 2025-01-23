@@ -12,7 +12,7 @@ export interface Bridge {
   updateAppState(appState: AppState, researchState: ResearchState, busy: boolean): void;
   onClosable(): void;
   onClose(callback: (confirmations: string[]) => void): void;
-  onSendError(callback: (e: Error) => void): void;
+  onSendError(callback: (e: string) => void): void;
   onMenuEvent(callback: (event: MenuEvent) => void): void;
 
   // Settings
