@@ -23,7 +23,7 @@ const api: Bridge = {
       callback(confirmations);
     });
   },
-  onSendError(callback: (e: Error) => void): void {
+  onSendError(callback: (e: string) => void): void {
     ipcRenderer.on(Renderer.SEND_ERROR, (_, e) => {
       callback(e);
     });

@@ -939,7 +939,13 @@ export function onClose(): void {
 }
 
 export function sendError(e: Error): void {
-  mainWindow.webContents.send(Renderer.SEND_ERROR, e);
+  if (e instanceof AggregateError) {
+    for (const error of e.errors) {
+      sendError(error);
+    }
+    return;
+  }
+  mainWindow.webContents.send(Renderer.SEND_ERROR, e.message || e.name);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
