@@ -42,6 +42,7 @@ import { exists } from "./helpers/file";
 import { emptyLayoutProfileList, LayoutProfileList } from "@/common/settings/layout";
 import { openPath } from "./helpers/electron";
 import { BookImportSettings, defaultBookImportSettings } from "@/common/settings/book";
+import { writeFileAtomic, writeFileAtomicSync } from "./file/atomic";
 
 const userDir = getAppPath("userData");
 const rootDir = getPortableExeDir() || userDir;
@@ -60,7 +61,7 @@ const windowSettingsPath = path.join(userDir, "window.json");
 
 export function saveWindowSettings(settings: WindowSettings): void {
   try {
-    fs.writeFileSync(
+    writeFileAtomicSync(
       windowSettingsPath,
       JSON.stringify(normalizeWindowSettings(settings), undefined, 2),
       "utf8",
@@ -82,7 +83,7 @@ export function loadWindowSettings(): WindowSettings {
 const usiEnginesPath = path.join(rootDir, "usi_engine.json");
 
 export async function saveUSIEngines(usiEngines: USIEngines): Promise<void> {
-  await fs.promises.writeFile(usiEnginesPath, usiEngines.jsonWithIndent, "utf8");
+  await writeFileAtomic(usiEnginesPath, usiEngines.jsonWithIndent, "utf8");
 }
 
 export async function loadUSIEngines(): Promise<USIEngines> {
@@ -95,7 +96,7 @@ export async function loadUSIEngines(): Promise<USIEngines> {
 const appSettingsPath = path.join(userDir, "app_setting.json");
 
 export async function saveAppSettings(settings: AppSettings): Promise<void> {
-  await fs.promises.writeFile(appSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
+  await writeFileAtomic(appSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
 }
 
 const defaultReturnCode = process.platform === "win32" ? "\r\n" : "\n";
@@ -142,7 +143,7 @@ const batchConversionSettingsPath = path.join(rootDir, "batch_conversion_setting
 export async function saveBatchConversionSettings(
   settings: BatchConversionSettings,
 ): Promise<void> {
-  await fs.promises.writeFile(
+  await writeFileAtomic(
     batchConversionSettingsPath,
     JSON.stringify(settings, undefined, 2),
     "utf8",
@@ -161,7 +162,7 @@ export async function loadBatchConversionSettings(): Promise<BatchConversionSett
 const gameSettingsPath = path.join(rootDir, "game_setting.json");
 
 export async function saveGameSettings(settings: GameSettings): Promise<void> {
-  await fs.promises.writeFile(gameSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
+  await writeFileAtomic(gameSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
 }
 
 export async function loadGameSettings(): Promise<GameSettings> {
@@ -178,7 +179,7 @@ export async function saveCSAGameSettingsHistory(settings: CSAGameSettingsHistor
     settings,
     isEncryptionAvailable() ? EncryptString : undefined,
   );
-  await fs.promises.writeFile(
+  await writeFileAtomic(
     csaGameSettingsHistoryPath,
     JSON.stringify(encrypted, undefined, 2),
     "utf8",
@@ -199,7 +200,7 @@ export async function loadCSAGameSettingsHistory(): Promise<CSAGameSettingsHisto
 const researchSettingsPath = path.join(rootDir, "research_setting.json");
 
 export async function saveResearchSettings(settings: ResearchSettings): Promise<void> {
-  await fs.promises.writeFile(researchSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
+  await writeFileAtomic(researchSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
 }
 
 export async function loadResearchSettings(): Promise<ResearchSettings> {
@@ -214,7 +215,7 @@ export async function loadResearchSettings(): Promise<ResearchSettings> {
 const analysisSettingsPath = path.join(rootDir, "analysis_setting.json");
 
 export async function saveAnalysisSettings(settings: AnalysisSettings): Promise<void> {
-  await fs.promises.writeFile(analysisSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
+  await writeFileAtomic(analysisSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
 }
 
 export async function loadAnalysisSettings(): Promise<AnalysisSettings> {
@@ -229,11 +230,7 @@ export async function loadAnalysisSettings(): Promise<AnalysisSettings> {
 const mateSearchSettingsPath = path.join(rootDir, "mate_search_setting.json");
 
 export async function saveMateSearchSettings(settings: MateSearchSettings): Promise<void> {
-  await fs.promises.writeFile(
-    mateSearchSettingsPath,
-    JSON.stringify(settings, undefined, 2),
-    "utf8",
-  );
+  await writeFileAtomic(mateSearchSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
 }
 
 export async function loadMateSearchSettings(): Promise<MateSearchSettings> {
@@ -248,11 +245,7 @@ export async function loadMateSearchSettings(): Promise<MateSearchSettings> {
 const layoutProfileListPath = path.join(userDir, "layouts.json");
 
 export async function saveLayoutProfileList(profileList: LayoutProfileList): Promise<void> {
-  await fs.promises.writeFile(
-    layoutProfileListPath,
-    JSON.stringify(profileList, undefined, 2),
-    "utf8",
-  );
+  await writeFileAtomic(layoutProfileListPath, JSON.stringify(profileList, undefined, 2), "utf8");
 }
 
 export async function loadLayoutProfileList(): Promise<LayoutProfileList> {
@@ -265,11 +258,7 @@ export async function loadLayoutProfileList(): Promise<LayoutProfileList> {
 const bookImportSettingsPath = path.join(rootDir, "book_import.json");
 
 export async function saveBookImportSettings(settings: BookImportSettings): Promise<void> {
-  await fs.promises.writeFile(
-    bookImportSettingsPath,
-    JSON.stringify(settings, undefined, 2),
-    "utf8",
-  );
+  await writeFileAtomic(bookImportSettingsPath, JSON.stringify(settings, undefined, 2), "utf8");
 }
 
 export async function loadBookImportSettings(): Promise<BookImportSettings> {

@@ -10,6 +10,7 @@ import { t } from "@/common/i18n";
 import { getAppLogger } from "@/background/log";
 import { getAppVersion, showNotification } from "@/background/helpers/electron";
 import { ghRepository, ghioDomain } from "@/common/links/github";
+import { writeFileAtomic } from "./file/atomic";
 
 const minimumCheckIntervalMs = isDevelopment()
   ? 60 * 1000 // Dev: 1 minute
@@ -49,7 +50,7 @@ export async function readStatus(): Promise<VersionStatus> {
 }
 
 async function writeStatus(last: VersionStatus) {
-  await fs.promises.writeFile(statusFilePath, JSON.stringify(last, null, " "));
+  await writeFileAtomic(statusFilePath, JSON.stringify(last, null, " "));
 }
 
 function suggestUpdate(releases: Releases, last: VersionStatus) {

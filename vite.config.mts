@@ -35,6 +35,7 @@ export default defineConfig({
     dir: "./src/tests",
     globals: true,
     environment: "jsdom",
+    setupFiles: ["./src/tests/setup.ts"],
     coverage: {
       exclude: [
         "docs",

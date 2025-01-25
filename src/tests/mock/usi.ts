@@ -1,18 +1,22 @@
 import { USIEngine } from "@/common/settings/usi";
 
 export const testUSIEngine: USIEngine = {
-  uri: "es://usi/test-engine",
+  uri: "es://usi-engine/test-engine",
   name: "my usi engine",
   defaultName: "engine",
   author: "author",
   path: "/engines/engines",
   options: {},
-  labels: {},
+  labels: {
+    game: true,
+    research: true,
+    mate: false,
+  },
   enableEarlyPonder: false,
 };
 
 export const testUSIEngineWithPonder: USIEngine = {
-  uri: "es://usi/test-engine",
+  uri: "es://usi-engine/test-engine",
   name: "my usi engine",
   defaultName: "engine",
   author: "author",
@@ -25,6 +29,10 @@ export const testUSIEngineWithPonder: USIEngine = {
       value: "true",
     },
   },
-  labels: {},
+  labels: {
+    game: true,
+    research: true,
+    mate: false,
+  },
   enableEarlyPonder: false,
 };
