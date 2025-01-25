@@ -268,6 +268,7 @@ const buildDatasets = (record: ImmutableRecord, config: ChartConfig) => {
 };
 
 const buildScalesOption = (record: ImmutableRecord, config: ChartConfig) => {
+  const stepSize = config.type === EvaluationChartType.RAW ? MAX_SCORE / 2 : 25;
   return {
     x: {
       min: 0,
@@ -278,7 +279,7 @@ const buildScalesOption = (record: ImmutableRecord, config: ChartConfig) => {
     y: {
       min: getMinScore(config.type),
       max: getMaxScore(config.type),
-      ticks: { color: config.palette.ticks },
+      ticks: { color: config.palette.ticks, stepSize },
       grid: { color: config.palette.grid },
     },
   };
