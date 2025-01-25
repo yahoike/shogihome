@@ -77,6 +77,7 @@
           </Pane>
           <Pane>
             <TabPane
+              v-if="appSettings.tabPaneType === TabPaneType.DOUBLE"
               class="full"
               :size="tabPaneSize2"
               :visible-tabs="[Tab.COMMENT, Tab.CHART, Tab.PERCENTAGE_CHART]"
@@ -85,6 +86,17 @@
               @on-change-tab="onChangeTab2"
               @on-minimize="onMinimizeTab"
             />
+            <div v-else class="full column">
+              <TabPane
+                :size="tabPaneSize2a"
+                :visible-tabs="[Tab.CHART, Tab.PERCENTAGE_CHART]"
+                :active-tab="appSettings.tab2"
+                :display-minimize-toggle="true"
+                @on-change-tab="onChangeTab2"
+                @on-minimize="onMinimizeTab"
+              />
+              <RecordComment class="full" />
+            </div>
           </Pane>
         </Splitpanes>
       </Pane>
@@ -98,6 +110,7 @@ import { reactive, onMounted, onUnmounted, computed, ref } from "vue";
 import BoardPane from "./BoardPane.vue";
 import RecordPane, { minWidth as minRecordWidth } from "./RecordPane.vue";
 import TabPane, { headerHeight as tabHeaderHeight } from "./TabPane.vue";
+import RecordComment from "@/renderer/view/tab/RecordComment.vue";
 import ControlPane, { ControlGroup } from "./ControlPane.vue";
 import { RectSize } from "@/common/assets/geometry";
 import { AppSettingsUpdate, Tab, TabPaneType } from "@/common/settings/app";
@@ -257,6 +270,17 @@ const tabPaneSize2 = computed(() => {
     (windowSize.height - splitterWidth) * (bottomPaneHeightPercentage.value / 100),
   );
 });
+
+const tabPaneSize2a = computed(
+  () =>
+    new RectSize(
+      tabPaneSize2.value.width,
+      Math.min(
+        Math.max(tabPaneSize2.value.width * 0.5, 150),
+        tabPaneSize2.value.height * 0.2 + 100,
+      ),
+    ),
+);
 </script>
 
 <style>

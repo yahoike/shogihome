@@ -361,6 +361,7 @@
               :items="[
                 { label: t.oneColumn, value: TabPaneType.SINGLE },
                 { label: t.twoColumns, value: TabPaneType.DOUBLE },
+                { label: `${t.twoColumns} v2`, value: TabPaneType.DOUBLE_V2 },
               ]"
               @change="
                 (value: string) => {

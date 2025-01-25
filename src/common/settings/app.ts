@@ -78,6 +78,7 @@ export enum RightSideControlType {
 export enum TabPaneType {
   SINGLE = "single",
   DOUBLE = "double",
+  DOUBLE_V2 = "doubleV2",
 }
 
 export enum Tab {
@@ -331,6 +332,7 @@ export function buildUpdatedAppSettings(org: AppSettings, update: AppSettingsUpd
   // カラム構成に合わせて選択可能なタブを制限する。
   switch (updated.tabPaneType) {
     case TabPaneType.DOUBLE:
+    case TabPaneType.DOUBLE_V2:
       switch (updated.tab) {
         case Tab.COMMENT:
           updated.tab = Tab.RECORD_INFO;
@@ -338,6 +340,15 @@ export function buildUpdatedAppSettings(org: AppSettings, update: AppSettingsUpd
         case Tab.CHART:
         case Tab.PERCENTAGE_CHART:
           updated.tab = Tab.PV;
+          break;
+      }
+      break;
+  }
+  switch (updated.tabPaneType) {
+    case TabPaneType.DOUBLE_V2:
+      switch (updated.tab2) {
+        case Tab.COMMENT:
+          updated.tab2 = Tab.CHART;
           break;
       }
       break;
@@ -377,9 +388,9 @@ export function defaultAppSettings(opt?: {
     clockPitch: 500,
     clockSoundTarget: ClockSoundTarget.ONLY_USER,
     boardFlipping: false,
-    tabPaneType: TabPaneType.DOUBLE,
+    tabPaneType: TabPaneType.DOUBLE_V2,
     tab: Tab.RECORD_INFO,
-    tab2: Tab.COMMENT,
+    tab2: Tab.CHART,
     topPaneHeightPercentage: 60,
     topPanePreviousHeightPercentage: 60,
     bottomLeftPaneWidthPercentage: 60,
