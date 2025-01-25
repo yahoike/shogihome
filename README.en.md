@@ -8,32 +8,32 @@
 [日本語](./README.md)
 
 This is a Shogi GUI app.
-You can play Shogi with AI and manage records.
+You can play Shogi with AI, analyze games, and manage records.
 
-You can use this app with any Shogi engine (AI) based on the [USI Protocol](http://shogidokoro.starfree.jp/usi.html), just like [将棋所](http://shogidokoro.starfree.jp/).
+You can use this app with any Shogi engines (AI) based on the [USI Protocol](http://shogidokoro.starfree.jp/usi.html), just like [将棋所](http://shogidokoro.starfree.jp/).
 
 ## Concept
 
-Excellent shogi software such as 将棋所 and [ShogiGUI](http://shogigui.siganus.com/) already exist.
-However, the source code of most of these programs are not public.
+There are excellent shogi software such as 将棋所 and [ShogiGUI](http://shogigui.siganus.com/).
+However, those source codes are not public.
 Authoritative Shogi AI developers have advocated [the importance of source code sharing](https://yaneuraou.yaneu.com/2022/01/15/new-gui-for-shogi-is-needed-to-improve-the-usi-protocol/).
-ShogiHome publishes its source code fully. You can use or modify it under only a few restrictions.
+ShogiHome publishes all its source codes. You can use or modify it under only a few restrictions.
 
 ShogiHome is developed using [Electron](https://www.electronjs.org/) which is a web-based GUI framework.
-We make use of modern web technologies since we want this project to see widespread usage in the future.
+We make use of modern web technologies since we want this project to be widely used in the future.
 You can even run this on your web browser although only a portion of features are supported.
-As an Electron-based app, this is bundled with Chromium, so it is easy to guarantee the same operability and quality across different OSs.
+As an Electron-based app, this is bundled with Chromium, so it is easy to guarantee the same operability and quality across different operation systems.
 
 These days, 2-in-1 laptops are becoming popular.
-It is now possible to play shogi on PCs with a touch screen.
-However, legacy desktop Shogi apps have very small UI components. These are not good for compatibility with a touch display.
+It is now possible to play Shogi on PCs with a touch screen.
+However, legacy desktop Shogi apps have very small UI components. These are not compatible with a touch display.
 We designed this app to have operability for touch devices.
 
 ## Website
 
 https://sunfish-shogi.github.io/shogihome/
 
-You can try the web version from the website.
+You can try the web app on the above website.
 
 ## Wiki
 
@@ -53,8 +53,8 @@ You can download any version from [Releases](https://github.com/sunfish-shogi/sh
 
 ## Bug Reports / Suggestions
 
-If you have a GitHub account, you can create an issue or a pull request.
-For large changes, please open an issue to discuss them before starting development.
+If you have a GitHub account, you can create issues or pull requests.
+For major changes, please open an issue to discuss them before starting development.
 Make sure to use the provided templates when creating new issues or pull requests.
 
 If not, please send messages through the [Web Form](https://form.run/@sunfish-shogi-1650819491).
