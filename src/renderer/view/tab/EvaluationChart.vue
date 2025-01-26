@@ -293,6 +293,9 @@ const updateChart = (config: ChartConfig) => {
     legend: {
       display: config.showLegend,
     },
+    tooltip: {
+      enabled: false,
+    },
   };
   chart.update();
 };
