@@ -473,6 +473,10 @@ export function normalizeAppSettings(
   if (result.tab === Tab.INVISIBLE) {
     result.tab = Tab.RECORD_INFO;
   }
+  // 旧バージョンと行き来すると DOUBLE_V2 のまま Tab.COMMENT が選択された状態が発生しうる。
+  if (result.tabPaneType === TabPaneType.DOUBLE_V2 && result.tab2 === Tab.COMMENT) {
+    result.tab2 = Tab.CHART;
+  }
   // 旧バージョンではフォントの太さは設定項目になく、明朝体とゴシック体で違っていた。
   if (!settings.positionImageFontWeight) {
     switch (settings.positionImageTypeface) {
