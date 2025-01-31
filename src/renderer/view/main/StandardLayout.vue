@@ -309,7 +309,7 @@ const tabPaneSize2a = computed(
   box-shadow: 0px 6px 6px -3px var(--shadow-color);
 }
 .margin-bottom {
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 .compact-control {
   margin-top: 10px;
