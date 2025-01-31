@@ -93,17 +93,15 @@ app.on("will-quit", (event) => {
   shutdownLoggers();
 });
 
-// Quit when all windows are closed.
-app.on("window-all-closed", () => {
-  getAppLogger().info("on window-all-closed");
+function onMainWindowClosed() {
   app.quit();
-});
+}
 
 app.on("activate", () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
+    createWindow(onMainWindowClosed);
   }
 });
 
@@ -160,7 +158,7 @@ app.on("ready", () => {
     validateHTTPRequest(details.method, details.url);
     callback({});
   });
-  createWindow();
+  createWindow(onMainWindowClosed);
 });
 
 // Exit cleanly on request from parent process in development mode.

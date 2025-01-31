@@ -1,5 +1,5 @@
 import { BrowserWindow } from "electron";
-import { createChildWindow } from "./child";
+import { createAuxiliaryWindow } from "./auxiliary";
 
 let win: BrowserWindow | null = null;
 
@@ -8,7 +8,7 @@ export function createMonitorWindow(parent: BrowserWindow) {
     win.focus();
     return;
   }
-  win = createChildWindow("monitor", {}, parent, () => {
+  win = createAuxiliaryWindow("monitor", {}, parent, () => {
     win = null;
   });
 }

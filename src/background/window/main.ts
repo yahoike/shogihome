@@ -18,7 +18,7 @@ import { setupMenu } from "@/background/window/menu";
 import { t } from "@/common/i18n";
 import { ghioDomain } from "@/common/links/github";
 
-export function createWindow() {
+export function createWindow(onClosed: () => void) {
   let settings = loadWindowSettings();
 
   getAppLogger().info("create BrowserWindow");
@@ -35,8 +35,8 @@ export function createWindow() {
       // 対局や棋譜解析の用途では処理の遅延が致命的なのでスロットリングを無効にする。
       backgroundThrottling: false,
     },
+    backgroundColor: "#888",
   });
-  win.setBackgroundColor("#888");
   if (settings.maximized) {
     win.maximize();
   }
@@ -56,6 +56,7 @@ export function createWindow() {
     }
     settings = buildWindowSettings(settings, win);
     saveWindowSettings(settings);
+    onClosed();
   });
 
   setupIPC(win);
