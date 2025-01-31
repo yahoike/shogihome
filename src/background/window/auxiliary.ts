@@ -3,11 +3,11 @@ import { BrowserWindow } from "electron";
 import { getPreloadPath, isDevelopment, isPreview, isTest } from "@/background/proc/env";
 import { getAppLogger } from "@/background/log";
 
-export function createChildWindow(
+export function createAuxiliaryWindow(
   name: string,
   query: Record<string, string>,
   parent: BrowserWindow,
-  onClose: (webContentsID: number) => void,
+  onClosed: (webContentsID: number) => void,
 ): BrowserWindow {
   const win = new BrowserWindow({
     webPreferences: {
@@ -17,16 +17,15 @@ export function createChildWindow(
       // NOTE: 現状、子ウィンドウではタイマーの実行が抑制されても困るケースが無いので、スロットリングは有効(デフォルト)にしておく。
       //backgroundThrottling: false,
     },
+    backgroundColor: "#888",
   });
-  win.setBackgroundColor("#888");
-  win.setParentWindow(parent);
   win.menuBarVisible = false;
   win.once("ready-to-show", () => {
     win.webContents.setZoomLevel(parent.webContents.getZoomLevel());
   });
 
   win.on("close", () => {
-    onClose(win.webContents.id);
+    onClosed(win.webContents.id);
   });
 
   if (isDevelopment() || isTest()) {

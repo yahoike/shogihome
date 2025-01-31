@@ -337,8 +337,7 @@ function createMenuTemplate(window: BrowserWindow) {
         {
           label: t.defaultFontSize,
           click: () => {
-            window.webContents.setZoomLevel(0);
-            window.getChildWindows().forEach((child) => {
+            BrowserWindow.getAllWindows().forEach((child) => {
               child.webContents.setZoomLevel(0);
             });
           },
@@ -348,8 +347,7 @@ function createMenuTemplate(window: BrowserWindow) {
           label: t.increaseFontSize,
           click: () => {
             const level = window.webContents.getZoomLevel() + 1;
-            window.webContents.setZoomLevel(level);
-            window.getChildWindows().forEach((child) => {
+            BrowserWindow.getAllWindows().forEach((child) => {
               child.webContents.setZoomLevel(level);
             });
           },
@@ -359,8 +357,7 @@ function createMenuTemplate(window: BrowserWindow) {
           label: t.decreaseFontSize,
           click: () => {
             const level = window.webContents.getZoomLevel() - 1;
-            window.webContents.setZoomLevel(level);
-            window.getChildWindows().forEach((child) => {
+            BrowserWindow.getAllWindows().forEach((child) => {
               child.webContents.setZoomLevel(level);
             });
           },
