@@ -88,6 +88,7 @@
             />
             <div v-else class="full column">
               <TabPane
+                class="shadow-bottom margin-bottom"
                 :size="tabPaneSize2a"
                 :visible-tabs="[Tab.CHART, Tab.PERCENTAGE_CHART]"
                 :active-tab="appSettings.tab2"
@@ -304,6 +305,12 @@ const tabPaneSize2a = computed(
 </style>
 
 <style scoped>
+.shadow-bottom {
+  box-shadow: 0px 6px 6px -3px var(--shadow-color);
+}
+.margin-bottom {
+  margin-bottom: 10px;
+}
 .compact-control {
   margin-top: 10px;
   margin-bottom: 10px;
