@@ -3,6 +3,7 @@ import { parseUSIPV, USIInfoCommand } from "@/common/game/usi";
 import {
   getUSIEngineMultiPV,
   getUSIEnginePonder,
+  getUSIEngineStochasticPonder,
   MultiPV,
   USIEngine,
   USIMultiPV,
@@ -12,18 +13,22 @@ import { Player, SearchInfo, SearchHandler, MateHandler } from "./player";
 import { GameResult } from "@/common/game/result";
 import { TimeStates } from "@/common/game/time";
 
-type onReceiveUSIBestMoveHandler = (sessionID: number, usi: string, usiMove: string) => void;
+type onReceiveUSIBestMoveHandler = (
+  sessionID: number,
+  position: ImmutablePosition,
+  usiMove: string,
+) => void;
 
 type onUpdateUSIInfoHandler = (
   sessionID: number,
-  usi: string,
+  position: ImmutablePosition,
   name: string,
   info: USIInfoCommand,
+  ponderMove?: Move,
 ) => void;
 
 let onReceiveUSIBestMove: onReceiveUSIBestMoveHandler = () => {};
 let onUpdateUSIInfo: onUpdateUSIInfoHandler = () => {};
-let onUpdateUSIPonderInfo: onUpdateUSIInfoHandler = () => {};
 
 export function setOnReceiveUSIBestMoveHandler(handler: onReceiveUSIBestMoveHandler) {
   onReceiveUSIBestMove = handler;
@@ -33,10 +38,6 @@ export function setOnUpdateUSIInfoHandler(handler: onUpdateUSIInfoHandler) {
   onUpdateUSIInfo = handler;
 }
 
-export function setOnUpdateUSIPonderInfoHandler(handler: onUpdateUSIInfoHandler) {
-  onUpdateUSIPonderInfo = handler;
-}
-
 export class USIPlayer implements Player {
   private _sessionID = 0;
   private usi?: string;
@@ -44,7 +45,7 @@ export class USIPlayer implements Player {
   private searchHandler?: SearchHandler;
   private mateHandler?: MateHandler;
   private ponder?: string;
-  private inPonder = false;
+  private ponderMove?: Move;
   private info?: SearchInfo;
   private usiInfoTimeout?: number;
   private customMultiPV?: number;
@@ -86,13 +87,13 @@ export class USIPlayer implements Player {
     this.searchHandler = handler;
     this.usi = usi;
     this.position = position.clone();
-    if (this.inPonder && this.ponder === this.usi) {
+    if (this.ponderMove && this.ponder === this.usi) {
       api.usiPonderHit(this.sessionID, timeStates);
     } else {
       this.info = undefined;
       await api.usiGo(this.sessionID, this.usi, timeStates);
     }
-    this.inPonder = false;
+    this.ponderMove = undefined;
     this.ponder = undefined;
   }
 
@@ -107,7 +108,7 @@ export class USIPlayer implements Player {
     }
     // 連続して Ponder を開始しない。
     // NOTE: 早期 Ponder 機能を有効にすると早期実行と通常実行の 2 回の呼び出しが来る。
-    if (this.inPonder) {
+    if (this.ponderMove) {
       return;
     }
     // 現在局面までの USI が前方一致しているか確認する。
@@ -125,9 +126,11 @@ export class USIPlayer implements Player {
     this.clearHandlers();
     this.usi = this.ponder;
     this.position = position.clone();
-    this.position.doMove(ponderMove);
+    if (!this.stochasticPonder) {
+      this.position.doMove(ponderMove);
+    }
     this.info = undefined;
-    this.inPonder = true;
+    this.ponderMove = ponderMove;
     await api.usiGoPonder(this.sessionID, this.ponder, timeStates);
   }
 
@@ -180,6 +183,7 @@ export class USIPlayer implements Player {
     if (usi !== this.usi) {
       return;
     }
+    onReceiveUSIBestMove(this.sessionID, this.position, usiMove);
     if (usiMove === "resign") {
       searchHandler.onResign();
       return;
@@ -212,6 +216,7 @@ export class USIPlayer implements Player {
     if (usi !== this.usi || !this.position) {
       return;
     }
+    onUpdateUSIInfo(this.sessionID, this.position, this.name, { pv: usiMoves });
     const mateHandler = this.mateHandler;
     this.clearHandlers();
     if (!mateHandler) {
@@ -262,6 +267,7 @@ export class USIPlayer implements Player {
     if (usi !== this.usi || !this.position) {
       return;
     }
+    onUpdateUSIInfo(this.sessionID, this.position, this.name, infoCommand, this.ponderMove);
     if (infoCommand.multipv && infoCommand.multipv !== 1) {
       return;
     }
@@ -282,7 +288,7 @@ export class USIPlayer implements Player {
       pv: (pv && parseUSIPV(this.position, pv)) ?? this.info?.pv,
     };
     // Ponder 中はハンドラーを呼ばない。
-    if (this.inPonder) {
+    if (this.ponderMove) {
       return;
     }
     // 高頻度でコマンドが送られてくると描画が追いつかないので、一定時間ごとに反映する。
@@ -319,24 +325,20 @@ export class USIPlayer implements Player {
     await api.usiSetOption(this.sessionID, option.name, multiPV.toFixed(0));
     this.customMultiPV = multiPV;
   }
+
+  get stochasticPonder(): boolean {
+    return getUSIEngineStochasticPonder(this.engine);
+  }
 }
 
 const usiPlayers: { [sessionID: number]: USIPlayer } = {};
 
 export function onUSIBestMove(sessionID: number, usi: string, usiMove: string, ponder?: string) {
   usiPlayers[sessionID]?.onBestMove(usi, usiMove, ponder);
-  onReceiveUSIBestMove(sessionID, usi, usiMove);
 }
 
 export function onUSICheckmate(sessionID: number, usi: string, usiMoves: string[]) {
-  const player = usiPlayers[sessionID];
-  if (!player) {
-    return;
-  }
-  onUpdateUSIInfo(sessionID, usi, player.name, {
-    pv: usiMoves,
-  });
-  player.onCheckmate(usi, usiMoves);
+  usiPlayers[sessionID]?.onCheckmate(usi, usiMoves);
 }
 
 export function onUSICheckmateNotImplemented(sessionID: number) {
@@ -352,21 +354,7 @@ export function onUSINoMate(sessionID: number, usi: string) {
 }
 
 export function onUSIInfo(sessionID: number, usi: string, info: USIInfoCommand) {
-  const player = usiPlayers[sessionID];
-  if (!player) {
-    return;
-  }
-  player.onUSIInfo(usi, info);
-  onUpdateUSIInfo(sessionID, usi, player.name, info);
-}
-
-export function onUSIPonderInfo(sessionID: number, usi: string, info: USIInfoCommand) {
-  const player = usiPlayers[sessionID];
-  if (!player) {
-    return;
-  }
-  player.onUSIInfo(usi, info);
-  onUpdateUSIPonderInfo(sessionID, usi, player.name, info);
+  usiPlayers[sessionID]?.onUSIInfo(usi, info);
 }
 
 export function isActiveUSIPlayerSession(sessionID: number): boolean {

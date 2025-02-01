@@ -214,7 +214,6 @@ export class EngineProcess {
   checkmateTimeoutCallback?: CheckmateTimeoutCallback;
   noMateCallback?: NoMateCallback;
   infoCallback?: InfoCallback;
-  ponderInfoCallback?: InfoCallback;
   commandCallback?: CommandCallback;
 
   constructor(
@@ -275,7 +274,6 @@ export class EngineProcess {
   on(event: "checkmateTimeout", callback: CheckmateTimeoutCallback): this;
   on(event: "noMate", callback: NoMateCallback): this;
   on(event: "info", callback: InfoCallback): this;
-  on(event: "ponderInfo", callback: InfoCallback): this;
   on(event: "command", callback: (command: Command) => void): this;
   on(event: string, callback: unknown): this {
     switch (event) {
@@ -311,9 +309,6 @@ export class EngineProcess {
         break;
       case "info":
         this.infoCallback = callback as InfoCallback;
-        break;
-      case "ponderInfo":
-        this.ponderInfoCallback = callback as InfoCallback;
         break;
       case "command":
         this.commandCallback = callback as CommandCallback;
@@ -629,7 +624,10 @@ export class EngineProcess {
     } else if (command.startsWith("checkmate ")) {
       this.onCheckmate(command.substring(10));
     } else if (command.startsWith("info ")) {
-      this.onInfo(command.substring(5));
+      if (this.infoCallback) {
+        const args = command.substring(5);
+        this.infoCallback?.(this.currentPosition, parseInfoCommand(args));
+      }
     }
   }
 
@@ -768,19 +766,6 @@ export class EngineProcess {
       return;
     }
     this.checkmateCallback?.(this.currentPosition, args.trim().split(" "));
-  }
-
-  private onInfo(args: string): void {
-    switch (this.state) {
-      case State.WaitingForBestMove:
-      case State.WaitingForCheckmate:
-        this.infoCallback?.(this.currentPosition, parseInfoCommand(args));
-        break;
-      case State.Ponder:
-      case State.WaitingForPonderBestMove:
-        this.ponderInfoCallback?.(this.currentPosition, parseInfoCommand(args));
-        break;
-    }
   }
 
   invoke(type: CommandType, command: string): void {

@@ -165,10 +165,9 @@ export class USIPlayerMonitor {
   }
 
   endIteration(sfen: string) {
-    if (this.sfen !== sfen) {
-      return;
+    if (this.sfen === sfen) {
+      this.refreshOnNextUpdate = true;
     }
-    this.refreshOnNextUpdate = true;
   }
 }
 
@@ -228,6 +227,8 @@ export class USIMonitor {
       this._update(update);
     }
     this.updateQueue = [];
+
+    clearTimeout(this.timeoutHandle);
     this.timeoutHandle = undefined;
   }
 
@@ -251,8 +252,12 @@ export class USIMonitor {
   endIteration(sessionID: number, position: ImmutablePosition) {
     const monitor = this._sessions.find((session) => session.sessionID === sessionID);
     if (monitor) {
-      this.dequeue(); // flush the queue
-      monitor.endIteration(position.sfen);
+      const sfen = position.sfen;
+      // Invoke asynchronously to prevent IPC message delay.
+      setTimeout(() => {
+        this.dequeue(); // flush the queue
+        monitor.endIteration(sfen);
+      });
     }
   }
 }
