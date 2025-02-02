@@ -12,6 +12,7 @@ import {
   getUSIEnginePonder,
   getUSIEngineThreads,
   getUSIEngineMultiPV,
+  getUSIEngineStochasticPonder,
 } from "@/common/settings/usi";
 import { testUSIEngine } from "@/tests/mock/usi";
 
@@ -134,13 +135,8 @@ describe("settings/usi", () => {
     for (const testCase of testCases) {
       const engine: USIEngine = {
         uri: "dummy",
-        name: "My Test Engine",
-        defaultName: "Test Engine",
-        author: "Author",
-        path: "/path/to/engine",
         options: testCase.options,
-        enableEarlyPonder: false,
-      };
+      } as USIEngine;
       expect(getUSIEnginePonder(engine)).toBe(testCase.expected);
     }
   });
@@ -201,13 +197,8 @@ describe("settings/usi", () => {
     for (const testCase of testCases) {
       const engine: USIEngine = {
         uri: "dummy",
-        name: "My Test Engine",
-        defaultName: "Test Engine",
-        author: "Author",
-        path: "/path/to/engine",
         options: testCase.options,
-        enableEarlyPonder: false,
-      };
+      } as USIEngine;
       expect(getUSIEngineThreads(engine)).toBe(testCase.expected);
     }
   });
@@ -268,14 +259,71 @@ describe("settings/usi", () => {
     for (const testCase of testCases) {
       const engine: USIEngine = {
         uri: "dummy",
-        name: "My Test Engine",
-        defaultName: "Test Engine",
-        author: "Author",
-        path: "/path/to/engine",
         options: testCase.options,
-        enableEarlyPonder: false,
-      };
+      } as USIEngine;
       expect(getUSIEngineMultiPV(engine)).toBe(testCase.expected);
+    }
+  });
+
+  it("getUSIEngineStochasticPonder", () => {
+    const testCases: {
+      options: { [name: string]: USIEngineOption };
+      expected: boolean;
+    }[] = [
+      {
+        options: {
+          Stochastic_Ponder: {
+            name: "Stochastic_Ponder",
+            type: "check",
+            order: 1,
+            default: "true",
+            value: "false",
+          },
+        },
+        expected: false,
+      },
+      {
+        options: {
+          Stochastic_Ponder: {
+            name: "Stochastic_Ponder",
+            type: "check",
+            order: 1,
+            default: "false",
+            value: "true",
+          },
+        },
+        expected: true,
+      },
+      {
+        options: {
+          Stochastic_Ponder: {
+            name: "Stochastic_Ponder",
+            type: "check",
+            order: 1,
+            default: "true",
+          },
+        },
+        expected: true,
+      },
+      {
+        options: {
+          Foo: {
+            name: "Foo",
+            type: "check",
+            order: 1,
+            default: "false",
+            value: "true",
+          },
+        },
+        expected: false,
+      },
+    ];
+    for (const testCase of testCases) {
+      const engine: USIEngine = {
+        uri: "dummy",
+        options: testCase.options,
+      } as USIEngine;
+      expect(getUSIEngineStochasticPonder(engine)).toBe(testCase.expected);
     }
   });
 

@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import api, { API } from "@/renderer/ipc/api";
-import { Move } from "tsshogi";
+import { ImmutablePosition, Move, Position } from "tsshogi";
 import { createStore } from "@/renderer/store";
 import { RecordCustomData } from "@/renderer/store/record";
 import * as audio from "@/renderer/devices/audio";
@@ -26,6 +26,8 @@ import { useBusyState } from "@/renderer/store/busy";
 import { useErrorStore } from "@/renderer/store/error";
 import { useConfirmationStore } from "@/renderer/store/confirm";
 import { RecordFileFormat } from "@/common/file/record";
+import { mateSearchSettings } from "@/tests/mock/mate";
+import { MateSearchManager } from "@/renderer/store/mate";
 
 vi.mock("@/renderer/devices/audio");
 vi.mock("@/renderer/ipc/api");
@@ -33,6 +35,7 @@ vi.mock("@/renderer/store/game");
 vi.mock("@/renderer/store/csa");
 vi.mock("@/renderer/players/usi");
 vi.mock("@/renderer/store/analysis");
+vi.mock("@/renderer/store/mate");
 
 const mockAudio = audio as Mocked<typeof audio>;
 const mockAPI = api as Mocked<API>;
@@ -40,6 +43,7 @@ const mockGameManager = GameManager as MockedClass<typeof GameManager>;
 const mockCSAGameManager = CSAGameManager as MockedClass<typeof CSAGameManager>;
 const mockUSIPlayer = USIPlayer as MockedClass<typeof USIPlayer>;
 const mockAnalysisManager = AnalysisManager as MockedClass<typeof AnalysisManager>;
+const mockMateSearchManager = MateSearchManager as MockedClass<typeof MateSearchManager>;
 
 const sampleKIF = `
 手合割：平手
@@ -120,6 +124,7 @@ describe("store/index", () => {
     mockGameManager.prototype.on.mockReturnThis();
     mockCSAGameManager.prototype.on.mockReturnThis();
     mockAnalysisManager.prototype.on.mockReturnThis();
+    mockMateSearchManager.prototype.on.mockReturnThis();
   });
 
   afterEach(() => {
@@ -135,9 +140,12 @@ describe("store/index", () => {
   it("updateUSIInfo", () => {
     vi.useFakeTimers();
     const usi = "position startpos moves 7g7f";
+    const position = Position.newBySFEN(
+      "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2",
+    ) as ImmutablePosition;
     const store = createStore();
     store.pasteRecord(usi);
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 8,
       scoreCP: 138,
       pv: ["8c8d", "2g2f", "foo", "bar"],
@@ -152,14 +160,17 @@ describe("store/index", () => {
     expect(store.usiMonitors[0].iterations[0].score).toBe(138);
     expect(store.usiMonitors[0].iterations[0].pv).toEqual(["8c8d", "2g2f", "foo", "bar"]);
     expect(store.usiMonitors[0].iterations[0].text).toBe("☖８四歩☗２六歩 foo bar");
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 10,
       scoreCP: 213,
     });
-    store.updateUSIPonderInfo(102, usi, "Engine B", {
-      depth: 9,
-      scoreCP: -89,
-    });
+    store.updateUSIInfo(
+      102,
+      position,
+      "Engine B",
+      { depth: 9, scoreCP: -89 },
+      position.createMoveByUSI("8c8d") as Move,
+    );
     vi.runOnlyPendingTimers();
     expect(store.usiMonitors).toHaveLength(2);
     expect(store.usiMonitors[0].iterations).toHaveLength(2);
@@ -167,32 +178,37 @@ describe("store/index", () => {
     expect(store.usiMonitors[0].iterations[0].score).toBe(213);
     expect(store.usiMonitors[0].latestIteration).toHaveLength(1);
     expect(store.usiMonitors[0].latestIteration[0].score).toBe(213);
+    expect(store.usiMonitors[0].ponderMove).toBeUndefined();
     expect(store.usiMonitors[1].iterations).toHaveLength(1);
     expect(store.usiMonitors[1].iterations[0].depth).toBe(9);
     expect(store.usiMonitors[1].iterations[0].score).toBe(-89);
     expect(store.usiMonitors[1].latestIteration).toHaveLength(1);
     expect(store.usiMonitors[1].latestIteration[0].score).toBe(-89);
+    expect(store.usiMonitors[1].ponderMove).toBe("☖８四歩");
   });
 
   it("updateUSIInfo with multipv", () => {
     vi.useFakeTimers();
     const usi = "position startpos moves 7g7f";
+    const position = Position.newBySFEN(
+      "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2",
+    ) as ImmutablePosition;
     const store = createStore();
     store.pasteRecord(usi);
 
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 11,
       scoreCP: 198,
       multipv: 1,
       pv: ["8c8d", "2g2f"],
     });
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 11,
       scoreCP: 170,
       multipv: 2,
       pv: ["3c3e", "2g2f"],
     });
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 11,
       scoreCP: 169,
       multipv: 3,
@@ -204,13 +220,13 @@ describe("store/index", () => {
     expect(store.usiMonitors[0].latestIteration[1].score).toBe(170);
     expect(store.usiMonitors[0].latestIteration[2].score).toBe(169);
 
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 12,
       scoreCP: 187,
       multipv: 1,
       pv: ["8c8d", "2g2f"],
     });
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 12,
       scoreCP: 181,
       multipv: 2,
@@ -222,13 +238,13 @@ describe("store/index", () => {
     expect(store.usiMonitors[0].latestIteration[1].score).toBe(181);
     expect(store.usiMonitors[0].latestIteration[2].score).toBe(169); // 3rd move is not updated
 
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 13,
       scoreCP: 210,
       multipv: 1,
       pv: ["8c8d", "2g2f"],
     });
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 13,
       scoreCP: 152,
       multipv: 2,
@@ -240,7 +256,7 @@ describe("store/index", () => {
     expect(store.usiMonitors[0].latestIteration[0].score).toBe(210);
     expect(store.usiMonitors[0].latestIteration[1].score).toBe(152);
 
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       depth: 13,
       scoreCP: 231,
       multipv: 1,
@@ -252,52 +268,95 @@ describe("store/index", () => {
     expect(store.usiMonitors[0].latestIteration[0].score).toBe(231);
   });
 
+  it("endUSIInfoIteration", () => {
+    vi.useFakeTimers();
+    const usi = "position startpos moves 7g7f";
+    const position = Position.newBySFEN(
+      "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2",
+    ) as ImmutablePosition;
+    const store = createStore();
+    store.pasteRecord(usi);
+
+    store.updateUSIInfo(101, position, "Engine A", { depth: 8, scoreCP: 65, pv: ["8c8d"] });
+    store.updateUSIInfo(102, position, "Engine B", { depth: 6, scoreCP: -20, pv: ["3c3d"] });
+    vi.runOnlyPendingTimers();
+
+    store.updateUSIInfo(101, position, "Engine A", { depth: 11, scoreCP: 198, pv: ["8c8d"] });
+    store.updateUSIInfo(102, position, "Engine B", { depth: 9, scoreCP: -89, pv: ["3c3d"] });
+    store.endUSIInfoIteration(101, position);
+    vi.runOnlyPendingTimers();
+    expect(store.usiMonitors).toHaveLength(2);
+    expect(store.usiMonitors[0].iterations).toHaveLength(2);
+    expect(store.usiMonitors[0].refreshOnNextUpdate).toBeTruthy();
+    expect(store.usiMonitors[1].iterations).toHaveLength(2);
+    expect(store.usiMonitors[1].refreshOnNextUpdate).toBeFalsy();
+
+    store.updateUSIInfo(101, position, "Engine A", { depth: 12, scoreCP: 72, pv: ["5c5d"] });
+    store.updateUSIInfo(102, position, "Engine B", { depth: 10, scoreCP: 32, pv: ["5c5d"] });
+    vi.runOnlyPendingTimers();
+    expect(store.usiMonitors).toHaveLength(2);
+    expect(store.usiMonitors[0].iterations).toHaveLength(1);
+    expect(store.usiMonitors[0].refreshOnNextUpdate).toBeFalsy();
+    expect(store.usiMonitors[1].iterations).toHaveLength(3);
+    expect(store.usiMonitors[1].refreshOnNextUpdate).toBeFalsy();
+  });
+
   it("candidates", async () => {
     vi.useFakeTimers();
     const usi = "position startpos moves 7g7f";
+    const position = Position.newBySFEN(
+      "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 2",
+    ) as ImmutablePosition;
     const store = createStore();
     store.pasteRecord(usi);
     expect(store.candidates).toHaveLength(0);
 
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       multipv: 1,
       scoreCP: 83,
       pv: ["8c8d", "2g2f"],
     });
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       multipv: 2,
       scoreCP: 0,
       pv: ["4a3b", "2g2f"],
     });
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       multipv: 3,
       scoreCP: -5,
       pv: ["3c3d", "2g2f"],
     });
-    store.updateUSIInfo(101, usi, "Engine A", {
+    store.updateUSIInfo(101, position, "Engine A", {
       multipv: 4,
       scoreCP: -21,
       pv: ["5c5d", "2g2f"],
     });
-    store.updateUSIInfo(102, usi, "Engine B", {
+    store.updateUSIInfo(102, position, "Engine B", {
       scoreCP: -5,
       pv: ["9c9d", "9g9f"],
     });
-    store.updateUSIInfo(103, usi, "Engine C", {
+    store.updateUSIInfo(103, position, "Engine C", {
       multipv: 1,
       scoreMate: 3,
       pv: ["3c3d", "5g5f"],
     });
-    store.updateUSIInfo(103, usi, "Engine C", {
+    store.updateUSIInfo(103, position, "Engine C", {
       multipv: 2,
       scoreCP: 150,
       pv: ["1c1d", "5g5f"],
     });
-    store.updateUSIInfo(103, usi, "Engine C", {
+    store.updateUSIInfo(103, position, "Engine C", {
       multipv: 3,
       scoreMate: -5,
       pv: ["7c7d", "5g5f"],
     });
+    store.updateUSIInfo(
+      104,
+      position,
+      "Engine D",
+      { scoreCP: 7, pv: ["5c5d", "2g2f"] },
+      position.createMoveByUSI("8c8d") as Move,
+    );
     vi.runOnlyPendingTimers();
 
     await useAppSettings().updateAppSettings({ maxArrowsPerEngine: 3 });
@@ -315,26 +374,6 @@ describe("store/index", () => {
 
     await useAppSettings().updateAppSettings({ maxArrowsPerEngine: 0 });
     expect(store.candidates).toHaveLength(0);
-  });
-
-  it("updateUSIPonderInfo", () => {
-    vi.useFakeTimers();
-    const usi = "position startpos moves 7g7f";
-    const usi2 = "position startpos moves 7g7f 3c3d";
-    const store = createStore();
-    store.pasteRecord(usi);
-    store.updateUSIPonderInfo(101, usi2, "Engine A", {
-      depth: 8,
-      scoreCP: 138,
-    });
-    vi.runOnlyPendingTimers();
-    expect(store.usiMonitors[0].sfen).toBe(
-      "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL b - 1",
-    );
-    expect(store.usiMonitors[0].ponderMove).toBe("☖３四歩");
-    expect(store.usiMonitors[0].iterations.length).toBe(1);
-    expect(store.usiMonitors[0].iterations[0].depth).toBe(8);
-    expect(store.usiMonitors[0].iterations[0].score).toBe(138);
   });
 
   it("startGame/success", async () => {
@@ -456,6 +495,22 @@ describe("store/index", () => {
     store.startAnalysis(analysisSettings);
     expect(useBusyState().isBusy).toBeFalsy();
     expect(store.appState).toBe(AppState.NORMAL);
+  });
+
+  it("startMateSearch/success", async () => {
+    mockAPI.saveMateSearchSettings.mockResolvedValue();
+    mockMateSearchManager.prototype.start.mockResolvedValue();
+    const store = createStore();
+    store.showMateSearchDialog();
+    expect(store.appState).toBe(AppState.MATE_SEARCH_DIALOG);
+    store.startMateSearch(mateSearchSettings);
+    expect(useBusyState().isBusy).toBeTruthy();
+    await new Promise((resolve) => setTimeout(resolve));
+    expect(useBusyState().isBusy).toBeFalsy();
+    expect(store.appState).toBe(AppState.MATE_SEARCH);
+    expect(mockAPI.saveMateSearchSettings).toBeCalledWith(mateSearchSettings);
+    expect(mockMateSearchManager.prototype.start).toBeCalledTimes(1);
+    expect(mockMateSearchManager.prototype.start.mock.calls[0][0]).toBe(mateSearchSettings);
   });
 
   it("doMove", () => {

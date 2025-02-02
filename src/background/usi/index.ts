@@ -18,7 +18,6 @@ interface Handlers {
   onUSICheckmateTimeout(sessionID: number, usi: string): void;
   onUSINoMate(sessionID: number, usi: string): void;
   onUSIInfo(sessionID: number, usi: string, info: USIInfoCommand): void;
-  onUSIPonderInfo(sessionID: number, usi: string, info: USIInfoCommand): void;
   sendPromptCommand(sessionID: number, command: Command): void;
 }
 
@@ -234,9 +233,7 @@ export function goPonder(sessionID: number, usi: string, timeStates: TimeStates)
   const session = getSession(sessionID);
   const nextColor = getNextColorFromUSI(usi);
   session.process.goPonder(usi, buildTimeState(nextColor, timeStates));
-  session.process.on("ponderInfo", (usi, info) => {
-    h.onUSIPonderInfo(sessionID, usi, info);
-  });
+  session.process.on("info", (usi, info) => h.onUSIInfo(sessionID, usi, info));
 }
 
 export function goInfinite(sessionID: number, usi: string): void {

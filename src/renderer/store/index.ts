@@ -5,7 +5,6 @@ import {
   ImmutableRecord,
   Move,
   PositionChange,
-  Record,
   formatSpecialMove,
   exportKIF,
   RecordMetadataKey,
@@ -57,11 +56,7 @@ import { t } from "@/common/i18n";
 import { MateSearchManager } from "./mate";
 import { detectUnsupportedRecordProperties } from "@/renderer/helpers/record";
 import { RecordFileFormat, detectRecordFileFormatByPath } from "@/common/file/record";
-import {
-  setOnReceiveUSIBestMoveHandler,
-  setOnUpdateUSIInfoHandler,
-  setOnUpdateUSIPonderInfoHandler,
-} from "@/renderer/players/usi";
+import { setOnReceiveUSIBestMoveHandler, setOnUpdateUSIInfoHandler } from "@/renderer/players/usi";
 import { useErrorStore } from "./error";
 import { useBusyState } from "./busy";
 import { Confirmation, useConfirmationStore } from "./confirm";
@@ -213,7 +208,6 @@ class Store {
       .on("error", this.onCheckmateError.bind(refs));
     setOnReceiveUSIBestMoveHandler(this.endUSIInfoIteration.bind(refs));
     setOnUpdateUSIInfoHandler(this.updateUSIInfo.bind(refs));
-    setOnUpdateUSIPonderInfoHandler(this.updateUSIPonderInfo.bind(refs));
   }
 
   addEventListener(event: "changePosition", handler: ChangePositionHandler): void;
@@ -463,6 +457,9 @@ class Store {
     const candidates: Move[] = [];
     const usiSet = new Set<string>();
     for (const session of this.usiMonitor.sessions) {
+      if (session.ponderMove) {
+        continue;
+      }
       let entryCount = 0;
       let maxScore = -Infinity;
       for (const iteration of session.latestIteration) {
@@ -533,41 +530,21 @@ class Store {
     this.researchManager.setMultiPV(sessionID, multiPV);
   }
 
-  endUSIInfoIteration(sessionID: number, usi: string): void {
-    if (this.recordManager.record.usi !== usi) {
-      return;
-    }
-    this.usiMonitor.endIteration(sessionID, this.recordManager.record.position);
+  endUSIInfoIteration(sessionID: number, position: ImmutablePosition): void {
+    this.usiMonitor.endIteration(sessionID, position);
   }
 
-  updateUSIInfo(sessionID: number, usi: string, name: string, info: USIInfoCommand): void {
-    if (this.recordManager.record.usi !== usi) {
-      return;
-    }
+  updateUSIInfo(
+    sessionID: number,
+    position: ImmutablePosition,
+    name: string,
+    info: USIInfoCommand,
+    ponderMove?: Move,
+  ): void {
     const appSettings = useAppSettings();
     this.usiMonitor.update(
       sessionID,
-      this.recordManager.record.position,
-      name,
-      info,
-      appSettings.maxPVTextLength,
-    );
-  }
-
-  updateUSIPonderInfo(sessionID: number, usi: string, name: string, info: USIInfoCommand): void {
-    const record = Record.newByUSI(usi);
-    if (record instanceof Error) {
-      api.log(LogLevel.ERROR, `invalid USI: ${usi} (updateUSIPonderInfo)`);
-      return;
-    }
-    const ponderMove = record.current.move;
-    if (!(ponderMove instanceof Move)) {
-      return;
-    }
-    const appSettings = useAppSettings();
-    this.usiMonitor.update(
-      sessionID,
-      record.position,
+      position,
       name,
       info,
       appSettings.maxPVTextLength,

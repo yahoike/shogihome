@@ -987,9 +987,6 @@ setUSIHandlers({
   onUSIInfo(sessionID: number, usi: string, info: USIInfoCommand): void {
     mainWindow.webContents.send(Renderer.USI_INFO, sessionID, usi, JSON.stringify(info));
   },
-  onUSIPonderInfo(sessionID: number, usi: string, info: USIInfoCommand): void {
-    mainWindow.webContents.send(Renderer.USI_PONDER_INFO, sessionID, usi, JSON.stringify(info));
-  },
   sendPromptCommand: sendPromptCommand.bind(this, PromptTarget.USI),
 });
 
