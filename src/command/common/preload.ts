@@ -272,9 +272,6 @@ export function preload(config: Config) {
     onUSIInfo(): void {
       // Do Nothing
     },
-    onUSIPonderInfo(): void {
-      // Do Nothing
-    },
 
     // CSA
     async csaLogin(json: string): Promise<number> {
@@ -424,7 +421,6 @@ export function preload(config: Config) {
     onUSICheckmateTimeout: usi.onUSICheckmateTimeout,
     onUSINoMate: usi.onUSINoMate,
     onUSIInfo: usi.onUSIInfo,
-    onUSIPonderInfo: usi.onUSIPonderInfo,
     sendPromptCommand: () => {},
   });
   // eslint-disable-next-line @typescript-eslint/no-var-requires

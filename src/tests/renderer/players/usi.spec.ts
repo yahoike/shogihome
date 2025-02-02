@@ -1,5 +1,12 @@
 import api, { API } from "@/renderer/ipc/api";
-import { onUSIBestMove, onUSIInfo, USIPlayer } from "@/renderer/players/usi";
+import {
+  onUSIBestMove,
+  onUSICheckmate,
+  onUSICheckmateNotImplemented,
+  onUSIInfo,
+  onUSINoMate,
+  USIPlayer,
+} from "@/renderer/players/usi";
 import { Move, parsePV, Record } from "tsshogi";
 import { testUSIEngine, testUSIEngineWithPonder } from "@/tests/mock/usi";
 import { Mocked } from "vitest";
@@ -116,6 +123,93 @@ describe("usi", () => {
       expect(searchHandler.onMove.mock.calls[0][0].usi).toBe("2g2f");
       await player.startPonder(record2.position, usi2, timeStates);
       expect(mockAPI.usiGoPonder).not.toBeCalled();
+    } finally {
+      await player.close();
+    }
+  });
+
+  it("checkmate", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiGoMate.mockResolvedValueOnce();
+    const usi = "position sfen 3sks3/9/4+P4/9/7+B1/9/9/9/9 b S2rb4gs4n4l17p 1";
+    const record = Record.newByUSI(usi) as Record;
+    const player = new USIPlayer(testUSIEngine, 10);
+    try {
+      await player.launch();
+      const handler = {
+        onCheckmate: vi.fn(),
+        onNotImplemented: vi.fn(),
+        onTimeout: vi.fn(),
+        onNoMate: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startMateSearch(record.position, usi, handler);
+      expect(mockAPI.usiGoMate).toBeCalledWith(100, usi);
+      onUSICheckmate(100, usi, ["2e5b", "4a5b", "S*4b"]);
+      expect(handler.onCheckmate).toBeCalledTimes(1);
+      expect(handler.onCheckmate.mock.calls[0][0][0].usi).toBe("2e5b");
+      expect(handler.onCheckmate.mock.calls[0][0][1].usi).toBe("4a5b");
+      expect(handler.onCheckmate.mock.calls[0][0][2].usi).toBe("S*4b");
+      expect(handler.onNotImplemented).not.toBeCalled();
+      expect(handler.onTimeout).not.toBeCalled();
+      expect(handler.onNoMate).not.toBeCalled();
+      expect(handler.onError).not.toBeCalled();
+    } finally {
+      await player.close();
+    }
+  });
+
+  it("checkmate/notImplemented", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiGoMate.mockResolvedValueOnce();
+    const usi = "position sfen 3sks3/9/4+P4/9/7+B1/9/9/9/9 b S2rb4gs4n4l17p 1";
+    const record = Record.newByUSI(usi) as Record;
+    const player = new USIPlayer(testUSIEngine, 10);
+    try {
+      await player.launch();
+      const handler = {
+        onCheckmate: vi.fn(),
+        onNotImplemented: vi.fn(),
+        onTimeout: vi.fn(),
+        onNoMate: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startMateSearch(record.position, usi, handler);
+      expect(mockAPI.usiGoMate).toBeCalledWith(100, usi);
+      onUSICheckmateNotImplemented(100);
+      expect(handler.onCheckmate).not.toBeCalled();
+      expect(handler.onNotImplemented).toBeCalledTimes(1);
+      expect(handler.onTimeout).not.toBeCalled();
+      expect(handler.onNoMate).not.toBeCalled();
+      expect(handler.onError).not.toBeCalled();
+    } finally {
+      await player.close();
+    }
+  });
+
+  it("checkmate/noMate", async () => {
+    mockAPI.usiLaunch.mockResolvedValueOnce(100);
+    mockAPI.usiGoMate.mockResolvedValueOnce();
+    const usi = "position sfen 3sks3/9/4+P4/9/7+B1/9/9/9/9 b S2rb4gs4n4l17p 1";
+    const record = Record.newByUSI(usi) as Record;
+    const player = new USIPlayer(testUSIEngine, 10);
+    try {
+      await player.launch();
+      const handler = {
+        onCheckmate: vi.fn(),
+        onNotImplemented: vi.fn(),
+        onTimeout: vi.fn(),
+        onNoMate: vi.fn(),
+        onError: vi.fn(),
+      };
+      await player.startMateSearch(record.position, usi, handler);
+      expect(mockAPI.usiGoMate).toBeCalledWith(100, usi);
+      onUSINoMate(100, usi);
+      expect(handler.onCheckmate).not.toBeCalled();
+      expect(handler.onNotImplemented).not.toBeCalled();
+      expect(handler.onTimeout).not.toBeCalled();
+      expect(handler.onNoMate).toBeCalledTimes(1);
+      expect(handler.onError).not.toBeCalled();
     } finally {
       await player.close();
     }

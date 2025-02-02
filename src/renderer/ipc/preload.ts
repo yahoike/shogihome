@@ -253,11 +253,6 @@ const api: Bridge = {
       callback(sessionID, usi, json);
     });
   },
-  onUSIPonderInfo(callback: (sessionID: number, usi: string, json: string) => void): void {
-    ipcRenderer.on(Renderer.USI_PONDER_INFO, (_, sessionID, usi, json) => {
-      callback(sessionID, usi, json);
-    });
-  },
 
   // CSA
   async csaLogin(json: string): Promise<number> {

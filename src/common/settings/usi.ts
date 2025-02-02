@@ -11,6 +11,7 @@ export const USIMultiPV = "USI_MultiPV";
 export const Threads = "Threads";
 export const NumberOfThreads = "NumberOfThreads";
 export const MultiPV = "MultiPV";
+export const StochasticPonder = "Stochastic_Ponder";
 
 export type USIEngineOptionType = "check" | "spin" | "combo" | "button" | "string" | "filename";
 
@@ -88,6 +89,11 @@ export function getUSIEngineMultiPV(engine: USIEngine): number | undefined {
     getUSIEngineOptionCurrentValue(engine.options[USIMultiPV]) ||
     getUSIEngineOptionCurrentValue(engine.options[MultiPV]);
   return value as number | undefined;
+}
+
+export function getUSIEngineStochasticPonder(engine: USIEngine): boolean {
+  const value = getUSIEngineOptionCurrentValue(engine.options[StochasticPonder]);
+  return value === "true";
 }
 
 export type USIEngineOptions = { [name: string]: USIEngineOption };

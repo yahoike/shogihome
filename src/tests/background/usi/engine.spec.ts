@@ -25,7 +25,6 @@ function bindHandlers(engine: EngineProcess) {
     checkmateTimeout: vi.fn(),
     noMate: vi.fn(),
     info: vi.fn(),
-    ponderInfo: vi.fn(),
   };
   engine.on("timeout", handlers.timeout);
   engine.on("error", handlers.error);
@@ -37,7 +36,6 @@ function bindHandlers(engine: EngineProcess) {
   engine.on("checkmateTimeout", handlers.checkmateTimeout);
   engine.on("noMate", handlers.noMate);
   engine.on("info", handlers.info);
-  engine.on("ponderInfo", handlers.ponderInfo);
   return handlers;
 }
 
@@ -237,7 +235,7 @@ describe("background/usi/engine", () => {
       "go ponder btime 53000 wtime 60000 binc 5000 winc 5000",
     );
     onReceive("info depth 5 seldepth 10 currmove 2g2f");
-    expect(handlers.ponderInfo).lastCalledWith("position test01-ponder", {
+    expect(handlers.info).lastCalledWith("position test01-ponder", {
       depth: 5,
       seldepth: 10,
       currmove: "2g2f",
@@ -349,7 +347,7 @@ describe("background/usi/engine", () => {
     expect(mockChildProcess.prototype.send).nthCalledWith(6, "position test01-ponder");
     expect(mockChildProcess.prototype.send).nthCalledWith(7, "go ponder"); // early-ponder では go ponder で時間情報を送信しない。
     onReceive("info depth 5 seldepth 10 currmove 2g2f");
-    expect(handlers.ponderInfo).lastCalledWith("position test01-ponder", {
+    expect(handlers.info).lastCalledWith("position test01-ponder", {
       depth: 5,
       seldepth: 10,
       currmove: "2g2f",

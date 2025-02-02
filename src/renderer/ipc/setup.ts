@@ -8,7 +8,6 @@ import {
   onUSICheckmateNotImplemented,
   onUSICheckmateTimeout,
   onUSIInfo,
-  onUSIPonderInfo,
   onUSINoMate,
 } from "@/renderer/players/usi";
 import { humanPlayer } from "@/renderer/players/human";
@@ -279,10 +278,6 @@ export function setup(): void {
   bridge.onUSIInfo((sessionID: number, usi: string, json: string) => {
     const info = JSON.parse(json) as USIInfoCommand;
     onUSIInfo(sessionID, usi, info);
-  });
-  bridge.onUSIPonderInfo((sessionID: number, usi: string, json: string) => {
-    const info = JSON.parse(json) as USIInfoCommand;
-    onUSIPonderInfo(sessionID, usi, info);
   });
 
   // CSA

@@ -89,7 +89,6 @@ export interface Bridge {
   onUSICheckmateTimeout(callback: (sessionID: number, usi: string) => void): void;
   onUSINoMate(callback: (sessionID: number, usi: string) => void): void;
   onUSIInfo(callback: (sessionID: number, usi: string, json: string) => void): void;
-  onUSIPonderInfo(callback: (sessionID: number, usi: string, json: string) => void): void;
 
   // CSA
   csaLogin(json: string): Promise<number>;

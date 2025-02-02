@@ -98,7 +98,6 @@ export enum Renderer {
   USI_CHECKMATE_TIMEOUT = "usiCheckmateTimeout",
   USI_NO_MATE = "usiNoMate",
   USI_INFO = "usiInfo",
-  USI_PONDER_INFO = "usiPonderInfo",
   CSA_GAME_SUMMARY = "csaGameSummary",
   CSA_REJECT = "csaReject",
   CSA_START = "csaStart",

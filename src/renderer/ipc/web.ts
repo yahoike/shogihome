@@ -336,9 +336,6 @@ export const webAPI: Bridge = {
   onUSIInfo(): void {
     // Do Nothing
   },
-  onUSIPonderInfo(): void {
-    // Do Nothing
-  },
 
   // CSA
   async csaLogin(): Promise<number> {
