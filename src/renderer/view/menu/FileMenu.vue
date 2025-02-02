@@ -116,6 +116,12 @@
         </button>
       </div>
       <div v-if="isMobileWebApp()" class="group">
+        <button @click="onAppSettings">
+          <Icon :icon="IconType.SETTINGS" />
+          <div class="label">{{ t.appSettings }}</div>
+        </button>
+      </div>
+      <div v-if="isMobileWebApp()" class="group">
         <button @click="openCopyright">
           <Icon :icon="IconType.LICENSE" />
           <div class="label">{{ t.license }}</div>
@@ -251,6 +257,10 @@ const onCopyUSEN = () => {
 };
 const onPaste = () => {
   store.showPasteDialog();
+  emit("close");
+};
+const onAppSettings = () => {
+  store.showAppSettingsDialog();
   emit("close");
 };
 const states = computed(() => {

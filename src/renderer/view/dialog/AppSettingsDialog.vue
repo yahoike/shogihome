@@ -63,7 +63,7 @@
             />
           </div>
           <!-- 背景画像 -->
-          <div class="form-item">
+          <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.backgroundImage }}</div>
             <HorizontalSelector
               class="selector"
@@ -96,7 +96,7 @@
             />
           </div>
           <!-- 盤レイアウト -->
-          <div class="form-item">
+          <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.boardLayout }}</div>
             <HorizontalSelector
               class="selector"
@@ -119,22 +119,18 @@
             <HorizontalSelector
               class="selector"
               :value="original.pieceImage"
-              :items="[
-                { label: t.singleKanjiPiece, value: PieceImageType.HITOMOJI },
-                {
-                  label: t.singleKanjiGothicPiece,
-                  value: PieceImageType.HITOMOJI_GOTHIC,
-                },
-                {
-                  label: t.singleKanjiDarkPiece,
-                  value: PieceImageType.HITOMOJI_DARK,
-                },
-                {
-                  label: t.singleKanjiGothicDarkPiece,
-                  value: PieceImageType.HITOMOJI_GOTHIC_DARK,
-                },
-                { label: t.customImage, value: PieceImageType.CUSTOM_IMAGE },
-              ]"
+              :items="
+                [
+                  { label: t.singleKanjiPiece, value: PieceImageType.HITOMOJI },
+                  { label: t.singleKanjiGothicPiece, value: PieceImageType.HITOMOJI_GOTHIC },
+                  { label: t.singleKanjiDarkPiece, value: PieceImageType.HITOMOJI_DARK },
+                  {
+                    label: t.singleKanjiGothicDarkPiece,
+                    value: PieceImageType.HITOMOJI_GOTHIC_DARK,
+                  },
+                  { label: t.customImage, value: PieceImageType.CUSTOM_IMAGE },
+                ].filter((item) => !isMobileWebApp() || item.value !== PieceImageType.CUSTOM_IMAGE)
+              "
               @change="
                 (value: string) => {
                   update.pieceImage = value as PieceImageType;
@@ -171,23 +167,22 @@
             <HorizontalSelector
               class="selector"
               :value="original.boardImage"
-              :items="[
-                { label: t.lightWoodyTexture, value: BoardImageType.LIGHT },
-                { label: t.warmWoodTexture, value: BoardImageType.WARM },
-                { label: t.resin, value: BoardImageType.RESIN },
-                { label: t.resin + '2', value: BoardImageType.RESIN2 },
-                { label: t.resin + '3', value: BoardImageType.RESIN3 },
-                { label: t.green, value: BoardImageType.GREEN },
-                {
-                  label: t.cherryBlossom,
-                  value: BoardImageType.CHERRY_BLOSSOM,
-                },
-                { label: t.autumn, value: BoardImageType.AUTUMN },
-                { label: t.snow, value: BoardImageType.SNOW },
-                { label: t.darkGreen, value: BoardImageType.DARK_GREEN },
-                { label: t.dark, value: BoardImageType.DARK },
-                { label: t.customImage, value: BoardImageType.CUSTOM_IMAGE },
-              ]"
+              :items="
+                [
+                  { label: t.lightWoodyTexture, value: BoardImageType.LIGHT },
+                  { label: t.warmWoodTexture, value: BoardImageType.WARM },
+                  { label: t.resin, value: BoardImageType.RESIN },
+                  { label: t.resin + '2', value: BoardImageType.RESIN2 },
+                  { label: t.resin + '3', value: BoardImageType.RESIN3 },
+                  { label: t.green, value: BoardImageType.GREEN },
+                  { label: t.cherryBlossom, value: BoardImageType.CHERRY_BLOSSOM },
+                  { label: t.autumn, value: BoardImageType.AUTUMN },
+                  { label: t.snow, value: BoardImageType.SNOW },
+                  { label: t.darkGreen, value: BoardImageType.DARK_GREEN },
+                  { label: t.dark, value: BoardImageType.DARK },
+                  { label: t.customImage, value: BoardImageType.CUSTOM_IMAGE },
+                ].filter((item) => !isMobileWebApp() || item.value !== BoardImageType.CUSTOM_IMAGE)
+              "
               @change="
                 (value: string) => {
                   update.boardImage = value as BoardImageType;
@@ -212,22 +207,20 @@
             <HorizontalSelector
               class="selector"
               :value="original.pieceStandImage"
-              :items="[
-                { label: t.standard, value: PieceStandImageType.STANDARD },
-                { label: t.green, value: PieceStandImageType.GREEN },
-                {
-                  label: t.cherryBlossom,
-                  value: PieceStandImageType.CHERRY_BLOSSOM,
-                },
-                { label: t.autumn, value: PieceStandImageType.AUTUMN },
-                { label: t.snow, value: PieceStandImageType.SNOW },
-                { label: t.darkGreen, value: PieceStandImageType.DARK_GREEN },
-                { label: t.dark, value: PieceStandImageType.DARK },
-                {
-                  label: t.customImage,
-                  value: PieceStandImageType.CUSTOM_IMAGE,
-                },
-              ]"
+              :items="
+                [
+                  { label: t.standard, value: PieceStandImageType.STANDARD },
+                  { label: t.green, value: PieceStandImageType.GREEN },
+                  { label: t.cherryBlossom, value: PieceStandImageType.CHERRY_BLOSSOM },
+                  { label: t.autumn, value: PieceStandImageType.AUTUMN },
+                  { label: t.snow, value: PieceStandImageType.SNOW },
+                  { label: t.darkGreen, value: PieceStandImageType.DARK_GREEN },
+                  { label: t.dark, value: PieceStandImageType.DARK },
+                  { label: t.customImage, value: PieceStandImageType.CUSTOM_IMAGE },
+                ].filter(
+                  (item) => !isMobileWebApp() || item.value !== PieceStandImageType.CUSTOM_IMAGE,
+                )
+              "
               @change="
                 (value: string) => {
                   update.pieceStandImage = value as PieceStandImageType;
@@ -250,7 +243,7 @@
             />
           </div>
           <!-- 透過表示 -->
-          <div class="form-item">
+          <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.transparent }}</div>
             <ToggleButton
               :value="original.enableTransparent"
@@ -258,7 +251,7 @@
             />
           </div>
           <!-- 盤の不透明度 -->
-          <div class="form-item">
+          <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.boardOpacity }}</div>
             <input
               :value="original.boardOpacity * 100"
@@ -275,7 +268,7 @@
             <div class="form-item-small-label">%</div>
           </div>
           <!-- 駒台の不透明度 -->
-          <div class="form-item">
+          <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.pieceStandOpacity }}</div>
             <input
               :value="original.pieceStandOpacity * 100"
@@ -293,7 +286,7 @@
             <div class="form-item-small-label">%</div>
           </div>
           <!-- 棋譜の不透明度 -->
-          <div class="form-item">
+          <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.recordOpacity }}</div>
             <input
               :value="original.recordOpacity * 100"
@@ -323,7 +316,7 @@
             />
           </div>
           <!-- 左コントロールの表示 -->
-          <div v-show="isNative()" class="form-item">
+          <div v-if="isNative()" class="form-item">
             <div class="form-item-label-wide">
               {{ t.showLeftControls }}
             </div>
@@ -338,7 +331,7 @@
             />
           </div>
           <!-- 右コントロールの表示 -->
-          <div v-show="isNative()" class="form-item">
+          <div v-if="isNative()" class="form-item">
             <div class="form-item-label-wide">
               {{ t.showRightControls }}
             </div>
@@ -353,7 +346,7 @@
             />
           </div>
           <!-- タブビューの形式 -->
-          <div class="form-item">
+          <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">{{ t.tabViewStyle }}</div>
             <HorizontalSelector
               class="selector"
@@ -448,7 +441,7 @@
         <div class="section">
           <div class="section-title">{{ t.file }}</div>
           <!-- デフォルトの保存形式 -->
-          <div class="form-item">
+          <div v-if="!isMobileWebApp()" class="form-item">
             <div class="form-item-label-wide">
               {{ t.defaultRecordFileFormat }}
             </div>
@@ -510,7 +503,7 @@
             />
           </div>
           <!-- 自動保存先 -->
-          <div class="form-item row">
+          <div v-if="!isMobileWebApp()" class="form-item row">
             <div class="form-item-label-wide">
               {{ t.autoSavingDirectory }}
             </div>
@@ -594,9 +587,9 @@
             />
           </div>
         </div>
-        <hr />
+        <hr v-if="!isMobileWebApp()" />
         <!-- 定跡 -->
-        <div class="section">
+        <div v-if="!isMobileWebApp()" class="section">
           <div class="section-title">{{ t.book }}</div>
           <!-- 読み専モード閾値 -->
           <div class="form-item">
@@ -617,9 +610,9 @@
             <div class="form-item-small-label">MB ({{ t.between(0, 4096) }})</div>
           </div>
         </div>
-        <hr />
+        <hr v-if="!isMobileWebApp()" />
         <!-- USI プロトコル -->
-        <div class="section">
+        <div v-if="!isMobileWebApp()" class="section">
           <div class="section-title">{{ t.usiProtocol }}</div>
           <!-- オプション名を翻訳 -->
           <div class="form-item">
@@ -651,9 +644,9 @@
             <div class="form-item-small-label">{{ t.secondsSuffix }} ({{ t.between(1, 300) }})</div>
           </div>
         </div>
-        <hr />
-        <!-- 評価値・推定勝率・読み筋 -->
-        <div class="section">
+        <hr v-if="!isMobileWebApp()" />
+        <!-- 評価値・期待勝率・読み筋 -->
+        <div v-if="!isMobileWebApp()" class="section">
           <div class="section-title">{{ t.evaluationAndEstimatedWinRateAndPV }}</div>
           <!-- 評価値の符号 -->
           <div class="form-item">
@@ -826,9 +819,9 @@
             />
           </div>
         </div>
-        <hr />
+        <hr v-if="!isMobileWebApp()" />
         <!-- アプリバージョン -->
-        <div class="section">
+        <div v-if="!isMobileWebApp()" class="section">
           <div class="section-title">{{ t.appVersion }}</div>
           <div class="form-item">
             <div class="form-item-label-wide">{{ t.installed }}</div>
@@ -854,9 +847,9 @@
             </div>
           </div>
         </div>
-        <hr />
+        <hr v-if="!isMobileWebApp()" />
         <!-- 開発者向け -->
-        <div class="section">
+        <div v-if="!isMobileWebApp()" class="section">
           <div class="section-title">{{ t.forDevelopers }}</div>
           <div class="form-group warning">
             <div v-if="!isNative()" class="note">
@@ -953,7 +946,7 @@ import { useStore } from "@/renderer/store";
 import { ref, onMounted, onBeforeUnmount, watch } from "vue";
 import { readInputAsNumber } from "@/renderer/helpers/form.js";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
-import api, { appInfo, isNative } from "@/renderer/ipc/api";
+import api, { appInfo, isMobileWebApp, isNative } from "@/renderer/ipc/api";
 import { installHotKeyForDialog, uninstallHotKeyForDialog } from "@/renderer/devices/hotkey";
 import { useAppSettings } from "@/renderer/store/settings";
 import { LogLevel } from "@/common/log";
@@ -1067,8 +1060,8 @@ const cancel = () => {
 
 <style scoped>
 .settings {
-  width: 590px;
-  height: 540px;
+  max-width: 590px;
+  max-height: 540px;
 }
 .section {
   margin: 20px 0px 20px 0px;
