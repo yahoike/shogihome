@@ -56,7 +56,7 @@ import { t } from "@/common/i18n";
 import { MateSearchManager } from "./mate";
 import { detectUnsupportedRecordProperties } from "@/renderer/helpers/record";
 import { RecordFileFormat, detectRecordFileFormatByPath } from "@/common/file/record";
-import { setOnReceiveUSIBestMoveHandler, setOnUpdateUSIInfoHandler } from "@/renderer/players/usi";
+import { setOnStartSearchHandler, setOnUpdateUSIInfoHandler } from "@/renderer/players/usi";
 import { useErrorStore } from "./error";
 import { useBusyState } from "./busy";
 import { Confirmation, useConfirmationStore } from "./confirm";
@@ -206,7 +206,7 @@ class Store {
       .on("notImplemented", this.onNotImplemented.bind(refs))
       .on("noMate", this.onNoMate.bind(refs))
       .on("error", this.onCheckmateError.bind(refs));
-    setOnReceiveUSIBestMoveHandler(this.endUSIInfoIteration.bind(refs));
+    setOnStartSearchHandler(this.endUSIIteration.bind(refs));
     setOnUpdateUSIInfoHandler(this.updateUSIInfo.bind(refs));
   }
 
@@ -462,23 +462,23 @@ class Store {
       }
       let entryCount = 0;
       let maxScore = -Infinity;
-      for (const iteration of session.latestIteration) {
+      for (const info of session.latestInfo) {
         if (entryCount >= appSettings.maxArrowsPerEngine) {
           break;
         }
-        if (iteration.multiPV && iteration.multiPV > appSettings.maxArrowsPerEngine) {
+        if (info.multiPV && info.multiPV > appSettings.maxArrowsPerEngine) {
           break;
         }
-        if (!iteration.pv?.length) {
+        if (!info.pv?.length) {
           continue;
         }
         const score =
-          iteration.score !== undefined
-            ? iteration.score
-            : iteration.scoreMate
-              ? iteration.scoreMate > 0
-                ? 1e8 - iteration.scoreMate
-                : -1e8 - iteration.scoreMate
+          info.score !== undefined
+            ? info.score
+            : info.scoreMate
+              ? info.scoreMate > 0
+                ? 1e8 - info.scoreMate
+                : -1e8 - info.scoreMate
               : undefined;
         if (score !== undefined) {
           if (score < maxScore - maxScoreDiff) {
@@ -487,14 +487,14 @@ class Store {
             maxScore = score;
           }
         }
-        const usi = iteration.pv[0];
+        const usi = info.pv[0];
         if (usiSet.has(usi)) {
           continue;
         }
-        if (iteration.position !== sfen) {
+        if (info.position !== sfen) {
           continue;
         }
-        const pos = Position.newBySFEN(iteration.position);
+        const pos = Position.newBySFEN(info.position);
         if (!pos) {
           continue;
         }
@@ -530,8 +530,8 @@ class Store {
     this.researchManager.setMultiPV(sessionID, multiPV);
   }
 
-  endUSIInfoIteration(sessionID: number, position: ImmutablePosition): void {
-    this.usiMonitor.endIteration(sessionID, position);
+  endUSIIteration(sessionID: number): void {
+    this.usiMonitor.endIteration(sessionID);
   }
 
   updateUSIInfo(

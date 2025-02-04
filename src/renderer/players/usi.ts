@@ -13,11 +13,7 @@ import { Player, SearchInfo, SearchHandler, MateHandler } from "./player";
 import { GameResult } from "@/common/game/result";
 import { TimeStates } from "@/common/game/time";
 
-type onReceiveUSIBestMoveHandler = (
-  sessionID: number,
-  position: ImmutablePosition,
-  usiMove: string,
-) => void;
+type onStartSearchHandler = (sessionID: number, position: ImmutablePosition) => void;
 
 type onUpdateUSIInfoHandler = (
   sessionID: number,
@@ -27,11 +23,11 @@ type onUpdateUSIInfoHandler = (
   ponderMove?: Move,
 ) => void;
 
-let onReceiveUSIBestMove: onReceiveUSIBestMoveHandler = () => {};
+let onStartSearch: onStartSearchHandler = () => {};
 let onUpdateUSIInfo: onUpdateUSIInfoHandler = () => {};
 
-export function setOnReceiveUSIBestMoveHandler(handler: onReceiveUSIBestMoveHandler) {
-  onReceiveUSIBestMove = handler;
+export function setOnStartSearchHandler(handler: onStartSearchHandler) {
+  onStartSearch = handler;
 }
 
 export function setOnUpdateUSIInfoHandler(handler: onUpdateUSIInfoHandler) {
@@ -92,6 +88,7 @@ export class USIPlayer implements Player {
     } else {
       this.info = undefined;
       await api.usiGo(this.sessionID, this.usi, timeStates);
+      onStartSearch(this.sessionID, this.position);
     }
     this.ponderMove = undefined;
     this.ponder = undefined;
@@ -132,6 +129,7 @@ export class USIPlayer implements Player {
     this.info = undefined;
     this.ponderMove = ponderMove;
     await api.usiGoPonder(this.sessionID, this.ponder, timeStates);
+    onStartSearch(this.sessionID, this.position);
   }
 
   async startMateSearch(
@@ -145,6 +143,7 @@ export class USIPlayer implements Player {
     this.position = position.clone();
     this.mateHandler = handler;
     await api.usiGoMate(this.sessionID, this.usi);
+    onStartSearch(this.sessionID, this.position);
   }
 
   async startResearch(position: ImmutablePosition, usi: string): Promise<void> {
@@ -153,6 +152,7 @@ export class USIPlayer implements Player {
     this.info = undefined;
     this.position = position.clone();
     await api.usiGoInfinite(this.sessionID, usi);
+    onStartSearch(this.sessionID, this.position);
   }
 
   async stop(): Promise<void> {
@@ -183,7 +183,6 @@ export class USIPlayer implements Player {
     if (usi !== this.usi) {
       return;
     }
-    onReceiveUSIBestMove(this.sessionID, this.position, usiMove);
     if (usiMove === "resign") {
       searchHandler.onResign();
       return;

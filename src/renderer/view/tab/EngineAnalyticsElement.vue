@@ -14,29 +14,29 @@
       <div v-if="showHeader" class="row headers">
         <div class="header">
           <span>{{ t.name }}: </span>
-          <span>{{ info.name }}</span>
+          <span>{{ monitor.name }}</span>
         </div>
         <div class="header">
           <span>{{ t.prediction }}: </span>
           <span>
-            {{ info.ponderMove ? info.ponderMove : "---" }}
+            {{ monitor.ponderMove ? monitor.ponderMove : "---" }}
           </span>
         </div>
         <div class="header">
           <span>{{ t.best }}: </span>
-          <span>{{ info.currentMoveText || "---" }}</span>
+          <span>{{ monitor.currentMoveText || "---" }}</span>
         </div>
         <div class="header">
           <span>NPS: </span>
-          <span>{{ info.nps || "---" }}</span>
+          <span>{{ monitor.nps || "---" }}</span>
         </div>
         <div class="header">
           <span>{{ t.nodes }}: </span>
-          <span>{{ info.nodes || "---" }}</span>
+          <span>{{ monitor.nodes || "---" }}</span>
         </div>
         <div class="header">
           <span>{{ t.hashUsage }}: </span>
-          <span>{{ info.hashfull ? (info.hashfull * 100).toFixed(1) : "---" }} %</span>
+          <span>{{ monitor.hashfull ? (monitor.hashfull * 100).toFixed(1) : "---" }} %</span>
         </div>
       </div>
       <div class="list-area" :style="{ height: `${height - (showHeader ? 22 : 0)}px` }">
@@ -54,53 +54,48 @@
           </thead>
           <tbody>
             <tr
-              v-for="iteration in historyMode ? info.iterations : info.latestIteration"
-              :key="iteration.id"
+              v-for="info in historyMode ? monitor.infoList : monitor.latestInfo"
+              :key="info.id"
               class="list-item"
-              :class="{ highlight: enableHighlight && iteration.multiPV === 1 }"
+              :class="{ highlight: enableHighlight && info.multiPV === 1 }"
             >
               <td v-if="showTimeColumn" class="time">
-                {{ iteration.timeMs ? (iteration.timeMs / 1e3).toFixed(1) + "s" : "" }}
+                {{ info.timeMs ? (info.timeMs / 1e3).toFixed(1) + "s" : "" }}
               </td>
               <td v-if="showMultiPvColumn" class="multipv-index">
-                {{ iteration.multiPV || "" }}
+                {{ info.multiPV || "" }}
               </td>
               <td v-if="showDepthColumn" class="depth">
-                {{ iteration.depth
-                }}{{
-                  iteration.selectiveDepth !== undefined && iteration.depth !== undefined
-                    ? "/"
-                    : ""
-                }}{{ iteration.selectiveDepth }}
+                {{ info.depth
+                }}{{ info.selectiveDepth !== undefined && info.depth !== undefined ? "/" : ""
+                }}{{ info.selectiveDepth }}
               </td>
               <td v-if="showNodesColumn" class="nodes">
-                {{ iteration.nodes }}
+                {{ info.nodes }}
               </td>
               <td v-if="showScoreColumn" class="score">
                 {{
-                  iteration.scoreMate !== undefined
-                    ? getDisplayScore(iteration.scoreMate, iteration.color, evaluationViewFrom)
-                    : iteration.score !== undefined
-                      ? getDisplayScore(iteration.score, iteration.color, evaluationViewFrom)
+                  info.scoreMate !== undefined
+                    ? getDisplayScore(info.scoreMate, info.color, evaluationViewFrom)
+                    : info.score !== undefined
+                      ? getDisplayScore(info.score, info.color, evaluationViewFrom)
                       : ""
                 }}
               </td>
               <td v-if="showScoreColumn" class="score-flag">
-                {{ iteration.lowerBound ? "++" : "" }}
-                {{ iteration.upperBound ? "--" : "" }}
-                {{ iteration.scoreMate ? t.mateShort : "" }}
+                {{ info.lowerBound ? "++" : "" }}
+                {{ info.upperBound ? "--" : "" }}
+                {{ info.scoreMate ? t.mateShort : "" }}
               </td>
               <td class="text">
                 <button
-                  v-if="
-                    showPlayButton && iteration.pv && iteration.pv.length !== 0 && iteration.text
-                  "
-                  @click="showPreview(iteration)"
+                  v-if="showPlayButton && info.pv && info.pv.length !== 0 && info.text"
+                  @click="showPreview(info)"
                 >
                   <Icon :icon="IconType.PLAY" />
                   <span>{{ t.displayPVShort }}</span>
                 </button>
-                {{ iteration.text }}
+                {{ info.text }}
               </td>
             </tr>
           </tbody>
@@ -136,7 +131,7 @@ let ignoreSuggestionsCountLimit = false;
 
 <script setup lang="ts">
 import { t } from "@/common/i18n";
-import { USIIteration, USIPlayerMonitor } from "@/renderer/store/usi";
+import { USIInfo, USIPlayerMonitor } from "@/renderer/store/usi";
 import { computed, ref } from "vue";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
@@ -149,7 +144,7 @@ import { useConfirmationStore } from "@/renderer/store/confirm";
 
 const props = defineProps({
   historyMode: { type: Boolean, required: true },
-  info: { type: USIPlayerMonitor, required: true },
+  monitor: { type: USIPlayerMonitor, required: true },
   height: { type: Number, required: true },
   showHeader: { type: Boolean, default: true },
   showTimeColumn: { type: Boolean, default: true },
@@ -165,22 +160,22 @@ const store = useStore();
 const multiPVInput = ref();
 
 const isResearchSession = computed(() => {
-  return store.isResearchEngineSessionID(props.info.sessionID);
+  return store.isResearchEngineSessionID(props.monitor.sessionID);
 });
 
 const paused = computed(() => {
-  return store.isPausedResearchEngine(props.info.sessionID);
+  return store.isPausedResearchEngine(props.monitor.sessionID);
 });
 
 const multiPV = computed(() => {
-  return store.getResearchMultiPV(props.info.sessionID);
+  return store.getResearchMultiPV(props.monitor.sessionID);
 });
 
 const enableHighlight = computed(() => {
   if (!props.historyMode) {
     return false;
   }
-  return props.info.iterations.some((iteration) => iteration.multiPV && iteration.multiPV !== 1);
+  return props.monitor.infoList.some((info) => info.multiPV && info.multiPV !== 1);
 });
 
 const evaluationViewFrom = computed(() => {
@@ -190,7 +185,7 @@ const getDisplayScore = (score: number, color: Color, evaluationViewFrom: Evalua
   return evaluationViewFrom === EvaluationViewFrom.EACH || color == Color.BLACK ? score : -score;
 };
 
-const showPreview = (ite: USIIteration) => {
+const showPreview = (ite: USIInfo) => {
   const position = Position.newBySFEN(ite.position);
   if (!position) {
     return;
@@ -218,11 +213,11 @@ const showPreview = (ite: USIIteration) => {
 };
 
 const onPause = () => {
-  store.pauseResearchEngine(props.info.sessionID);
+  store.pauseResearchEngine(props.monitor.sessionID);
 };
 
 const onUnpause = () => {
-  store.unpauseResearchEngine(props.info.sessionID);
+  store.unpauseResearchEngine(props.monitor.sessionID);
 };
 
 const updateMultiPV = (add: number) => {
@@ -244,7 +239,7 @@ const updateMultiPV = (add: number) => {
       onOk: () => {
         // Ignore the limit and update the value
         ignoreSuggestionsCountLimit = true;
-        store.setResearchMultiPV(props.info.sessionID, newValue);
+        store.setResearchMultiPV(props.monitor.sessionID, newValue);
       },
       onCancel: () => {
         // Restore the value
@@ -255,7 +250,7 @@ const updateMultiPV = (add: number) => {
   }
 
   // Otherwise, update the value
-  store.setResearchMultiPV(props.info.sessionID, newValue);
+  store.setResearchMultiPV(props.monitor.sessionID, newValue);
 };
 </script>
 
