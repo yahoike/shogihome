@@ -155,11 +155,11 @@ describe("store/index", () => {
     expect(store.usiMonitors[0].sfen).toBe(
       "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w - 1",
     );
-    expect(store.usiMonitors[0].iterations.length).toBe(1);
-    expect(store.usiMonitors[0].iterations[0].depth).toBe(8);
-    expect(store.usiMonitors[0].iterations[0].score).toBe(138);
-    expect(store.usiMonitors[0].iterations[0].pv).toEqual(["8c8d", "2g2f", "foo", "bar"]);
-    expect(store.usiMonitors[0].iterations[0].text).toBe("☖８四歩☗２六歩 foo bar");
+    expect(store.usiMonitors[0].infoList.length).toBe(1);
+    expect(store.usiMonitors[0].infoList[0].depth).toBe(8);
+    expect(store.usiMonitors[0].infoList[0].score).toBe(138);
+    expect(store.usiMonitors[0].infoList[0].pv).toEqual(["8c8d", "2g2f", "foo", "bar"]);
+    expect(store.usiMonitors[0].infoList[0].text).toBe("☖８四歩☗２六歩 foo bar");
     store.updateUSIInfo(101, position, "Engine A", {
       depth: 10,
       scoreCP: 213,
@@ -173,17 +173,17 @@ describe("store/index", () => {
     );
     vi.runOnlyPendingTimers();
     expect(store.usiMonitors).toHaveLength(2);
-    expect(store.usiMonitors[0].iterations).toHaveLength(2);
-    expect(store.usiMonitors[0].iterations[0].depth).toBe(10);
-    expect(store.usiMonitors[0].iterations[0].score).toBe(213);
-    expect(store.usiMonitors[0].latestIteration).toHaveLength(1);
-    expect(store.usiMonitors[0].latestIteration[0].score).toBe(213);
+    expect(store.usiMonitors[0].infoList).toHaveLength(2);
+    expect(store.usiMonitors[0].infoList[0].depth).toBe(10);
+    expect(store.usiMonitors[0].infoList[0].score).toBe(213);
+    expect(store.usiMonitors[0].latestInfo).toHaveLength(1);
+    expect(store.usiMonitors[0].latestInfo[0].score).toBe(213);
     expect(store.usiMonitors[0].ponderMove).toBeUndefined();
-    expect(store.usiMonitors[1].iterations).toHaveLength(1);
-    expect(store.usiMonitors[1].iterations[0].depth).toBe(9);
-    expect(store.usiMonitors[1].iterations[0].score).toBe(-89);
-    expect(store.usiMonitors[1].latestIteration).toHaveLength(1);
-    expect(store.usiMonitors[1].latestIteration[0].score).toBe(-89);
+    expect(store.usiMonitors[1].infoList).toHaveLength(1);
+    expect(store.usiMonitors[1].infoList[0].depth).toBe(9);
+    expect(store.usiMonitors[1].infoList[0].score).toBe(-89);
+    expect(store.usiMonitors[1].latestInfo).toHaveLength(1);
+    expect(store.usiMonitors[1].latestInfo[0].score).toBe(-89);
     expect(store.usiMonitors[1].ponderMove).toBe("☖８四歩");
   });
 
@@ -215,10 +215,10 @@ describe("store/index", () => {
       pv: ["5c5d", "2g2f"],
     });
     vi.runOnlyPendingTimers();
-    expect(store.usiMonitors[0].latestIteration).toHaveLength(3);
-    expect(store.usiMonitors[0].latestIteration[0].score).toBe(198);
-    expect(store.usiMonitors[0].latestIteration[1].score).toBe(170);
-    expect(store.usiMonitors[0].latestIteration[2].score).toBe(169);
+    expect(store.usiMonitors[0].latestInfo).toHaveLength(3);
+    expect(store.usiMonitors[0].latestInfo[0].score).toBe(198);
+    expect(store.usiMonitors[0].latestInfo[1].score).toBe(170);
+    expect(store.usiMonitors[0].latestInfo[2].score).toBe(169);
 
     store.updateUSIInfo(101, position, "Engine A", {
       depth: 12,
@@ -233,10 +233,10 @@ describe("store/index", () => {
       pv: ["3c3e", "2g2f"],
     });
     vi.runOnlyPendingTimers();
-    expect(store.usiMonitors[0].latestIteration).toHaveLength(3);
-    expect(store.usiMonitors[0].latestIteration[0].score).toBe(187);
-    expect(store.usiMonitors[0].latestIteration[1].score).toBe(181);
-    expect(store.usiMonitors[0].latestIteration[2].score).toBe(169); // 3rd move is not updated
+    expect(store.usiMonitors[0].latestInfo).toHaveLength(3);
+    expect(store.usiMonitors[0].latestInfo[0].score).toBe(187);
+    expect(store.usiMonitors[0].latestInfo[1].score).toBe(181);
+    expect(store.usiMonitors[0].latestInfo[2].score).toBe(169); // 3rd move is not updated
 
     store.updateUSIInfo(101, position, "Engine A", {
       depth: 13,
@@ -251,10 +251,10 @@ describe("store/index", () => {
       pv: ["3c3e", "2g2f"],
     });
     vi.runOnlyPendingTimers();
-    // 3rd move is ignored because it is not updated in the two previous iterations
-    expect(store.usiMonitors[0].latestIteration).toHaveLength(2);
-    expect(store.usiMonitors[0].latestIteration[0].score).toBe(210);
-    expect(store.usiMonitors[0].latestIteration[1].score).toBe(152);
+    // 3rd move is ignored because it is not updated in the two previous infoList
+    expect(store.usiMonitors[0].latestInfo).toHaveLength(2);
+    expect(store.usiMonitors[0].latestInfo[0].score).toBe(210);
+    expect(store.usiMonitors[0].latestInfo[1].score).toBe(152);
 
     store.updateUSIInfo(101, position, "Engine A", {
       depth: 13,
@@ -264,8 +264,8 @@ describe("store/index", () => {
     });
     vi.runOnlyPendingTimers();
     // 3c3e is promoted to the best move
-    expect(store.usiMonitors[0].latestIteration).toHaveLength(1);
-    expect(store.usiMonitors[0].latestIteration[0].score).toBe(231);
+    expect(store.usiMonitors[0].latestInfo).toHaveLength(1);
+    expect(store.usiMonitors[0].latestInfo[0].score).toBe(231);
   });
 
   it("endUSIInfoIteration", () => {
@@ -283,21 +283,21 @@ describe("store/index", () => {
 
     store.updateUSIInfo(101, position, "Engine A", { depth: 11, scoreCP: 198, pv: ["8c8d"] });
     store.updateUSIInfo(102, position, "Engine B", { depth: 9, scoreCP: -89, pv: ["3c3d"] });
-    store.endUSIInfoIteration(101, position);
+    store.endUSIIteration(101);
     vi.runOnlyPendingTimers();
     expect(store.usiMonitors).toHaveLength(2);
-    expect(store.usiMonitors[0].iterations).toHaveLength(2);
+    expect(store.usiMonitors[0].infoList).toHaveLength(2);
     expect(store.usiMonitors[0].refreshOnNextUpdate).toBeTruthy();
-    expect(store.usiMonitors[1].iterations).toHaveLength(2);
+    expect(store.usiMonitors[1].infoList).toHaveLength(2);
     expect(store.usiMonitors[1].refreshOnNextUpdate).toBeFalsy();
 
     store.updateUSIInfo(101, position, "Engine A", { depth: 12, scoreCP: 72, pv: ["5c5d"] });
     store.updateUSIInfo(102, position, "Engine B", { depth: 10, scoreCP: 32, pv: ["5c5d"] });
     vi.runOnlyPendingTimers();
     expect(store.usiMonitors).toHaveLength(2);
-    expect(store.usiMonitors[0].iterations).toHaveLength(1);
+    expect(store.usiMonitors[0].infoList).toHaveLength(1);
     expect(store.usiMonitors[0].refreshOnNextUpdate).toBeFalsy();
-    expect(store.usiMonitors[1].iterations).toHaveLength(3);
+    expect(store.usiMonitors[1].infoList).toHaveLength(3);
     expect(store.usiMonitors[1].refreshOnNextUpdate).toBeFalsy();
   });
 
