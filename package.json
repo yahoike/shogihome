@@ -82,7 +82,7 @@
     "archiver": "^7.0.1",
     "concurrently": "^9.0.1",
     "depcheck": "^1.4.7",
-    "electron": "^34.0.2",
+    "electron": "^34.1.1",
     "electron-builder": "^25.0.5",
     "electron-devtools-installer": "^4.0.0",
     "eslint": "^8.26.0",
