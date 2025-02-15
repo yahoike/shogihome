@@ -1,34 +1,30 @@
 <template>
   <div style="display: inline-block">
     <div class="row wrap">
-      <select
-        ref="select"
-        size="1"
-        @change="
-          () => {
-            free = select.value === '__FREE_TEXT__';
-          }
-        "
-      >
+      <select v-model="selected" size="1">
         <option v-for="option in options" :key="option.value" :value="option.value">
           {{ option.label }}
         </option>
         <option value="__FREE_TEXT__">{{ freeTextLabel }}</option>
       </select>
-      <input v-show="free" ref="input" type="text" />
+      <input v-show="selected === '__FREE_TEXT__'" v-model="freeInput" type="text" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { PropType, Ref, ref } from "vue";
+import { PropType, ref, watch } from "vue";
 
 type Option = {
   value: string;
   label: string;
 };
 
-defineProps({
+const props = defineProps({
+  modelValue: {
+    type: String,
+    required: true,
+  },
   options: {
     type: Array as PropType<Option[]>,
     required: true,
@@ -39,34 +35,43 @@ defineProps({
   },
 });
 
-const select = ref() as Ref<HTMLSelectElement>;
-const input = ref() as Ref<HTMLInputElement>;
-const free = ref(false);
+const emit = defineEmits(["update:modelValue"]);
 
-const setValue = (value: string) => {
-  for (const option of select.value.querySelectorAll("option")) {
-    if (option.value === value) {
-      option.selected = true;
-      free.value = false;
+const selected = ref(
+  props.options.some((option) => option.value === props.modelValue)
+    ? props.modelValue
+    : "__FREE_TEXT__",
+);
+const freeInput = ref(props.modelValue);
+
+watch(selected, (newValue) => {
+  emit("update:modelValue", newValue === "__FREE_TEXT__" ? freeInput.value : newValue);
+});
+
+watch(freeInput, (newValue) => {
+  if (selected.value === "__FREE_TEXT__") {
+    emit("update:modelValue", newValue);
+  }
+});
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (
+      (selected.value === "__FREE_TEXT__" && newValue === freeInput.value) ||
+      newValue === selected.value
+    ) {
       return;
     }
-  }
-  select.value.value = "__FREE_TEXT__";
-  input.value.value = value;
-  free.value = true;
-};
-const getValue = () => {
-  const selected = Array.from(select.value.querySelectorAll("option")).find((option) => {
-    if (option.selected) {
-      return option.value;
+    if (props.options.some((option) => option.value === newValue)) {
+      selected.value = newValue;
+      freeInput.value ||= newValue;
+    } else {
+      selected.value = "__FREE_TEXT__";
+      freeInput.value = newValue;
     }
-  });
-  if (selected?.value === "__FREE_TEXT__") {
-    return input.value.value;
-  }
-  return selected?.value || "";
-};
-defineExpose({ setValue, getValue });
+  },
+);
 </script>
 
 <style scoped>
