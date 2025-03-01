@@ -7,7 +7,7 @@
           <img class="full" :src="board.background.textureImagePath" />
         </div>
         <div :style="board.background.style">
-          <img class="full" :src="board.background.gridImagePath" />
+          <BoardGrid class="full" :color="boardGridColor || board.background.gridColor" />
         </div>
         <div v-for="square in board.squares" :key="square.id" :style="square.backgroundStyle"></div>
         <div v-for="piece in board.pieces" :key="piece.id" :style="piece.style">
@@ -188,6 +188,7 @@ import {
 } from "./board/hand";
 import { BoardLayoutType } from "@/common/settings/layout";
 import { CompactLayoutBuilder } from "./board/compact";
+import BoardGrid from "./BoardGrid.vue";
 
 type State = {
   pointer: Square | Piece | null;
@@ -204,6 +205,21 @@ const props = defineProps({
     type: String as PropType<BoardImageType>,
     required: true,
   },
+  customBoardImageUrl: {
+    type: String,
+    required: false,
+    default: undefined,
+  },
+  boardImageOpacity: {
+    type: Number,
+    required: false,
+    default: 1.0,
+  },
+  boardGridColor: {
+    type: String,
+    required: false,
+    default: undefined,
+  },
   pieceImageUrlTemplate: {
     type: String,
     required: true,
@@ -211,11 +227,6 @@ const props = defineProps({
   kingPieceType: {
     type: String as PropType<KingPieceType>,
     required: true,
-  },
-  customBoardImageUrl: {
-    type: String,
-    required: false,
-    default: undefined,
   },
   pieceStandImageType: {
     type: String as PropType<PieceStandImageType>,
@@ -225,11 +236,6 @@ const props = defineProps({
     type: String,
     required: false,
     default: undefined,
-  },
-  boardImageOpacity: {
-    type: Number,
-    required: false,
-    default: 1.0,
   },
   pieceStandImageOpacity: {
     type: Number,
