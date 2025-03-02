@@ -10,7 +10,7 @@
 This is a Shogi GUI app.
 You can play Shogi with AI, analyze games, and manage records.
 
-You can use this app with any Shogi engines (AI) based on the [USI Protocol](http://shogidokoro.starfree.jp/usi.html), just like [将棋所](http://shogidokoro.starfree.jp/).
+You can use this app with any Shogi engines (AI) based on the [USI Protocol](http://shogidokoro2.stars.ne.jp/usi.html), just like [将棋所](http://shogidokoro2.stars.ne.jp/).
 
 ## Concept
 
