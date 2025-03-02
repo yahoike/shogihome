@@ -10,7 +10,7 @@
 将棋の GUI アプリです。
 コンピューターとの対局や棋譜の編集・検討ができます。
 
-[将棋所](http://shogidokoro.starfree.jp/)と同様に [USI プロトコル](http://shogidokoro.starfree.jp/usi.html) 対応の思考エンジンを利用できます。
+[将棋所](http://shogidokoro2.stars.ne.jp/)と同様に [USI プロトコル](http://shogidokoro2.stars.ne.jp/usi.html) 対応の思考エンジンを利用できます。
 
 ## コンセプト
 
