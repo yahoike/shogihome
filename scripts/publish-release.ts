@@ -32,13 +32,13 @@ async function getTarget(): Promise<Target> {
 
 async function inputPlatforms(): Promise<string[]> {
   const paths = [] as string[];
-  if (!(await stdio.question(`Do you want to update ${releaseWinJSON}? [Y/n]:`)).match(/^n/i)) {
+  if (!/^n/i.test(await stdio.question(`Do you want to update ${releaseWinJSON}? [Y/n]:`))) {
     paths.push(releaseWinJSON);
   }
-  if (!(await stdio.question(`Do you want to update ${releaseMacJSON}? [Y/n]:`)).match(/^n/i)) {
+  if (!/^n/i.test(await stdio.question(`Do you want to update ${releaseMacJSON}? [Y/n]:`))) {
     paths.push(releaseMacJSON);
   }
-  if (!(await stdio.question(`Do you want to update ${releaseLinuxJSON}? [Y/n]:`)).match(/^n/i)) {
+  if (!/^n/i.test(await stdio.question(`Do you want to update ${releaseLinuxJSON}? [Y/n]:`))) {
     paths.push(releaseLinuxJSON);
   }
   return paths;

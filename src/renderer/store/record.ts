@@ -289,24 +289,24 @@ function getPVsFromSearchComment(position: ImmutablePosition, comment: string): 
   for (const line of comment.split("\n")) {
     let pv: Move[] | undefined;
     // ShogiHome
-    if (line.match(/^[#*]読み筋=/)) {
+    if (/^[#*]読み筋=/.test(line)) {
       pv = parsePV(position, line.substring(5));
     }
     // ShogiGUI or 棋神アナリティクス
-    else if (line.match(/^\*.* 読み筋 /)) {
+    else if (/^\*.* 読み筋 /.test(line)) {
       const moveStr = line.substring(line.indexOf(" 読み筋 ") + 5);
       const sign = position.color === Color.BLACK ? "▲" : "△";
       pv = parsePV(position, moveStr.substring(moveStr.indexOf(sign)));
     }
     // K-Shogi or ぴよ将棋
     // "#推奨手[" という表記もあるが、それは 1 つ前の局面で別の手を指した場合の手順なので対象外とする。
-    else if (line.match(/^#(?:指し手|形勢)\[/)) {
+    else if (/^#(?:指し手|形勢)\[/.test(line)) {
       const moveStr = line.substring(line.indexOf("]") + 1);
       const sign = position.color === Color.BLACK ? "▲" : "△";
       pv = parsePV(position, moveStr.substring(moveStr.indexOf(sign)));
     }
     // Floodgate
-    else if (line.match(/^\* -?[0-9]+ /)) {
+    else if (/^\* -?[0-9]+ /.test(line)) {
       pv = parseFloodgatePVComment(position, line);
     }
     if (pv?.length) {
