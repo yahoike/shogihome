@@ -27,7 +27,7 @@ export function fetchInitialRecordFileRequest(): InitialRecordFileRequest {
       path = arg;
     } else if (!isNaN(Number(arg))) {
       ply = Number(arg);
-    } else if (arg.match(/^\+\d+$/)) {
+    } else if (/^\+\d+$/.test(arg)) {
       ply = Number(arg.substring(1));
     }
   }

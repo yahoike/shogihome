@@ -361,7 +361,7 @@ export class Client {
       this.onGamePosition(command);
     } else if (this.state === State.PLAYING) {
       this.onMove(command);
-    } else if (command.match(/^LOGIN:.* OK$/)) {
+    } else if (/^LOGIN:.* OK$/.test(command)) {
       this.onLoginOK();
     } else if (command === "LOGIN:incorrect") {
       this.onLoginIncorrect();

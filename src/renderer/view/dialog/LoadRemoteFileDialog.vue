@@ -49,7 +49,7 @@ onMounted(async () => {
       return;
     }
     const copied = (await navigator.clipboard.readText()).trim();
-    if (copied && copied.match(/^https?:\/\//)) {
+    if (copied && /^https?:\/\//.test(copied)) {
       input.value.value = copied;
     }
   } finally {
