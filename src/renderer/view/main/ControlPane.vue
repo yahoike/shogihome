@@ -2,7 +2,7 @@
   <div>
     <div ref="root" class="full column" :class="{ compact }">
       <div
-        v-show="group === ControlGroup.Group1 || group === ControlGroup.All"
+        v-if="group === ControlGroup.Group1 || group === ControlGroup.All"
         class="full column control-box"
       >
         <!-- 検討 -->
@@ -19,7 +19,6 @@
         <button
           v-show="store.researchState === ResearchState.RUNNING"
           class="control-item close"
-          data-hotkey="Escape"
           @click="onEndResearch"
         >
           <Icon :icon="IconType.END" />
@@ -34,7 +33,6 @@
         <button
           v-show="store.appState === AppState.GAME || store.appState === AppState.CSA_GAME"
           class="control-item close"
-          data-hotkey="Escape"
           @click="onStop"
         >
           <Icon :icon="IconType.STOP" />
@@ -98,7 +96,6 @@
         <button
           v-show="store.appState === AppState.ANALYSIS"
           class="control-item close"
-          data-hotkey="Escape"
           @click="onEndAnalysis"
         >
           <Icon :icon="IconType.STOP" />
@@ -118,7 +115,6 @@
         <button
           v-show="store.appState === AppState.MATE_SEARCH"
           class="control-item close"
-          data-hotkey="Escape"
           @click="onStopMateSearch"
         >
           <Icon :icon="IconType.END" />
@@ -137,7 +133,6 @@
         <button
           v-show="store.appState === AppState.POSITION_EDITING"
           class="control-item close"
-          data-hotkey="Escape"
           @click="onEndEditPosition"
         >
           <Icon :icon="IconType.CHECK" />
@@ -172,7 +167,7 @@
         </button>
       </div>
       <div
-        v-show="group === ControlGroup.Group2 || group === ControlGroup.All"
+        v-if="group === ControlGroup.Group2 || group === ControlGroup.All"
         class="full column control-box"
       >
         <!-- 指し手削除 -->
