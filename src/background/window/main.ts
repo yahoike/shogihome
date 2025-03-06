@@ -27,6 +27,7 @@ export function createWindow(onClosed: () => void) {
   const win = new BrowserWindow({
     width: settings.width,
     height: settings.height,
+    fullscreenable: true,
     fullscreen: settings.fullscreen,
     webPreferences: {
       preload: path.join(__dirname, getPreloadPath()),
