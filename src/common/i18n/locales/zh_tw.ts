@@ -401,7 +401,7 @@ export const zh_tw: Texts = {
   note: "備註",
   senteShortName: "先手省略名",
   goteShortName: "後手省略名",
-  scorekeeper: "記録係", // TODO: translate
+  scorekeeper: "記錄員",
   opusNo: "作品編號",
   opusName: "作品名",
   publishedBy: "發表於",
@@ -479,7 +479,7 @@ export const zh_tw: Texts = {
   bookMove: "定跡手", // TODO: translate
   play: "着手", // TODO: translate
   edit: "編集", // TODO: translate
-  addMoves: "指し手追加", // TODO: translate
+  addMoves: "新增該手",
   freq: "出現頻度", // TODO: translate
   frequency: "出現頻度", // TODO: translate
   new: "新規", // TODO: translate
@@ -509,17 +509,17 @@ export const zh_tw: Texts = {
   collapseSequentialSpaces: "整理連續空白",
   typeCustomTitleHere: "輸入自定義標題",
   displayEmptyElements: "顯示未定義資料",
-  share: "Share", // TODO: translate
+  share: "分享",
   waitingForNewGame: "正在等待下一場對局開始。",
   waitingForPlayerSetup: "正在等待對局者準備。",
   insertedComment: "已加入備註。",
   conversionCompleted: "轉換完成。",
-  human: "人", // TODO: translate
-  randomPlayer: "ランダムプレイヤー", // TODO: translate
-  beginner: "初心者", // TODO: translate
-  staticRook: "居飛車", // TODO: translate
-  rangingRook: "振り飛車", // TODO: translate
-  pleaseSelectEngines: "エンジンを選択してください。", // TODO: translate
+  human: "人",
+  randomPlayer: "隨機玩家",
+  beginner: "初學者",
+  staticRook: "居飛車",
+  rangingRook: "振飛車",
+  pleaseSelectEngines: "請選擇引擎。",
   thisItemCannotBeMerged: "この項目はマージできません。", // TODO: translate
   tryingToConnectAndLoginToCSAServer: "正在連接並登入CSA伺服器。",
   inBrowserLogsOutputToConsoleAndIgnoreThisSetting:
@@ -598,7 +598,7 @@ export const zh_tw: Texts = {
   invalidBoard: "不合法的盤面",
   invalidHandPiece: "不合法的持駒",
   invalidUSI: "不合法的USI",
-  engineProcessWasClosedUnexpectedly: "エンジンプロセスが予期せず終了しました。", // TODO: translate
+  engineProcessWasClosedUnexpectedly: "引擎進程意外結束。",
   backgroundImageFileNotSelected: "尚未選取背景圖片。",
   pieceImageFileNotSelected: "尚未選取棋駒圖片。",
   boardImageFileNotSelected: "尚未選取盤面圖片。",
@@ -657,7 +657,7 @@ export const zh_tw: Texts = {
     "互換性のないオプションがある場合それらは破棄されます。エンジンを置き換えますか？", // TODO: translate
   largeSuggestionsCountMayCausePerformanceDegradation:
     "候補手を増やしすぎると動作が重くなる可能性があります。", // TODO: translate
-  doYouReallyWantToIncreaseTheSuggestionsCount: "本当に候補手の数を増やしますか？", // TODO: translate
+  doYouReallyWantToIncreaseTheSuggestionsCount: "您確定要增加候選手數嗎？",
   totalNumber: (n: number) => `總計 ${n} 筆`,
   number: (n: number) => `${n} 筆`,
   tryToReloginToCSAServerNSecondsLater: (n) => `請在${n}秒後再次嘗試登入 CSA 伺服器。`,
