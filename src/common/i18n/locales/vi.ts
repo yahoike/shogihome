@@ -230,6 +230,7 @@ export const vi: Texts = {
   positionOfUSIOutput: "Định dạng thế cờ USI",
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
+  pasteDialog: "貼り付けダイアログ", // TODO: translate
   readOnlyThreshold: "読み専モード閾値", // TODO: translate
   usiProtocol: "Định dạng USI",
   translateOptionName: "Dịch tên tùy chọn",
@@ -370,6 +371,7 @@ export const vi: Texts = {
   ok: "OK",
   cancel: "Hủy",
   back: "Quay lại",
+  doNotShowAgain: "次回から表示を省略", // TODO: translate
   name: "Tên",
   prediction: "Dự đoán",
   best: "Tốt nhất",

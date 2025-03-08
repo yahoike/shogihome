@@ -227,6 +227,7 @@ export const zh_tw: Texts = {
   positionOfUSIOutput: "USI 局面紀錄格式",
   movesOfUSIOutput: "USI 棋譜紀錄格式",
   onlySFEN: "只有 SFEN",
+  pasteDialog: "貼り付けダイアログ", // TODO: translate
   readOnlyThreshold: "読み専モード閾値", // TODO: translate
   usiProtocol: "USI協定",
   translateOptionName: "選項名稱翻譯",
@@ -367,6 +368,7 @@ export const zh_tw: Texts = {
   ok: "OK",
   cancel: "取消",
   back: "返回",
+  doNotShowAgain: "次回から表示を省略", // TODO: translate
   name: "名稱",
   prediction: "預測",
   best: "最善",

@@ -1,18 +1,17 @@
 <template>
   <div>
     <dialog ref="dialog">
-      <div ref="content">
-        <div class="form-group">
-          <div class="message">{{ t.importingFollowingRecordOrPosition }}</div>
-          <div class="message">{{ t.supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN }}</div>
-          <div v-if="!isNative()" class="message">
-            {{ t.pleasePasteRecordIntoTextArea }}
-          </div>
-          <div v-if="!isNative()" class="message">
-            {{ t.desktopVersionPastesAutomatically }}
-          </div>
-          <textarea ref="textarea"></textarea>
+      <div class="form-group column">
+        <div class="message">{{ t.importingFollowingRecordOrPosition }}</div>
+        <div class="message">{{ t.supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN }}</div>
+        <div v-if="!isNative()" class="message">
+          {{ t.pleasePasteRecordIntoTextArea }}
         </div>
+        <div v-if="!isNative()" class="message">
+          {{ t.desktopVersionPastesAutomatically }}
+        </div>
+        <textarea ref="textarea"></textarea>
+        <ToggleButton v-model:value="doNotShowAgain" :label="t.doNotShowAgain" />
       </div>
       <div class="main-buttons">
         <button data-hotkey="Enter" autofocus @click="onOk">
@@ -35,11 +34,15 @@ import { useStore } from "@/renderer/store";
 import { onBeforeUnmount, onMounted, ref } from "vue";
 import { useErrorStore } from "@/renderer/store/error";
 import { useBusyState } from "@/renderer/store/busy";
+import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
+import { useAppSettings } from "@/renderer/store/settings";
 
 const store = useStore();
+const appSettings = useAppSettings();
 const busyState = useBusyState();
 const dialog = ref();
 const textarea = ref();
+const doNotShowAgain = ref(false);
 
 busyState.retain();
 onMounted(async () => {
@@ -66,6 +69,9 @@ const onOk = () => {
   }
   store.closeModalDialog();
   store.pasteRecord(data);
+  if (doNotShowAgain.value) {
+    appSettings.updateAppSettings({ showPasteDialog: false });
+  }
 };
 
 const onCancel = () => {

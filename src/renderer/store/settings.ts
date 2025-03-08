@@ -165,6 +165,9 @@ class AppSettingsStore {
   get enableUSIFileResign(): boolean {
     return this.merged.enableUSIFileResign;
   }
+  get showPasteDialog(): boolean {
+    return this.merged.showPasteDialog;
+  }
   get bookOnTheFlyThresholdMB(): number {
     return this.merged.bookOnTheFlyThresholdMB;
   }

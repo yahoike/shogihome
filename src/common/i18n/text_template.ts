@@ -225,6 +225,7 @@ export type Texts = {
   positionOfUSIOutput: string;
   movesOfUSIOutput: string;
   onlySFEN: string;
+  pasteDialog: string;
   readOnlyThreshold: string;
   usiProtocol: string;
   translateOptionName: string;
@@ -365,6 +366,7 @@ export type Texts = {
   ok: string;
   cancel: string;
   back: string;
+  doNotShowAgain: string;
   name: string;
   prediction: string;
   best: string;
