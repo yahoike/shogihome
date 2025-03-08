@@ -1153,7 +1153,7 @@ class Store {
     if (this.appState !== AppState.NORMAL) {
       return;
     }
-    const error = this.recordManager.importRecord(data);
+    const error = this.recordManager.importRecord(data.trim());
     if (error) {
       useErrorStore().add(error);
       return;
