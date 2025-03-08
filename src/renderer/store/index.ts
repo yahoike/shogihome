@@ -324,8 +324,16 @@ class Store {
   }
 
   showPasteDialog(): void {
-    if (this.appState === AppState.NORMAL) {
+    if (this.appState !== AppState.NORMAL) {
+      return;
+    }
+    const appSettings = useAppSettings();
+    if (appSettings.showPasteDialog) {
       this._appState = AppState.PASTE_DIALOG;
+    } else {
+      navigator.clipboard.readText().then((text) => {
+        this.pasteRecord(text);
+      });
     }
   }
 

@@ -185,6 +185,7 @@ export type AppSettings = {
   useCSAV3: boolean;
   enableUSIFileStartpos: boolean;
   enableUSIFileResign: boolean;
+  showPasteDialog: boolean;
 
   // Opening Book
   bookOnTheFlyThresholdMB: number;
@@ -329,6 +330,7 @@ export function defaultAppSettings(opt?: {
     useCSAV3: false,
     enableUSIFileStartpos: true,
     enableUSIFileResign: false,
+    showPasteDialog: true,
     bookOnTheFlyThresholdMB: 256,
     translateEngineOptionName: true,
     engineTimeoutSeconds: 10,

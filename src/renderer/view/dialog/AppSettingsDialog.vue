@@ -464,6 +464,11 @@
               "
             />
           </div>
+          <!-- 貼り付けダイアログを表示 -->
+          <div class="form-item">
+            <div class="form-item-label-wide">{{ t.pasteDialog }}</div>
+            <ToggleButton v-model:value="update.showPasteDialog" />
+          </div>
         </div>
         <hr v-if="!isMobileWebApp()" />
         <!-- 定跡 -->
@@ -754,6 +759,7 @@ const update = ref({
   useCSAV3: org.useCSAV3,
   enableUSIFileStartpos: org.enableUSIFileStartpos,
   enableUSIFileResign: org.enableUSIFileResign,
+  showPasteDialog: org.showPasteDialog,
   bookOnTheFlyThresholdMB: org.bookOnTheFlyThresholdMB,
   translateEngineOptionName: org.translateEngineOptionName,
   engineTimeoutSeconds: org.engineTimeoutSeconds,
