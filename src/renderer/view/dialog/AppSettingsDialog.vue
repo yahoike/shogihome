@@ -465,7 +465,7 @@
             />
           </div>
           <!-- 貼り付けダイアログを表示 -->
-          <div class="form-item">
+          <div v-if="isNative()" class="form-item">
             <div class="form-item-label-wide">{{ t.pasteDialog }}</div>
             <ToggleButton v-model:value="update.showPasteDialog" />
           </div>

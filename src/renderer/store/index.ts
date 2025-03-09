@@ -1,4 +1,4 @@
-import api from "@/renderer/ipc/api";
+import api, { isNative } from "@/renderer/ipc/api";
 import {
   Color,
   exportCSA,
@@ -328,7 +328,7 @@ class Store {
       return;
     }
     const appSettings = useAppSettings();
-    if (appSettings.showPasteDialog) {
+    if (appSettings.showPasteDialog || !isNative()) {
       this._appState = AppState.PASTE_DIALOG;
     } else {
       navigator.clipboard.readText().then((text) => {
