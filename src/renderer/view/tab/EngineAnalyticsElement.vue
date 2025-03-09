@@ -42,13 +42,31 @@
       <div class="list-area" :style="{ height: `${height - (showHeader ? 22 : 0)}px` }">
         <table class="list">
           <thead>
-            <tr class="list-header">
-              <td v-if="showTimeColumn" class="time">{{ t.elapsed }}</td>
-              <td v-if="showMultiPvColumn" class="multipv-index">{{ t.rank }}</td>
-              <td v-if="showDepthColumn" class="depth">{{ t.depth }}</td>
-              <td v-if="showNodesColumn" class="nodes">{{ t.nodes }}</td>
-              <td v-if="showScoreColumn" class="score">{{ t.score }}</td>
-              <td v-if="showScoreColumn" class="score-flag"></td>
+            <tr ref="listHeader" class="list-header">
+              <td v-if="showTimeColumn" class="time" :style="columnStyleMap['time']">
+                {{ t.elapsed }}
+              </td>
+              <td
+                v-if="showMultiPvColumn"
+                class="multipv-index"
+                :style="columnStyleMap['multipv-index']"
+              >
+                {{ t.rank }}
+              </td>
+              <td v-if="showDepthColumn" class="depth" :style="columnStyleMap['depth']">
+                {{ t.depth }}
+              </td>
+              <td v-if="showNodesColumn" class="nodes" :style="columnStyleMap['nodes']">
+                {{ t.nodes }}
+              </td>
+              <td v-if="showScoreColumn" class="score" :style="columnStyleMap['score']">
+                {{ t.score }}
+              </td>
+              <td
+                v-if="showScoreColumn"
+                class="score-flag"
+                :style="columnStyleMap['score-flag']"
+              ></td>
               <td class="text">{{ t.pv }}</td>
             </tr>
           </thead>
@@ -132,7 +150,7 @@ let ignoreSuggestionsCountLimit = false;
 <script setup lang="ts">
 import { t } from "@/common/i18n";
 import { USIInfo, USIPlayerMonitor } from "@/renderer/store/usi";
-import { computed, ref } from "vue";
+import { computed, onBeforeUpdate, reactive, ref } from "vue";
 import { IconType } from "@/renderer/assets/icons";
 import Icon from "@/renderer/view/primitive/Icon.vue";
 import { EvaluationViewFrom } from "@/common/settings/app";
@@ -157,7 +175,24 @@ const props = defineProps({
 });
 
 const store = useStore();
+const listHeader = ref();
+const columnWidthMap = {} as { [key: string]: number };
+const columnStyleMap = reactive({} as { [key: string]: { minWidth: string } });
 const multiPVInput = ref();
+
+onBeforeUpdate(() => {
+  for (const column of (listHeader.value as HTMLElement).childNodes) {
+    if (column instanceof HTMLElement) {
+      const className = column.className;
+      const width = column.offsetWidth;
+      const oldWidth = columnWidthMap[className] || 0;
+      if (width > oldWidth) {
+        columnWidthMap[className] = width;
+        columnStyleMap[className] = { minWidth: `${width}px` };
+      }
+    }
+  }
+});
 
 const isResearchSession = computed(() => {
   return store.isResearchEngineSessionID(props.monitor.sessionID);
@@ -316,6 +351,7 @@ tr.list-item.highlight > td {
   border-bottom: dashed var(--text-separator-color) 1px;
 }
 table.list td {
+  box-sizing: border-box;
   border: 0;
   padding: 0;
   height: 100%;
