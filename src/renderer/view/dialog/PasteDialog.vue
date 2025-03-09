@@ -11,7 +11,7 @@
           {{ t.desktopVersionPastesAutomatically }}
         </div>
         <textarea ref="textarea"></textarea>
-        <ToggleButton v-model:value="doNotShowAgain" :label="t.doNotShowAgain" />
+        <ToggleButton v-if="isNative()" v-model:value="doNotShowAgain" :label="t.doNotShowAgain" />
       </div>
       <div class="main-buttons">
         <button data-hotkey="Enter" autofocus @click="onOk">
