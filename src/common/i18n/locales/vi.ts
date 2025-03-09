@@ -549,12 +549,14 @@ export const vi: Texts = {
   logsRecommendedForCSAProtocol: "Chúng tôi đề xuất bật tùy chọn log cho phương thức CSA.",
   pleaseEnableLogsAndRestart: "Vui lòng bật tùy chọn log và khởi động lại ứng dụng.",
   notSendPVOnStandardCSAProtocol: "PV không được gửi trong phương thức CSA tiêu chuẩn.",
-  csaProtocolSendPlaintextPassword: "Trong phương thức CSA, mật khẩu thô được gửi.",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "Mật khẩu sẽ được lưu thô vì hệ điều hành không hỗ trợ mã hóa.",
   pleaseUncheckSaveHistoryIfNotWantSave: "Vui lòng bỏ chọn lưu lịch sử nếu không muốn lưu.",
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory:
-    "Trong phương thức CSA, mật khẩu thô được gửi bất kể lịch sử.",
+  floodgatePasswordShouldStartWithGameName:
+    "Floodgateのパスワードはゲーム名で始まる必要があります。", // TODO: Translate
+  thisIsNotFloodgateOfficialGameName: "これはFloodgate公式のゲーム名ではありません。", // TODO: Translate
+  yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
+    "パスワードがFloodgateの要件を満たしていない可能性があります。続行しますか？", // TODO: Translate
   whenNewVersionIsAvailableItWillBeNotified: "Sẽ có thông báo khi có phiên bản mới.",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     'Vui lòng thử tin nhắn "Đây là thông báo thử." bằng nút trên.',

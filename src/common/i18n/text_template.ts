@@ -540,10 +540,11 @@ export type Texts = {
   logsRecommendedForCSAProtocol: string;
   pleaseEnableLogsAndRestart: string;
   notSendPVOnStandardCSAProtocol: string;
-  csaProtocolSendPlaintextPassword: string;
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable: string;
   pleaseUncheckSaveHistoryIfNotWantSave: string;
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory: string;
+  floodgatePasswordShouldStartWithGameName: string;
+  thisIsNotFloodgateOfficialGameName: string;
+  yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue: string;
   whenNewVersionIsAvailableItWillBeNotified: string;
   pleaseCheckMessageThisIsTestNotificationByAboveButton: string;
   ifNotWorkYouShouldAllowNotificationOnOSSetting: string;

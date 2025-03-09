@@ -86,3 +86,14 @@ export enum CSAGameResult {
   CENSORED = "censored",
   CHUDAN = "chudan",
 }
+
+export const officialCSAServerDomain = "gserver.computer-shogi.org";
+export const floodgateDomain = "wdoor.c.u-tokyo.ac.jp";
+
+export function isOfficialFloodgateGameName(gameNameOrPassword: string): boolean {
+  return /^floodgate-[0-9]+-[0-9]+F?$/.test(gameNameOrPassword.split(",")[0]);
+}
+
+export function isValidFloodgatePassword(password: string): boolean {
+  return /^[^,]+-[0-9]+-[0-9]+F?(-[BWbw])?,/.test(password);
+}
