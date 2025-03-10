@@ -42,7 +42,7 @@ export const vi: Texts = {
   deleteMoves: "Xóa từ nước hiện tại trở đi",
   view: "Hiển thị",
   openLayoutManager: "Mở trình quản lý bố cục",
-  openMonitorWindow: "監視ウィンドウ", // TODO: translate
+  openMonitorWindow: "Mở cửa sổ quản lý",
   toggleFullScreen: "Bật/tắt toàn màn hình",
   defaultFontSize: "Cỡ chữ tiêu chuẩn",
   increaseFontSize: "Cỡ chữ lớn",
@@ -84,7 +84,7 @@ export const vi: Texts = {
   openUserGuide: "Hướng dẫn sử dụng",
   openLatestReleasePage: "Mở trang của bản mới nhất",
   openStableReleasePage: "Mở trang của bản ổn định",
-  license: "License", // TODO: translate
+  license: "Giấy phép",
   inputs: "Đầu vào",
   outputs: "Đầu ra",
   format: "Định dạng",
@@ -144,7 +144,7 @@ export const vi: Texts = {
   draw: "Hòa",
   impass: "Bế tắc",
   repetitionDraw: "Hòa do lặp nước",
-  repetition: "千日手", // TODO: translate
+  repetition: "Hòa do lặp nước",
   mate: "Chiếu hết",
   noMate: "Không chiếu hết",
   mateSearch: "Tìm chiếu hết",
@@ -183,9 +183,9 @@ export const vi: Texts = {
   snow: "Tuyết rơi",
   darkGreen: "Xanh lá đậm",
   dark: "Tối",
-  boardLayout: "盤レイアウト", // TODO: translate
-  compact: "コンパクト", // TODO: translate
-  portrait: "ポートレイト", // TODO: translate
+  boardLayout: "Bố cục bàn cờ",
+  compact: "Gọn",
+  portrait: "Dọc",
   piece: "Quân",
   singleKanjiPiece: "Nhất tự",
   singleKanjiGothicPiece: "Nhất tự (Gothic)",
@@ -225,13 +225,13 @@ export const vi: Texts = {
   autoSavingDirectory: "Thư mục lưu tự động",
   recordFileName: "Tên tệp kỳ phổ",
   select: "Chọn",
-  shuffle: "シャッフル", // TODO: translate
-  csaV3Output: "CSA V3 で出力", // TODO: translate
+  shuffle: "Trộn", 
+  csaV3Output: "Xuất dưới dạng CSA v3",
   positionOfUSIOutput: "Định dạng thế cờ USI",
   movesOfUSIOutput: "Định dạng kỳ phổ USI",
   onlySFEN: "Chỉ SFEN",
-  pasteDialog: "貼り付けダイアログ", // TODO: translate
-  readOnlyThreshold: "読み専モード閾値", // TODO: translate
+  pasteDialog: "Hộp thoại dán", 
+  readOnlyThreshold: "Ngưỡng mở dưới dạng chỉ đọc", 
   usiProtocol: "Định dạng USI",
   translateOptionName: "Dịch tên tùy chọn",
   functionalOnJapaneseOnly: "Chỉ dùng cho bản tiếng Nhật",
@@ -270,7 +270,7 @@ export const vi: Texts = {
   swapEachTurnChange: "Đổi mỗi lượt",
   alwaysSenteIsPositive: "Tiên luôn dương",
   signOfEvaluation: "Dấu giá trị đánh giá",
-  maxArrows: "矢印の表示数", // TODO: translate
+  maxArrows: "Số mũi tên hiển thị",
   winRateCoefficient: "Hệ số tỷ lệ thắng",
   monitor: "Theo dõi",
   hideTabView: "Ẩn",
@@ -282,22 +282,22 @@ export const vi: Texts = {
   goteOrUwate: "Hậu thủ (Thượng thủ)",
   uwate: "Thượng thủ",
   swapSenteGote: "Đổi Tiên/Hậu",
-  pieceToss: "振り駒", // TODO: translate
+  pieceToss: "Furigoma",
   currentPosition: "Thế cờ hiện tại",
-  positionList: "局面集", // TODO: translate
+  positionList: "Danh sách thế cờ",
   enableEngineTimeout: "Bật hết giờ phần mềm",
   setDifferentTimeForGote: "Đặt thời gian khác cho Hậu",
   nextTurn: "Lượt đi",
   elapsedTime: "Thời gian dùng tổng cộng",
-  elapsed: "Thời gian dùng trong nước này",
+  elapsed: "T.gian",
   rank: "Hạng",
   depth: "Độ sâu",
   searchEngine: "Phần mềm",
   ponder: "Đọc trước",
   numberOfThreads: "Luồng",
-  suggestionsCount: "Nhiều biến", // TODO: 日本語が「マルチPV」から「候補手の数」へ変更されたのでそれを反映したい。
+  suggestionsCount: "Số nước đề xuất", 
   startPosition: "Thế cờ ban đầu",
-  beginFromThisPosition: "この局面から開始", // TODO: translate
+  beginFromThisPosition: "Bắt đầu từ thế cờ này", 
   maxMoves: "Số nước tối đa",
   gameRepetition: "Lặp lại thế cờ",
   jishogi: "Bế tắc",
@@ -341,20 +341,20 @@ export const vi: Texts = {
   earlyPonder: "Tính nhanh",
   enginePath: "Đường dẫn phần mềm",
   openDirectory: "Mở đường dẫn",
-  replaceEnginePath: "エンジン再選択", // TODO: translate
+  replaceEnginePath: "Chọn lại đường dẫn phần mềm",
   displayName: "Tên hiển thị",
   invoke: "Thực hiện",
   resetToEngineDefaultValues: "Đặt lại về giá trị ban đầu",
   defaultValue: "Giá trị mặc định",
-  freeTextUnsafe: "自由入力(非推奨)", // TODO: translate
+  freeTextUnsafe: "Nhập tự do (không hỗ trợ)",
   noEngineRegistered: "Không có phần mềm",
   duplicate: "Sao chép",
   add: "Thêm",
-  compareAndMerge: "比較・マージ", // TODO: translate
-  compareEngineSettings: "エンジン設定の比較", // TODO: translate
-  noDifference: "差分なし", // TODO: translate
-  mergeToLeft: "左へマージ", // TODO: translate
-  mergeToRight: "右へマージ", // TODO: translate
+  compareAndMerge: "So sánh/sáp nhập", 
+  compareEngineSettings: "So sánh cài đặt phần mềm", 
+  noDifference: "Không khác nhau",
+  mergeToLeft: "Sáp nhập sang trái", 
+  mergeToRight: "Sáp nhập sang phải", 
   recommended: "Đề xuất",
   import: "Nhập",
   saveAndClose: "Lưu và đóng",
@@ -371,7 +371,7 @@ export const vi: Texts = {
   ok: "OK",
   cancel: "Hủy",
   back: "Quay lại",
-  doNotShowAgain: "次回から表示を省略", // TODO: translate
+  doNotShowAgain: "Không hiện lại lần sau",
   name: "Tên",
   prediction: "Dự đoán",
   best: "Tốt nhất",
@@ -406,7 +406,7 @@ export const vi: Texts = {
   note: "Ghi chú",
   senteShortName: "Tiên thủ (ngắn)",
   goteShortName: "Hậu thủ (ngắn)",
-  scorekeeper: "記録係", // TODO: translate
+  scorekeeper: "Người ghi chép", 
   opusNo: "Số hiệu",
   opusName: "Tên tác phẩm",
   publishedBy: "Xuất bản bởi",
@@ -442,8 +442,8 @@ export const vi: Texts = {
   dubiousThreshold: "Ngưỡng nước không tốt",
   mistakeThreshold: "Ngưỡng nước sai lầm",
   blunderThreshold: "Ngưỡng nước sai lầm ngớ ngẩn",
-  maxPVLength: "PV表示手数", // TODO: translate
-  commentFormat: "コメントの形式", // TODO: translate
+  maxPVLength: "Số nước đọc hiển thị",
+  commentFormat: "Định dạng chú thích", 
   gothic: "Gothic",
   mincho: "Minh thể",
   appVersion: "Phiên bản ứng dụng",
@@ -453,7 +453,7 @@ export const vi: Texts = {
   backgroundColor: "Màu nền",
   dialogBackdrop: "Nền hộp thoại",
   record: "Kỳ phổ",
-  book: "定跡", // TODO: translate
+  book: "Định thức",
   chart: "Đồ thị",
   analytics: "Phân tích",
   controlGroup: "Menu",
@@ -480,16 +480,16 @@ export const vi: Texts = {
   insert: "Chèn",
   bringForward: "Đưa lên trên",
   sendBackward: "Đẩy xuống dưới",
-  move: "指し手", // TODO: translate
-  bookMove: "定跡手", // TODO: translate
-  play: "着手", // TODO: translate
-  edit: "編集", // TODO: translate
-  addMoves: "指し手追加", // TODO: translate
-  freq: "出現頻度", // TODO: translate
-  frequency: "出現頻度", // TODO: translate
-  new: "新規", // TODO: translate
-  duplicated: "重複", // TODO: translate
-  moveEntry: "登録手数", // TODO: translate
+  move: "Nước đi",
+  bookMove: "Nước định thức",
+  play: "Chơi",
+  edit: "Sửa",
+  addMoves: "Thêm nước đi",
+  freq: "Tần suất", 
+  frequency: "Tần suất xuất hiện", 
+  new: "Mới", 
+  duplicated: "Trùng lặp", 
+  moveEntry: "Nước đã được lưu", 
   updatedAt: "Cập nhật lúc",
   createdAt: "Tạo lúc",
   lastSent: "Gửi lần cuối",
@@ -514,18 +514,18 @@ export const vi: Texts = {
   collapseSequentialSpaces: "Gộp dấu cách liền nhau",
   typeCustomTitleHere: "Nhập tiêu đề",
   displayEmptyElements: "Hiện các mục trống",
-  share: "Share", // TODO: translate
+  share: "Chia sẻ",
   waitingForNewGame: "Đang chờ ván mới.",
   waitingForPlayerSetup: "Đang chờ người chơi chuẩn bị.",
   insertedComment: "Đã chèn bình luận.",
   conversionCompleted: "Chuyển đổi hoàn tất.",
-  human: "人", // TODO: translate
-  randomPlayer: "ランダムプレイヤー", // TODO: translate
-  beginner: "初心者", // TODO: translate
-  staticRook: "居飛車", // TODO: translate
-  rangingRook: "振り飛車", // TODO: translate
-  pleaseSelectEngines: "エンジンを選択してください。", // TODO: translate
-  thisItemCannotBeMerged: "この項目はマージできません。", // TODO: translate
+  human: "Người",
+  randomPlayer: "Người chơi ngẫu nhiên", 
+  beginner: "Người mới học",
+  staticRook: "Cư Phi Xa",
+  rangingRook: "Chấn Phi Xa",
+  pleaseSelectEngines: "Vui lòng chọn phần mềm.",
+  thisItemCannotBeMerged: "Mục này không thể sáp nhập.",
   tryingToConnectAndLoginToCSAServer: "Đang kết nối và đăng nhập vào máy chủ CSA.",
   inBrowserLogsOutputToConsoleAndIgnoreThisSetting:
     "*Bản trình duyệt sẽ xuất log ra trình nhắc lệnh và bỏ qua cài đặt này.",
@@ -605,7 +605,7 @@ export const vi: Texts = {
   invalidBoard: "Bàn cờ không hợp lệ",
   invalidHandPiece: "Quân trên tay không hợp lệ",
   invalidUSI: "USI không hợp lệ",
-  engineProcessWasClosedUnexpectedly: "エンジンプロセスが予期せず終了しました。", // TODO: translate
+  engineProcessWasClosedUnexpectedly: "Phần mềm đã bị đóng bất ngờ.", 
   backgroundImageFileNotSelected: "Chưa chọn ảnh nền.",
   pieceImageFileNotSelected: "Chưa chọn ảnh quân cờ.",
   boardImageFileNotSelected: "Chưa chọn ảnh bàn cờ.",
@@ -653,24 +653,24 @@ export const vi: Texts = {
   destinationDirectoryNotSpecified: "Đường dẫn đến chưa được đặt.",
   destinationFileNotSpecified: "Tệp đến chưa được đặt.",
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
-    "保存していない内容は失われます。定跡を初期化しますか？", // TODO: translate
+    "Tất cả dữ liệu chưa lưu sẽ bị mất. Bạn có muốn đặt lại dữ liệu định thức?", 
   bookDataOpendAsReadOnlyModeBecauseOfLargeFile:
-    "定跡ファイルのサイズが大きいため読み込み専用モードで開きます。", // TODO: translate
+    "Do kích cỡ tệp quá lớn, dữ liệu định thức được mở dưới dạng chỉ đọc.", 
   youCanChangeFileSizeThresholdFromPreferencesDialog:
-    "アプリ設定からファイルサイズの閾値を変更できます。", // TODO: translate
-  bookMovesWereImported: "定跡データをインポートしました。", // TODO: translate
+    "Bạn có thể chỉnh giới hạn kích cỡ tệp từ cài đặt.", 
+  bookMovesWereImported: "Dữ liệu định thức đã được nhập thành công.", 
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
-    "保存されていない定跡があります。破棄してアプリを終了しますか？", // TODO: translate
-  sourceRecordFileNotSet: "棋譜ファイルが指定されていません。", // TODO: translate
-  sfenFileImportIsNotSupported: ".sfen はサポートされていません。", // TODO: translate
-  sourceDirectoryNotSet: "フォルダを選択してください。", // TODO: translate
-  minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。", // TODO: translate
-  playerNameNotSet: "対局者名が設定されていません。", // TODO: translate
+    "Có các nước định thức chưa lưu. Bạn có muốn hủy bỏ chúng và đóng ứng dụng?", 
+  sourceRecordFileNotSet: "Chưa chỉ định tệp kỳ phổ gốc.", 
+  sfenFileImportIsNotSupported: "Không hỗ trợ định dạng .sfen.", 
+  sourceDirectoryNotSet: "Vui lòng chọn một tập tin.", 
+  minPlyMustBeLessThanMaxPly: "Số nước ít nhất phải nhỏ hơn số nước lớn nhất.", 
+  playerNameNotSet: "Tên người chơi chưa được đặt.", 
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
-    "互換性のないオプションがある場合それらは破棄されます。エンジンを置き換えますか？", // TODO: translate
+    "Các cài đặt không tương thích sẽ bị xóa bỏ. Bạn có thực sự muốn thay đổi đường dẫn phần mềm?", 
   largeSuggestionsCountMayCausePerformanceDegradation:
-    "候補手を増やしすぎると動作が重くなる可能性があります。", // TODO: translate
-  doYouReallyWantToIncreaseTheSuggestionsCount: "本当に候補手の数を増やしますか？", // TODO: translate
+    "Số nước đề xuất quá lớn có thể làm ứng dụng chậm đi đáng kể.",
+  doYouReallyWantToIncreaseTheSuggestionsCount: "Bạn có thực sự muốn tăng số nước đề xuất?", 
   totalNumber: (n: number) => `Tổng: ${n}`,
   number: (n: number) => "" + n,
   tryToReloginToCSAServerNSecondsLater: (n) => `Vui lòng đăng nhập lại sau ${n} giây.`,
@@ -704,15 +704,15 @@ export const vi: Texts = {
     return `Phiên bản mới nhất ${version} đã ra mắt!`;
   },
   doYouReallyWantToRemoveBookMove(name: string) {
-    return `定跡手 ${name} を削除します。よろしいですか？`; // TODO: translate
+    return `Bạn có thực sự muốn xóa nước định thức ${name}?`; 
   },
   unexpectedRecordFileExtension(path: string) {
-    return `サポートされていない棋譜の拡張子です。 [${path}]`; // TODO: translate
+    return `Định dạng kỳ phổ không được hỗ trợ. [${path}]`;
   },
   fileNotFound(path: string) {
-    return `ファイルが見つかりません。 [${path}]`; // TODO: translate
+    return `Không tìm thấy tệp. [${path}]`; 
   },
   directoryNotFound(path: string) {
-    return `フォルダが見つかりません。 [${path}]`; // TODO: translate
+    return `Không tìm thấy tập tin. [${path}]`; 
   },
 };
