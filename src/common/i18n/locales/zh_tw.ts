@@ -42,7 +42,7 @@ export const zh_tw: Texts = {
   deleteMoves: "刪除現在位置後的棋譜",
   view: "表示",
   openLayoutManager: "開啟佈局管理員",
-  openMonitorWindow: "監視ウィンドウ", // TODO: translate
+  openMonitorWindow: "監視視窗",
   toggleFullScreen: "切換全螢幕",
   defaultFontSize: "預設字體尺寸",
   increaseFontSize: "增加字體尺寸",
@@ -81,7 +81,7 @@ export const zh_tw: Texts = {
   openUserGuide: "使用教學",
   openLatestReleasePage: "前往最新版發布頁面",
   openStableReleasePage: "前往安定版發布頁面",
-  license: "License", // TODO: translate
+  license: "授權條款", 
   inputs: "輸入目錄",
   outputs: "輸出目錄",
   format: "格式",
@@ -180,9 +180,9 @@ export const zh_tw: Texts = {
   snow: "雪",
   darkGreen: "深綠",
   dark: "深色主題",
-  boardLayout: "盤レイアウト", // TODO: translate
-  compact: "コンパクト", // TODO: translate
-  portrait: "ポートレイト", // TODO: translate
+  boardLayout: "棋盤設計", 
+  compact: "緊湊", 
+  portrait: "直向", 
   piece: "棋駒",
   singleKanjiPiece: "一文字駒",
   singleKanjiGothicPiece: "一文字駒（黑體）",
@@ -222,13 +222,13 @@ export const zh_tw: Texts = {
   autoSavingDirectory: "棋譜自動保存地點",
   recordFileName: "棋譜檔案名稱",
   select: "選擇",
-  shuffle: "シャッフル", // TODO: translate
-  csaV3Output: "CSA V3 で出力", // TODO: translate
+  shuffle: "隨機",
+  csaV3Output: "使用 CSA V3 輸出", 
   positionOfUSIOutput: "USI 局面紀錄格式",
   movesOfUSIOutput: "USI 棋譜紀錄格式",
   onlySFEN: "只有 SFEN",
-  pasteDialog: "貼り付けダイアログ", // TODO: translate
-  readOnlyThreshold: "読み専モード閾値", // TODO: translate
+  pasteDialog: "貼上視窗",
+  readOnlyThreshold: "唯讀模式閾值",
   usiProtocol: "USI協定",
   translateOptionName: "選項名稱翻譯",
   functionalOnJapaneseOnly: "只有在日文選擇時有效",
@@ -267,7 +267,7 @@ export const zh_tw: Texts = {
   swapEachTurnChange: "手番側有利時為正值",
   alwaysSenteIsPositive: "先手有利時為正值",
   signOfEvaluation: "評價值符號",
-  maxArrows: "矢印の表示数", // TODO: translate
+  maxArrows: "箭頭顯示數量",
   winRateCoefficient: "勝率換算係數",
   monitor: "引擎監視",
   hideTabView: "最小化",
@@ -279,9 +279,9 @@ export const zh_tw: Texts = {
   goteOrUwate: "後手（上手）",
   uwate: "上手",
   swapSenteGote: "先後交換",
-  pieceToss: "振り駒", // TODO: translate
+  pieceToss: "振駒", 
   currentPosition: "現在局面",
-  positionList: "局面集", // TODO: translate
+  positionList: "局面列表",
   enableEngineTimeout: "開啟引擎時間限制",
   setDifferentTimeForGote: "先後手時間不相同",
   nextTurn: "手番",
@@ -292,9 +292,9 @@ export const zh_tw: Texts = {
   searchEngine: "引擎",
   ponder: "對方手番時運算 (Ponder)",
   numberOfThreads: "執行緒數",
-  suggestionsCount: "多重PV", // TODO: 日本語が「マルチPV」から「候補手の数」へ変更されたのでそれを反映したい。
+  suggestionsCount: "候補手數量", 
   startPosition: "開始局面",
-  beginFromThisPosition: "この局面から開始", // TODO: translate
+  beginFromThisPosition: "自此局面開始", 
   maxMoves: "最大手數",
   gameRepetition: "連續對局",
   jishogi: "持將棋",
@@ -338,20 +338,20 @@ export const zh_tw: Texts = {
   earlyPonder: "預先Ponder",
   enginePath: "場所",
   openDirectory: "開啟資料夾",
-  replaceEnginePath: "エンジン再選択", // TODO: translate
+  replaceEnginePath: "重新選擇引擎", 
   displayName: "表示名稱",
   invoke: "執行",
   resetToEngineDefaultValues: "回復至引擎預設設定",
   defaultValue: "預設値",
-  freeTextUnsafe: "自由入力(非推奨)", // TODO: translate
+  freeTextUnsafe: "自由輸入（不建議）", 
   noEngineRegistered: "尚未登錄引擎。",
   duplicate: "複製",
   add: "追加",
-  compareAndMerge: "比較・マージ", // TODO: translate
-  compareEngineSettings: "エンジン設定の比較", // TODO: translate
-  noDifference: "差分なし", // TODO: translate
-  mergeToLeft: "左へマージ", // TODO: translate
-  mergeToRight: "右へマージ", // TODO: translate
+  compareAndMerge: "比較並合併", 
+  compareEngineSettings: "引擎設定比較", 
+  noDifference: "無更改", 
+  mergeToLeft: "合併至左側", 
+  mergeToRight: "合併至右側", 
   recommended: "推薦",
   import: "匯入",
   saveAndClose: "保存並關閉",
@@ -368,7 +368,7 @@ export const zh_tw: Texts = {
   ok: "OK",
   cancel: "取消",
   back: "返回",
-  doNotShowAgain: "次回から表示を省略", // TODO: translate
+  doNotShowAgain: "不再顯示", 
   name: "名稱",
   prediction: "預測",
   best: "最善",
@@ -439,8 +439,8 @@ export const zh_tw: Texts = {
   dubiousThreshold: "疑問手閾値",
   mistakeThreshold: "惡手閾値",
   blunderThreshold: "大惡手閾値",
-  maxPVLength: "PV表示手数", // TODO: translate
-  commentFormat: "コメントの形式", // TODO: translate
+  maxPVLength: "PV表示手數", 
+  commentFormat: "註解形式", 
   gothic: "黑體",
   mincho: "明體",
   appVersion: "軟體版本",
@@ -448,9 +448,9 @@ export const zh_tw: Texts = {
   stable: "安定版",
   latest: "最新版",
   backgroundColor: "背景顏色",
-  dialogBackdrop: "ダイアログ表示中の暗転", // TODO: translate
+  dialogBackdrop: "對話窗背景", 
   record: "棋譜",
-  book: "定跡", // TODO: translate
+  book: "定跡", 
   chart: "圖表",
   analytics: "解析",
   controlGroup: "選單",
@@ -475,18 +475,18 @@ export const zh_tw: Texts = {
   headers: "解析表頭",
   playButton: "再現按鈕",
   insert: "插入",
-  bringForward: "前面へ", // TODO: translate
-  sendBackward: "背面へ", // TODO: translate
-  move: "指し手", // TODO: translate
-  bookMove: "定跡手", // TODO: translate
-  play: "着手", // TODO: translate
-  edit: "編集", // TODO: translate
+  bringForward: "移至前方",
+  sendBackward: "移至後方",
+  move: "著手",
+  bookMove: "定跡手",
+  play: "著手",
+  edit: "編輯",
   addMoves: "新增該手",
-  freq: "出現頻度", // TODO: translate
-  frequency: "出現頻度", // TODO: translate
-  new: "新規", // TODO: translate
-  duplicated: "重複", // TODO: translate
-  moveEntry: "登録手数", // TODO: translate
+  freq: "出現次數", 
+  frequency: "出現次數",
+  new: "新增", 
+  duplicated: "重複",
+  moveEntry: "匯入手數",
   updatedAt: "更新時間",
   createdAt: "建立時間",
   lastSent: "最後送出",
@@ -522,7 +522,7 @@ export const zh_tw: Texts = {
   staticRook: "居飛車",
   rangingRook: "振飛車",
   pleaseSelectEngines: "請選擇引擎。",
-  thisItemCannotBeMerged: "この項目はマージできません。", // TODO: translate
+  thisItemCannotBeMerged: "該項目無法被合併。",
   tryingToConnectAndLoginToCSAServer: "正在連接並登入CSA伺服器。",
   inBrowserLogsOutputToConsoleAndIgnoreThisSetting:
     "※在瀏覽器版本中紀錄會於 console 中顯示，並無視此處的設定。",
@@ -642,23 +642,23 @@ export const zh_tw: Texts = {
   destinationDirectoryNotSpecified: "輸出格式尚未被指定。",
   destinationFileNotSpecified: "輸出檔案尚未被指定。",
   anyUnsavedDataWillBeLostDoYouReallyWantToResetBookData:
-    "保存していない内容は失われます。定跡を初期化しますか？", // TODO: translate
+    "未保存內容可能會丟失。您確認要重置定跡嗎？",
   bookDataOpendAsReadOnlyModeBecauseOfLargeFile:
-    "定跡ファイルのサイズが大きいため読み込み専用モードで開きます。", // TODO: translate
+    "由於定跡檔案過大，將使用唯讀模式讀取。", 
   youCanChangeFileSizeThresholdFromPreferencesDialog:
-    "アプリ設定からファイルサイズの閾値を変更できます。", // TODO: translate
-  bookMovesWereImported: "定跡データをインポートしました。", // TODO: translate
+    "您可以自程式設定調整檔案大小閾值。", 
+  bookMovesWereImported: "已完成匯入定跡。",
   anyBookMovesAreUnsavedDoYouReallyWantToDiscardThemAndCloseTheApp:
-    "保存されていない定跡があります。破棄してアプリを終了しますか？", // TODO: translate
-  sourceRecordFileNotSet: "棋譜ファイルが指定されていません。", // TODO: translate
-  sfenFileImportIsNotSupported: ".sfen はサポートされていません。", // TODO: translate
-  sourceDirectoryNotSet: "フォルダを選択してください。", // TODO: translate
-  minPlyMustBeLessThanMaxPly: "最小手数は最大手数より小さくしてください。", // TODO: translate
-  playerNameNotSet: "対局者名が設定されていません。", // TODO: translate
+    "存在尚未保存的定跡。您確定要捨棄並關閉本程式嗎？", 
+  sourceRecordFileNotSet: "尚未指定棋譜檔案。", 
+  sfenFileImportIsNotSupported: "尚未支援 .sfen 檔案。", 
+  sourceDirectoryNotSet: "請選擇目錄。", 
+  minPlyMustBeLessThanMaxPly: "最小手數應小於最大手數。", 
+  playerNameNotSet: "尚未設定對局者名稱。",
   incompatibleOptionsWillBeDiscardedDoYouReallyWantToReplaceTheEnginePath:
-    "互換性のないオプションがある場合それらは破棄されます。エンジンを置き換えますか？", // TODO: translate
+    "不相容的設定將自動被移除。您確認要更換引擎嗎？",
   largeSuggestionsCountMayCausePerformanceDegradation:
-    "候補手を増やしすぎると動作が重くなる可能性があります。", // TODO: translate
+    "增加候補手可能會導致效能下降。", 
   doYouReallyWantToIncreaseTheSuggestionsCount: "您確定要增加候選手數嗎？",
   totalNumber: (n: number) => `總計 ${n} 筆`,
   number: (n: number) => `${n} 筆`,
@@ -693,15 +693,15 @@ export const zh_tw: Texts = {
     return `最新版 ${version} 已經發布！`;
   },
   doYouReallyWantToRemoveBookMove(name: string) {
-    return `定跡手 ${name} を削除します。よろしいですか？`; // TODO: translate
+    return `將移除定跡手 ${name}。確認移除嗎？`; 
   },
   unexpectedRecordFileExtension(path: string) {
-    return `サポートされていない棋譜の拡張子です。 [${path}]`; // TODO: translate
+    return `該檔案為不支援的棋譜副檔名。 [${path}]`; 
   },
   fileNotFound(path: string) {
-    return `ファイルが見つかりません。 [${path}]`; // TODO: translate
+    return `無法找到該檔案。 [${path}]`; 
   },
   directoryNotFound(path: string) {
-    return `フォルダが見つかりません。 [${path}]`; // TODO: translate
+    return `無法找到該目錄。 [${path}]`; 
   },
 };
