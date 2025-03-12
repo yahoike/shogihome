@@ -482,6 +482,7 @@ export const zh_tw: Texts = {
   play: "著手",
   edit: "編輯",
   addMoves: "新增該手",
+  flippedBook: "反転も検索", // TODO: Translate
   freq: "出現次數",
   frequency: "出現次數",
   new: "新增",

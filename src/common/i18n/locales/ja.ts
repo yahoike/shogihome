@@ -485,6 +485,7 @@ export const ja: Texts = {
   play: "着手",
   edit: "編集",
   addMoves: "指し手追加",
+  flippedBook: "反転も検索",
   freq: "出現頻度",
   frequency: "出現頻度",
   new: "新規",

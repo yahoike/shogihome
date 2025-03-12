@@ -485,6 +485,7 @@ export const vi: Texts = {
   play: "Chơi",
   edit: "Sửa",
   addMoves: "Thêm nước đi",
+  flippedBook: "反転も検索", // TODO: Translate
   freq: "Tần suất",
   frequency: "Tần suất xuất hiện",
   new: "Mới",

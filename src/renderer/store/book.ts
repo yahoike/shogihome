@@ -10,6 +10,7 @@ import { useConfirmationStore } from "./confirm";
 import { BookImportSettings, SourceType } from "@/common/settings/book";
 import { t } from "@/common/i18n";
 import { ImmutableRecord } from "tsshogi";
+import { flippedSFEN, flippedUSIMove } from "@/common/helpers/sfen";
 
 export class BookStore {
   private _mode: BookLoadingMode = "in-memory";
@@ -32,10 +33,10 @@ export class BookStore {
     return this._moves;
   }
 
-  private async reloadBookMoves() {
+  async reloadBookMoves() {
     try {
       const sfen = this.record.position.sfen;
-      const moves = await api.searchBookMoves(sfen);
+      const moves = await this.searchMoves(sfen);
       this._moves = moves.map((bookMove) => {
         const position = this.record.position.clone();
         const move = position.createMoveByUSI(bookMove.usi);
@@ -172,7 +173,21 @@ export class BookStore {
   }
 
   async searchMoves(sfen: string): Promise<BookMove[]> {
-    return api.searchBookMoves(sfen);
+    const moves = await api.searchBookMoves(sfen);
+    if (moves.length !== 0) {
+      return moves;
+    }
+    const appSettings = useAppSettings();
+    if (!appSettings.flippedBook) {
+      return [];
+    }
+    return (await api.searchBookMoves(flippedSFEN(sfen))).map((move) => {
+      move.usi = flippedUSIMove(move.usi);
+      if (move.usi2) {
+        move.usi2 = flippedUSIMove(move.usi2);
+      }
+      return move;
+    });
   }
 
   importBookMoves(settings: BookImportSettings) {

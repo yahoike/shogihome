@@ -17,6 +17,11 @@
         <button @click="onOpenBook">{{ t.open }}</button>
         <button :disabled="!isBookOperational" @click="onSaveBook">{{ t.saveAs }}</button>
         <button :disabled="!isBookOperational" @click="onAddBookMoves">{{ t.addMoves }}</button>
+        <ToggleButton
+          :value="appSettings.flippedBook"
+          :label="t.flippedBook"
+          @update:value="onUpdateFlippedBook"
+        />
       </div>
       <BookMoveDialog
         v-if="editingData"
@@ -45,9 +50,12 @@ import { t } from "@/common/i18n";
 import { useConfirmationStore } from "@/renderer/store/confirm";
 import BookView from "@/renderer/view/primitive/BookView.vue";
 import { useErrorStore } from "@/renderer/store/error";
+import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
+import { useAppSettings } from "@/renderer/store/settings";
 
 const store = useStore();
 const bookStore = useBookStore();
+const appSettings = useAppSettings();
 
 const isBookOperational = computed(
   () => store.appState === AppState.NORMAL && bookStore.mode === "in-memory",
@@ -74,6 +82,12 @@ const onSaveBook = () => {
 
 const onAddBookMoves = () => {
   store.showAddBookMovesDialog();
+};
+
+const onUpdateFlippedBook = (value: boolean) => {
+  appSettings.updateAppSettings({ flippedBook: value }).then(() => {
+    bookStore.reloadBookMoves();
+  });
 };
 
 const playBookMove = (move: Move) => {
@@ -141,6 +155,9 @@ const onCancelEditBookMove = () => {
 }
 .control > button:not(:first-child) {
   margin-left: 2px;
+}
+.control > :not(:first-child) {
+  margin-left: 8px;
 }
 .book-list {
   height: calc(100% - 27px);

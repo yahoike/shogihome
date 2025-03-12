@@ -480,6 +480,7 @@ export type Texts = {
   play: string;
   edit: string;
   addMoves: string;
+  flippedBook: string;
   freq: string;
   frequency: string;
   new: string;
