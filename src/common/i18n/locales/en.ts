@@ -485,6 +485,7 @@ export const en: Texts = {
   play: "Play",
   edit: "Edit",
   addMoves: "Add Moves",
+  flippedBook: "Flipped Book",
   freq: "Freq.",
   frequency: "Frequency",
   new: "New",

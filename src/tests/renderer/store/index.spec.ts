@@ -127,14 +127,14 @@ describe("store/index", () => {
     mockMateSearchManager.prototype.on.mockReturnThis();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     vi.useRealTimers();
     vi.clearAllMocks();
     while (useMessageStore().hasMessage) {
       useMessageStore().dequeue();
     }
     useErrorStore().clear();
-    useAppSettings().updateAppSettings(defaultAppSettings());
+    await useAppSettings().updateAppSettings(defaultAppSettings());
   });
 
   it("updateUSIInfo", () => {

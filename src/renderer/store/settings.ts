@@ -171,6 +171,9 @@ class AppSettingsStore {
   get bookOnTheFlyThresholdMB(): number {
     return this.merged.bookOnTheFlyThresholdMB;
   }
+  get flippedBook(): boolean {
+    return this.merged.flippedBook;
+  }
   get translateEngineOptionName(): boolean {
     return this.merged.translateEngineOptionName;
   }

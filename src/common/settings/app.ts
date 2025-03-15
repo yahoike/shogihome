@@ -189,6 +189,7 @@ export type AppSettings = {
 
   // Opening Book
   bookOnTheFlyThresholdMB: number;
+  flippedBook: boolean;
 
   // Engine
   translateEngineOptionName: boolean;
@@ -332,6 +333,7 @@ export function defaultAppSettings(opt?: {
     enableUSIFileResign: false,
     showPasteDialog: true,
     bookOnTheFlyThresholdMB: 256,
+    flippedBook: true,
     translateEngineOptionName: true,
     engineTimeoutSeconds: 10,
     evaluationViewFrom: EvaluationViewFrom.EACH,
