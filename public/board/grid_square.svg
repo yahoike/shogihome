@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="432.64899mm" height="432.64899mm" viewBox="0 0 432.64899 432.64898" xmlns="http://www.w3.org/2000/svg">
   <g transform="translate(-228.61791,-250.41993)">
-    <g transform="matrix(0.49905371,0,0,0.45469912,222.90704,245.27802)" style="fill:none;stroke:#000;stroke-width:3.77865;stroke-linecap:square">
-      <!-- 外枠（9列×9行分） -->
-      <rect x="17.170895" y="17.594574" width="855.602118" height="939.06792"/>
+    <g transform="matrix(0.49905371,0,0,0.45469912,222.90704,245.27802)" style="fill:none;stroke:#000;stroke-width:2.8;stroke-linecap:square">
       <!-- 縦のグリッド線 (内側 8 本) -->
       <line x1="112.23779" y1="17.594574" x2="112.23779" y2="956.662494"/>
       <line x1="207.30469" y1="17.594574" x2="207.30469" y2="956.662494"/>
@@ -25,6 +23,7 @@
     </g>
   </g>
   <g transform="translate(1.0583324,1.0583338)" style="fill:#fff;fill-opacity:0;stroke:#000;stroke-width:3.61719;stroke-linecap:square">
+    <!-- 外枠 -->
     <rect x="0.7502625" y="0.75026119" width="429.0318" height="429.0318"/>
   </g>
 </svg>
