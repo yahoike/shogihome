@@ -82,7 +82,7 @@ function buildParams(size: number) {
     boardLineHeight: size * 0.088,
     boardBorderSize: size * 0.004,
     labelSize: size * 0.05,
-    labelFontSize: size * 0.04,
+    labelFontSize: size * 0.03,
     pieceSize: (size * 0.7) / 9,
     fontSize: size * 0.038,
     maxHandFontSize: size * 0.048,
