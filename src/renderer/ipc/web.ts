@@ -105,7 +105,10 @@ export const webAPI: Bridge = {
   async loadGameSettings(): Promise<string> {
     const json = localStorage.getItem(STORAGE_KEY.GAME_SETTINGS);
     if (!json) {
-      return JSON.stringify(defaultGameSettings());
+      return JSON.stringify({
+        ...defaultGameSettings(),
+        enableAutoSave: false,
+      });
     }
     return JSON.stringify({
       ...defaultGameSettings(),
