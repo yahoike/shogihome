@@ -24,6 +24,7 @@
           </div>
           <div v-else class="game">
             <BoardView
+              :layout-type="appSettings.boardLayoutType"
               :board-image-type="appSettings.boardImage"
               :custom-board-image-url="appSettings.boardImageFileURL"
               :board-grid-color="appSettings.boardGridColor || undefined"
