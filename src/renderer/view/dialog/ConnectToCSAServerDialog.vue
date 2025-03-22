@@ -7,8 +7,8 @@
           <div class="form-item-label-wide">{{ t.host }}</div>
           <input ref="host" class="long-text" list="csa-server-host" type="text" />
           <datalist id="csa-server-host">
-            <option value="gserver.computer-shogi.org"></option>
-            <option value="wdoor.c.u-tokyo.ac.jp"></option>
+            <option :value="officialCSAServerDomain"></option>
+            <option :value="floodgateDomain"></option>
             <option value="localhost"></option>
             <option value="127.0.0.1"></option>
           </datalist>
@@ -72,6 +72,7 @@ import ToggleButton from "@/renderer/view/primitive/ToggleButton.vue";
 import { useAppSettings } from "@/renderer/store/settings";
 import { Tab } from "@/common/settings/app";
 import { useErrorStore } from "@/renderer/store/error";
+import { floodgateDomain, officialCSAServerDomain } from "@/common/game/csa";
 
 const store = useStore();
 const dialog = ref();

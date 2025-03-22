@@ -550,12 +550,13 @@ export const en: Texts = {
   logsRecommendedForCSAProtocol: "Log settings are recommended for CSA protocol.",
   pleaseEnableLogsAndRestart: "Please enable log settings and restart this app.",
   notSendPVOnStandardCSAProtocol: "Client do not send PV on standard CSA protocol.",
-  csaProtocolSendPlaintextPassword: "On CSA protocol, client send plaintext password.",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "Password will saved as plaintext because OS side encryption is not available.",
   pleaseUncheckSaveHistoryIfNotWantSave: "Please uncheck Save History, if you don't want to save.",
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory:
-    "On CSA protocol, client send plaintext password regardless of history.",
+  floodgatePasswordShouldStartWithGameName: "Floodgate's password should start with game name.",
+  thisIsNotFloodgateOfficialGameName: "This is not Floodgate official game name.",
+  yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
+    "Your password does not meet Floodgate's requirements. Do you still want to continue?",
   whenNewVersionIsAvailableItWillBeNotified: "When new version is available, it will be notified.",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     'Please check the message "This is test notification." by above button.',
