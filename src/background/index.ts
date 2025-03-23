@@ -150,9 +150,7 @@ app.on("ready", () => {
   }
 
   // Set dock menu (MacOS only)
-  if (process.platform == "darwin") {
-    app.dock.setMenu(dockMenu);
-  }
+  app.dock?.setMenu(dockMenu);
 
   session.defaultSession.webRequest.onBeforeRequest((details, callback) => {
     validateHTTPRequest(details.method, details.url);

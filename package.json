@@ -63,7 +63,7 @@
     "log4js": "^6.7.0",
     "proper-lockfile": "^4.1.2",
     "semver": "^7.7.1",
-    "splitpanes": "^3.1.5",
+    "splitpanes": "^3.2.0",
     "tsshogi": "^1.8.0",
     "vue": "^3.4.34",
     "yaml": "^2.5.0"
@@ -87,7 +87,7 @@
     "archiver": "^7.0.1",
     "concurrently": "^9.0.1",
     "depcheck": "^1.4.7",
-    "electron": "^34.1.1",
+    "electron": "^35.0.3",
     "electron-builder": "^25.0.5",
     "electron-devtools-installer": "^4.0.0",
     "eslint": "^8.26.0",
