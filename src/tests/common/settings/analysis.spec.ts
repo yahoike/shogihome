@@ -1,4 +1,8 @@
-import { AnalysisSettings, normalizeAnalysisSettings } from "@/common/settings/analysis";
+import {
+  AnalysisSettings,
+  normalizeAnalysisSettings,
+  validateAnalysisSettings,
+} from "@/common/settings/analysis";
 import { CommentBehavior } from "@/common/settings/comment";
 import * as uri from "@/common/uri";
 
@@ -32,5 +36,70 @@ describe("settings/analysis", () => {
     };
     const result = normalizeAnalysisSettings(settings);
     expect(result).toEqual(settings);
+  });
+
+  it("validate", () => {
+    expect(
+      validateAnalysisSettings({
+        startCriteria: { enableNumber: false, number: 0 },
+        endCriteria: { enableNumber: false, number: 0 },
+        perMoveCriteria: { maxSeconds: 0 },
+        commentBehavior: CommentBehavior.INSERT,
+      }),
+    ).toBeUndefined();
+
+    expect(
+      validateAnalysisSettings({
+        startCriteria: { enableNumber: true, number: 30 },
+        endCriteria: { enableNumber: true, number: 120 },
+        perMoveCriteria: { maxSeconds: 0 },
+        commentBehavior: CommentBehavior.INSERT,
+      }),
+    ).toBeUndefined();
+
+    expect(
+      validateAnalysisSettings({
+        startCriteria: { enableNumber: true, number: 30 },
+        endCriteria: { enableNumber: true, number: 30 },
+        perMoveCriteria: { maxSeconds: 0 },
+        commentBehavior: CommentBehavior.INSERT,
+      }),
+    ).toBeUndefined();
+
+    expect(
+      validateAnalysisSettings({
+        startCriteria: { enableNumber: true, number: 0 },
+        endCriteria: { enableNumber: false, number: 0 },
+        perMoveCriteria: { maxSeconds: 0 },
+        commentBehavior: CommentBehavior.INSERT,
+      }),
+    ).toBeInstanceOf(Error);
+
+    expect(
+      validateAnalysisSettings({
+        startCriteria: { enableNumber: false, number: 0 },
+        endCriteria: { enableNumber: true, number: 0 },
+        perMoveCriteria: { maxSeconds: 0 },
+        commentBehavior: CommentBehavior.INSERT,
+      }),
+    ).toBeInstanceOf(Error);
+
+    expect(
+      validateAnalysisSettings({
+        startCriteria: { enableNumber: true, number: 30 },
+        endCriteria: { enableNumber: true, number: 29 },
+        perMoveCriteria: { maxSeconds: 0 },
+        commentBehavior: CommentBehavior.INSERT,
+      }),
+    ).toBeInstanceOf(Error);
+
+    expect(
+      validateAnalysisSettings({
+        startCriteria: { enableNumber: true, number: 30 },
+        endCriteria: { enableNumber: true, number: 120 },
+        perMoveCriteria: { maxSeconds: -1 },
+        commentBehavior: CommentBehavior.INSERT,
+      }),
+    ).toBeInstanceOf(Error);
   });
 });

@@ -88,7 +88,7 @@
 import { t } from "@/common/i18n";
 import { showModalDialog } from "@/renderer/helpers/dialog.js";
 import api from "@/renderer/ipc/api";
-import { defaultAnalysisSettings } from "@/common/settings/analysis";
+import { defaultAnalysisSettings, validateAnalysisSettings } from "@/common/settings/analysis";
 import { CommentBehavior } from "@/common/settings/comment";
 import { USIEngineLabel, USIEngines } from "@/common/settings/usi";
 import { useStore } from "@/renderer/store";
@@ -134,10 +134,16 @@ const onStart = () => {
     return;
   }
   const engine = engines.value.getEngine(engineURI.value);
-  store.startAnalysis({
+  const newSettings = {
     ...settings.value,
     usi: engine,
-  });
+  };
+  const error = validateAnalysisSettings(newSettings);
+  if (error) {
+    useErrorStore().add(error);
+    return;
+  }
+  store.startAnalysis(newSettings);
 };
 
 const onCancel = () => {
