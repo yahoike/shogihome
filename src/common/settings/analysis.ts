@@ -40,6 +40,7 @@ export type AnalysisSettings = {
   startCriteria: StartCriteria;
   endCriteria: EndCriteria;
   perMoveCriteria: PerMoveCriteria;
+  descending: boolean;
   commentBehavior: CommentBehavior;
 };
 
@@ -48,6 +49,7 @@ export function defaultAnalysisSettings(): AnalysisSettings {
     startCriteria: defaultStartCriteria(),
     endCriteria: defaultEndCriteria(),
     perMoveCriteria: defaultPerMoveCriteria(),
+    descending: false,
     commentBehavior: CommentBehavior.INSERT,
   };
 }

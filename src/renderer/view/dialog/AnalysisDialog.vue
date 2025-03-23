@@ -41,6 +41,9 @@
           />
           <div class="form-item-small-label">{{ t.plySuffix }}{{ t.toSuffix }}</div>
         </div>
+        <div class="form-item">
+          <ToggleButton v-model:value="settings.descending" :label="t.descending" />
+        </div>
       </div>
       <div class="form-group">
         <div>{{ t.endCriteria1Move }}</div>
