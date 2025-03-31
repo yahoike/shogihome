@@ -51,7 +51,7 @@ contextMenu({
   },
 });
 
-if (appSettings.disableHardwareAcceleration) {
+if (!appSettings.enableHardwareAcceleration) {
   app.disableHardwareAcceleration();
 }
 app.enableSandbox();

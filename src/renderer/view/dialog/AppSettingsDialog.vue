@@ -676,8 +676,8 @@
           </div>
           <!-- ハードウェアアクセラレーション無効化 -->
           <div v-if="isNative()" class="form-item">
-            <div class="form-item-label-wide">Disable HWA</div>
-            <ToggleButton v-model:value="update.disableHardwareAcceleration" />
+            <div class="form-item-label-wide">Enable HWA</div>
+            <ToggleButton v-model:value="update.enableHardwareAcceleration" />
             <button class="thin auxiliary" @click="aboutDisableHWASetting">
               <Icon :icon="IconType.HELP" />
             </button>
@@ -793,7 +793,7 @@ const update = ref({
   enableUSILog: org.enableUSILog,
   enableCSALog: org.enableCSALog,
   logLevel: org.logLevel,
-  disableHardwareAcceleration: org.disableHardwareAcceleration,
+  enableHardwareAcceleration: org.enableHardwareAcceleration,
 });
 const autoSaveDirectory = ref();
 const dialog = ref();

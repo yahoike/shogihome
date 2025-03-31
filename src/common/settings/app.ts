@@ -238,7 +238,7 @@ export type AppSettings = {
   emptyRecordInfoVisibility: boolean;
 
   // Low Level
-  disableHardwareAcceleration: boolean;
+  enableHardwareAcceleration: boolean;
 };
 
 export function isLogEnabled(type: LogType, appSettings: AppSettings): boolean {
@@ -369,7 +369,7 @@ export function defaultAppSettings(opt?: {
     lastImageExportFilePath: "",
     lastOtherFilePath: "",
     emptyRecordInfoVisibility: true,
-    disableHardwareAcceleration: false,
+    enableHardwareAcceleration: true,
   };
 }
 
