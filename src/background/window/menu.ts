@@ -14,6 +14,7 @@ import {
   onMenuEvent,
   onUpdateAppState,
   sendError,
+  sendMessage,
   updateAppSettings,
 } from "@/background/window/ipc";
 import { MenuEvent } from "@/common/control/menu";
@@ -515,6 +516,23 @@ function createMenuTemplate(window: BrowserWindow) {
         {
           label: t.notificationTest,
           click: sendTestNotification,
+        },
+        {
+          label: "GPU Information",
+          click: () => {
+            const gpuInfo = app.getGPUFeatureStatus();
+            sendMessage({
+              text: "GPU Information",
+              attachments: [
+                {
+                  type: "list",
+                  items: Object.entries(gpuInfo).map(([key, value]) => ({
+                    text: `${key}: ${value}`,
+                  })),
+                },
+              ],
+            });
+          },
         },
       ],
     },
