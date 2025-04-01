@@ -32,6 +32,7 @@ import { licenseURL, thirdPartyLicenseURL } from "@/common/links/github";
 import { materialIconsGuideURL } from "@/common/links/google";
 import { openPath } from "@/background/helpers/electron";
 import { createMonitorWindow } from "./monitor";
+import { createListItems } from "@/common/message";
 
 const isWin = process.platform === "win32";
 const isMac = process.platform === "darwin";
@@ -518,19 +519,30 @@ function createMenuTemplate(window: BrowserWindow) {
           click: sendTestNotification,
         },
         {
+          type: "separator",
+        },
+        {
+          label: "GPU Feature Status",
+          click: () => {
+            const status = app.getGPUFeatureStatus();
+            sendMessage({
+              text: "GPU Feature Status",
+              attachments: [{ type: "list", items: createListItems(status) }],
+            });
+          },
+        },
+        {
           label: "GPU Information",
           click: () => {
-            const gpuInfo = app.getGPUFeatureStatus();
-            sendMessage({
-              text: "GPU Information",
-              attachments: [
-                {
-                  type: "list",
-                  items: Object.entries(gpuInfo).map(([key, value]) => ({
-                    text: `${key}: ${value}`,
-                  })),
-                },
-              ],
+            app.getGPUInfo("complete").then((gpuInfo) => {
+              if (!(gpuInfo instanceof Object)) {
+                sendError(new Error("GPU Information is not an object"));
+                return;
+              }
+              sendMessage({
+                text: "GPU Information",
+                attachments: [{ type: "list", items: createListItems(gpuInfo) }],
+              });
             });
           },
         },
