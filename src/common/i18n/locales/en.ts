@@ -111,6 +111,8 @@ export const en: Texts = {
   gameProgress: "Game Progress",
   allGamesCompleted: "All Games Completed",
   wins: "Wins",
+  winsOnBlack: "Wins(Black)",
+  winsOnWhite: "Wins(White)",
   draws: "Draws",
   validGames: "Valid Games",
   invalidGames: "Invalid Games",

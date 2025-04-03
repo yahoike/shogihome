@@ -111,6 +111,8 @@ export const ja: Texts = {
   gameProgress: "対局の経過",
   allGamesCompleted: "連続対局終了",
   wins: "勝ち数",
+  winsOnBlack: "勝ち数(先手)",
+  winsOnWhite: "勝ち数(後手)",
   draws: "引き分け",
   validGames: "有効対局数",
   invalidGames: "無効対局数",

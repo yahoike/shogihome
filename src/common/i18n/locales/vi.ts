@@ -111,6 +111,8 @@ export const vi: Texts = {
   gameProgress: "Tiến triển ván đấu",
   allGamesCompleted: "Tất cả các ván đã kết thúc",
   wins: "Thắng",
+  winsOnBlack: "勝ち数(先手)", // TODO: Translate
+  winsOnWhite: "勝ち数(後手)", // TODO: Translate
   draws: "Hòa",
   validGames: "Ván hợp lệ",
   invalidGames: "Ván không hợp lệ",

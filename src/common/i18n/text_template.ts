@@ -106,6 +106,8 @@ export type Texts = {
   gameProgress: string;
   allGamesCompleted: string;
   wins: string;
+  winsOnBlack: string;
+  winsOnWhite: string;
   draws: string;
   validGames: string;
   invalidGames: string;
