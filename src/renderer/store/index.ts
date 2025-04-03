@@ -85,11 +85,19 @@ function getMessageAttachmentsByGameResults(results: GameResults): Attachment[] 
       items: [
         {
           text: results.player1.name,
-          children: [`${t.wins}: ${results.player1.win}`],
+          children: [
+            `${t.wins}: ${results.player1.win}`,
+            `${t.winsOnBlack}: ${results.player1.winBlack}`,
+            `${t.winsOnWhite}: ${results.player1.winWhite}`,
+          ],
         },
         {
           text: results.player2.name,
-          children: [`${t.wins}: ${results.player2.win}`],
+          children: [
+            `${t.wins}: ${results.player2.win}`,
+            `${t.winsOnBlack}: ${results.player2.winBlack}`,
+            `${t.winsOnWhite}: ${results.player2.winWhite}`,
+          ],
         },
         { text: `${t.draws}: ${results.draw}` },
         { text: `${t.validGames}: ${results.total - results.invalid}` },
