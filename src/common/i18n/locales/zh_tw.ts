@@ -366,6 +366,7 @@ export const zh_tw: Texts = {
   automaticBackup: "自動備份",
   restore: "復原",
   loadRecordFromWeb: "從網際網路取得棋譜",
+  backToMainBranch: "本譜に戻る", // TODO: Translate
   fetchLatestData: "取得最新資料",
   sourceURL: "來源網址",
   ok: "OK",

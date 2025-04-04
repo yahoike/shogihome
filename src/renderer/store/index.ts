@@ -1084,6 +1084,12 @@ class Store {
     return this.recordManager.swapWithPreviousBranch();
   }
 
+  backToMainBranch(): void {
+    if (this.appState === AppState.NORMAL) {
+      this.recordManager.resetAllBranchSelection();
+    }
+  }
+
   removeCurrentMove(): void {
     if (this.appState !== AppState.NORMAL) {
       return;

@@ -369,6 +369,7 @@ export const en: Texts = {
   automaticBackup: "Automatic Backup",
   restore: "Restore",
   loadRecordFromWeb: "Load Record from Web",
+  backToMainBranch: "Back to Main Branch",
   fetchLatestData: "Fetch Latest Data",
   sourceURL: "Source URL",
   ok: "OK",

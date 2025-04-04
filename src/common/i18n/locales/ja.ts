@@ -369,6 +369,7 @@ export const ja: Texts = {
   automaticBackup: "自動バックアップ",
   restore: "復元",
   loadRecordFromWeb: "Webの棋譜を取得",
+  backToMainBranch: "本譜に戻る",
   fetchLatestData: "最新データを取得",
   sourceURL: "ソースURL",
   ok: "OK",
