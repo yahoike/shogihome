@@ -33,10 +33,15 @@ function escapePath(path: string): string {
   return path.replaceAll(/[<>:"/\\|?*]/g, "_");
 }
 
+type RecordFileNameOptions = {
+  ply?: number;
+  template?: string;
+  extension?: string;
+};
+
 export function generateRecordFileName(
   metadata: ImmutableRecordMetadata,
-  template?: string,
-  extension?: string,
+  options: RecordFileNameOptions = {},
 ): string {
   // get metadata
   const datetime = getDateStringFromMetadata(metadata) || getDateString().replaceAll("/", "");
@@ -54,6 +59,7 @@ export function generateRecordFileName(
     title: title || "",
     sente: sente || "",
     gote: gote || "",
+    ply: options.ply !== undefined ? options.ply.toString() : "",
     hex5,
   };
   for (const key in params) {
@@ -63,15 +69,15 @@ export function generateRecordFileName(
   }
 
   // generate file name
-  let ret = template || defaultRecordFileNameTemplate;
+  let ret = options.template || defaultRecordFileNameTemplate;
   ret = escapePath(ret);
   for (const key in params) {
     const value = params[key];
     ret = escapePath(ret.replaceAll("{" + key + "}", value));
   }
   ret = ret.trim();
-  if (extension) {
-    ret = ret + (extension.startsWith(".") ? extension : "." + extension);
+  if (options.extension) {
+    ret = ret + (options.extension.startsWith(".") ? options.extension : "." + options.extension);
   } else {
     ret = ret + ".kif";
   }
