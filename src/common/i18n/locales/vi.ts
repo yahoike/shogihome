@@ -369,6 +369,7 @@ export const vi: Texts = {
   automaticBackup: "Sao lưu tự động",
   restore: "Khôi phục",
   loadRecordFromWeb: "Tải kỳ phổ từ mạng",
+  backToMainBranch: "本譜に戻る", // TODO: Translate
   fetchLatestData: "Lấy dữ liệu mới nhất",
   sourceURL: "URL nguồn",
   ok: "OK",

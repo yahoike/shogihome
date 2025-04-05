@@ -364,6 +364,7 @@ export type Texts = {
   automaticBackup: string;
   restore: string;
   loadRecordFromWeb: string;
+  backToMainBranch: string;
   fetchLatestData: string;
   sourceURL: string;
   ok: string;
