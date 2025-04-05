@@ -1,11 +1,7 @@
-import {
-  RecordMetadataKey,
-  getBlackPlayerName,
-  getWhitePlayerName,
-  ImmutableRecordMetadata,
-} from "tsshogi";
+import { getBlackPlayerName, getWhitePlayerName, ImmutableRecordMetadata } from "tsshogi";
 import { getDateString } from "@/common/helpers/datetime";
 import { defaultRecordFileNameTemplate } from "@/common/file/path";
+import { getDateStringFromMetadata, getRecordTitleFromMetadata } from "@/common/helpers/metadata";
 
 export function basename(path: string): string {
   return path.substring(Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\")) + 1);
@@ -37,31 +33,14 @@ function escapePath(path: string): string {
   return path.replaceAll(/[<>:"/\\|?*]/g, "_");
 }
 
-function getDateStringByMeta(metadata: ImmutableRecordMetadata): string {
-  const datetime =
-    metadata.getStandardMetadata(RecordMetadataKey.START_DATETIME) ||
-    metadata.getStandardMetadata(RecordMetadataKey.DATE);
-  if (datetime) {
-    return datetime.trim().replaceAll(" ", "_").replaceAll("/", "").replaceAll(":", "");
-  }
-  return getDateString().replaceAll("/", "");
-}
-
 export function generateRecordFileName(
   metadata: ImmutableRecordMetadata,
   template?: string,
   extension?: string,
 ): string {
   // get metadata
-  const datetime = getDateStringByMeta(metadata);
-  const title =
-    metadata.getStandardMetadata(RecordMetadataKey.TITLE) ||
-    metadata.getStandardMetadata(RecordMetadataKey.TOURNAMENT) ||
-    metadata.getStandardMetadata(RecordMetadataKey.OPUS_NAME) ||
-    metadata.getStandardMetadata(RecordMetadataKey.OPUS_NO) ||
-    metadata.getStandardMetadata(RecordMetadataKey.PLACE) ||
-    metadata.getStandardMetadata(RecordMetadataKey.POSTED_ON) ||
-    metadata.getStandardMetadata(RecordMetadataKey.AUTHOR);
+  const datetime = getDateStringFromMetadata(metadata) || getDateString().replaceAll("/", "");
+  const title = getRecordTitleFromMetadata(metadata);
   const sente = getBlackPlayerName(metadata);
   const gote = getWhitePlayerName(metadata);
   const hex5 = Math.floor(Math.random() * 0x100000)
