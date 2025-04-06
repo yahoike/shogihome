@@ -193,7 +193,7 @@ async function main() {
   const returnCode = returnCodeName() === "CRLF" ? "\r\n" : "\n";
 
   function onSaveRecord() {
-    const fileName = generateRecordFileName(recordManager.record.metadata, {
+    const fileName = generateRecordFileName(recordManager.record, {
       template:
         recordFileNameTemplate() ||
         cliSettings.recordFileNameTemplate ||
