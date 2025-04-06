@@ -60,7 +60,11 @@
           </div>
         </div>
         <div v-if="!isMainBranch">
-          <button class="branch-bottom-control" @click="emit('backToMainBranch')">
+          <button
+            class="branch-bottom-control"
+            :disabled="!operational"
+            @click="emit('backToMainBranch')"
+          >
             {{ backToMainBranchLabel }}
           </button>
         </div>
