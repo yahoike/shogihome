@@ -1,4 +1,4 @@
-import { getBlackPlayerName, getWhitePlayerName, ImmutableRecordMetadata } from "tsshogi";
+import { getBlackPlayerName, getWhitePlayerName, ImmutableRecord, Move } from "tsshogi";
 import { getDateString } from "@/common/helpers/datetime";
 import { defaultRecordFileNameTemplate } from "@/common/file/path";
 import { getDateStringFromMetadata, getRecordTitleFromMetadata } from "@/common/helpers/metadata";
@@ -34,16 +34,16 @@ function escapePath(path: string): string {
 }
 
 type RecordFileNameOptions = {
-  ply?: number;
   template?: string;
   extension?: string;
 };
 
 export function generateRecordFileName(
-  metadata: ImmutableRecordMetadata,
+  record: ImmutableRecord,
   options: RecordFileNameOptions = {},
 ): string {
   // get metadata
+  const metadata = record.metadata;
   const datetime = getDateStringFromMetadata(metadata) || getDateString().replaceAll("/", "");
   const title = getRecordTitleFromMetadata(metadata);
   const sente = getBlackPlayerName(metadata);
@@ -54,12 +54,16 @@ export function generateRecordFileName(
     .padStart(5, "0");
 
   // build parameter map
+  let ply = 0;
+  for (let node = record.first.next; node && node.move instanceof Move; node = node.next) {
+    ply = node.ply;
+  }
   const params: { [key: string]: string } = {
     datetime,
     title: title || "",
     sente: sente || "",
     gote: gote || "",
-    ply: options.ply !== undefined ? options.ply.toString() : "",
+    ply: ply.toString(),
     hex5,
   };
   for (const key in params) {

@@ -743,8 +743,7 @@ class Store {
 
   private onSaveRecord(): void {
     const appSettings = useAppSettings();
-    const fname = generateRecordFileName(this.recordManager.record.metadata, {
-      ply: this.recordManager.record.length,
+    const fname = generateRecordFileName(this.recordManager.record, {
       template: appSettings.recordFileNameTemplate,
       extension: appSettings.defaultRecordFileFormat,
     });
@@ -1233,8 +1232,7 @@ class Store {
         const appSettings = useAppSettings();
         const defaultPath =
           (!options?.format && path) ||
-          generateRecordFileName(this.recordManager.record.metadata, {
-            ply: this.recordManager.record.length,
+          generateRecordFileName(this.recordManager.record, {
             template: appSettings.recordFileNameTemplate,
             extension: options?.format || appSettings.defaultRecordFileFormat,
           });
