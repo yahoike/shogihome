@@ -111,6 +111,8 @@ export const vi: Texts = {
   gameProgress: "Tiến triển ván đấu",
   allGamesCompleted: "Tất cả các ván đã kết thúc",
   wins: "Thắng",
+  winsOnBlack: "勝ち数(先手)", // TODO: Translate
+  winsOnWhite: "勝ち数(後手)", // TODO: Translate
   draws: "Hòa",
   validGames: "Ván hợp lệ",
   invalidGames: "Ván không hợp lệ",
@@ -318,6 +320,7 @@ export const vi: Texts = {
   byoyomi: "Byoyomi",
   increments: "Cộng thời gian",
   startEndCriteria: "Điều kiện bắt đầu/kết thúc",
+  descending: "逆順", // TODO: Translate
   endCriteria1Move: "Điều kiện kết thúc cho mỗi nước đi",
   outputSettings: "Tùy chọn xuất",
   noOutputs: "Không xuất",
@@ -366,6 +369,7 @@ export const vi: Texts = {
   automaticBackup: "Sao lưu tự động",
   restore: "Khôi phục",
   loadRecordFromWeb: "Tải kỳ phổ từ mạng",
+  backToMainBranch: "本譜に戻る", // TODO: Translate
   fetchLatestData: "Lấy dữ liệu mới nhất",
   sourceURL: "URL nguồn",
   ok: "OK",
@@ -534,6 +538,7 @@ export const vi: Texts = {
   canOpenLogDirectoryFromMenu:
     '*Bạn có thể mở đường dẫn log qua menu "Gỡ lỗi" - "Mở đường dẫn log".',
   hasNoOldLogCleanUpFeature: "*Ứng dụng này không có tính năng dọn dẹp. Vui lòng tự xóa log cũ.",
+  shouldRestartToApplyLowLevelSettings: "※低レベルの設定を反映するにはアプリの再起動が必要です。", // TODO: Translate
   processingPleaseWait: "Đang tải, vui lòng chờ.",
   importingFollowingRecordOrPosition: "Đang nhập kỳ phổ (hoặc thế cờ) dưới đây.",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: "*Hỗ trợ KIF, KI2, CSA, USI, SFEN, JKF, và USEN.",
@@ -549,12 +554,14 @@ export const vi: Texts = {
   logsRecommendedForCSAProtocol: "Chúng tôi đề xuất bật tùy chọn log cho phương thức CSA.",
   pleaseEnableLogsAndRestart: "Vui lòng bật tùy chọn log và khởi động lại ứng dụng.",
   notSendPVOnStandardCSAProtocol: "PV không được gửi trong phương thức CSA tiêu chuẩn.",
-  csaProtocolSendPlaintextPassword: "Trong phương thức CSA, mật khẩu thô được gửi.",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "Mật khẩu sẽ được lưu thô vì hệ điều hành không hỗ trợ mã hóa.",
   pleaseUncheckSaveHistoryIfNotWantSave: "Vui lòng bỏ chọn lưu lịch sử nếu không muốn lưu.",
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory:
-    "Trong phương thức CSA, mật khẩu thô được gửi bất kể lịch sử.",
+  floodgatePasswordShouldStartWithGameName:
+    "Floodgateのパスワードはゲーム名で始まる必要があります。", // TODO: Translate
+  thisIsNotFloodgateOfficialGameName: "これはFloodgate公式のゲーム名ではありません。", // TODO: Translate
+  yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
+    "パスワードがFloodgateの要件を満たしていない可能性があります。続行しますか？", // TODO: Translate
   whenNewVersionIsAvailableItWillBeNotified: "Sẽ có thông báo khi có phiên bản mới.",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     'Vui lòng thử tin nhắn "Đây là thông báo thử." bằng nút trên.',

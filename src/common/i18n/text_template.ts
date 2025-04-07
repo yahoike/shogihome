@@ -106,6 +106,8 @@ export type Texts = {
   gameProgress: string;
   allGamesCompleted: string;
   wins: string;
+  winsOnBlack: string;
+  winsOnWhite: string;
   draws: string;
   validGames: string;
   invalidGames: string;
@@ -313,6 +315,7 @@ export type Texts = {
   byoyomi: string;
   increments: string;
   startEndCriteria: string;
+  descending: string;
   endCriteria1Move: string;
   outputSettings: string;
   noOutputs: string;
@@ -361,6 +364,7 @@ export type Texts = {
   automaticBackup: string;
   restore: string;
   loadRecordFromWeb: string;
+  backToMainBranch: string;
   fetchLatestData: string;
   sourceURL: string;
   ok: string;
@@ -527,6 +531,7 @@ export type Texts = {
   shouldRestartToApplyLogSettings: string;
   canOpenLogDirectoryFromMenu: string;
   hasNoOldLogCleanUpFeature: string;
+  shouldRestartToApplyLowLevelSettings: string;
   processingPleaseWait: string;
   importingFollowingRecordOrPosition: string;
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: string;
@@ -540,10 +545,11 @@ export type Texts = {
   logsRecommendedForCSAProtocol: string;
   pleaseEnableLogsAndRestart: string;
   notSendPVOnStandardCSAProtocol: string;
-  csaProtocolSendPlaintextPassword: string;
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable: string;
   pleaseUncheckSaveHistoryIfNotWantSave: string;
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory: string;
+  floodgatePasswordShouldStartWithGameName: string;
+  thisIsNotFloodgateOfficialGameName: string;
+  yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue: string;
   whenNewVersionIsAvailableItWillBeNotified: string;
   pleaseCheckMessageThisIsTestNotificationByAboveButton: string;
   ifNotWorkYouShouldAllowNotificationOnOSSetting: string;

@@ -38,7 +38,7 @@ import { generateRecordFileName, join } from "@/renderer/helpers/path";
 import { ResearchSettings } from "@/common/settings/research";
 import { USIPlayerMonitor, USIMonitor } from "./usi";
 import { AppState, ResearchState } from "@/common/control/state";
-import { Attachment, ListItem, useMessageStore } from "./message";
+import { useMessageStore } from "./message";
 import * as uri from "@/common/uri";
 import { AnalysisManager } from "./analysis";
 import { AnalysisSettings } from "@/common/settings/analysis";
@@ -63,6 +63,7 @@ import { Confirmation, useConfirmationStore } from "./confirm";
 import { LayoutProfile, LayoutProfileList } from "@/common/settings/layout";
 import { clearURLParams, loadRecordForWebApp, saveRecordForWebApp } from "./webapp";
 import { CommentBehavior } from "@/common/settings/comment";
+import { Attachment, ListItem } from "@/common/message";
 
 export type PVPreview = {
   position: ImmutablePosition;
@@ -84,11 +85,19 @@ function getMessageAttachmentsByGameResults(results: GameResults): Attachment[] 
       items: [
         {
           text: results.player1.name,
-          children: [`${t.wins}: ${results.player1.win}`],
+          children: [
+            `${t.wins}: ${results.player1.win}`,
+            `${t.winsOnBlack}: ${results.player1.winBlack}`,
+            `${t.winsOnWhite}: ${results.player1.winWhite}`,
+          ],
         },
         {
           text: results.player2.name,
-          children: [`${t.wins}: ${results.player2.win}`],
+          children: [
+            `${t.wins}: ${results.player2.win}`,
+            `${t.winsOnBlack}: ${results.player2.winBlack}`,
+            `${t.winsOnWhite}: ${results.player2.winWhite}`,
+          ],
         },
         { text: `${t.draws}: ${results.draw}` },
         { text: `${t.validGames}: ${results.total - results.invalid}` },
@@ -734,11 +743,10 @@ class Store {
 
   private onSaveRecord(): void {
     const appSettings = useAppSettings();
-    const fname = generateRecordFileName(
-      this.recordManager.record.metadata,
-      appSettings.recordFileNameTemplate,
-      appSettings.defaultRecordFileFormat,
-    );
+    const fname = generateRecordFileName(this.recordManager.record, {
+      template: appSettings.recordFileNameTemplate,
+      extension: appSettings.defaultRecordFileFormat,
+    });
     const path = join(appSettings.autoSaveDirectory, fname);
     this.saveRecordByPath(path).catch((e) => {
       useErrorStore().add(e);
@@ -1075,6 +1083,12 @@ class Store {
     return this.recordManager.swapWithPreviousBranch();
   }
 
+  backToMainBranch(): void {
+    if (this.appState === AppState.NORMAL) {
+      this.recordManager.resetAllBranchSelection();
+    }
+  }
+
   removeCurrentMove(): void {
     if (this.appState !== AppState.NORMAL) {
       return;
@@ -1218,11 +1232,10 @@ class Store {
         const appSettings = useAppSettings();
         const defaultPath =
           (!options?.format && path) ||
-          generateRecordFileName(
-            this.recordManager.record.metadata,
-            appSettings.recordFileNameTemplate,
-            options?.format || appSettings.defaultRecordFileFormat,
-          );
+          generateRecordFileName(this.recordManager.record, {
+            template: appSettings.recordFileNameTemplate,
+            extension: options?.format || appSettings.defaultRecordFileFormat,
+          });
         return api.showSaveRecordDialog(defaultPath);
       })
       .then((path) => {

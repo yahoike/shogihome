@@ -111,6 +111,8 @@ export const en: Texts = {
   gameProgress: "Game Progress",
   allGamesCompleted: "All Games Completed",
   wins: "Wins",
+  winsOnBlack: "Wins(Black)",
+  winsOnWhite: "Wins(White)",
   draws: "Draws",
   validGames: "Valid Games",
   invalidGames: "Invalid Games",
@@ -318,6 +320,7 @@ export const en: Texts = {
   byoyomi: "Byoyomi",
   increments: "Increments",
   startEndCriteria: "Start/End Criteria",
+  descending: "Descending",
   endCriteria1Move: "End Criteria for 1 Move",
   outputSettings: "Output Settings",
   noOutputs: "No Outputs",
@@ -366,6 +369,7 @@ export const en: Texts = {
   automaticBackup: "Automatic Backup",
   restore: "Restore",
   loadRecordFromWeb: "Load Record from Web",
+  backToMainBranch: "Back to Main Branch",
   fetchLatestData: "Fetch Latest Data",
   sourceURL: "Source URL",
   ok: "OK",
@@ -534,6 +538,7 @@ export const en: Texts = {
   canOpenLogDirectoryFromMenu:
     '*You can open log directory from "Debug" - "Open Log Directory" menu.',
   hasNoOldLogCleanUpFeature: "*This app has no clean-up feature. Please remove old logs manually.",
+  shouldRestartToApplyLowLevelSettings: "*You should restart this app to apply low-level settings.",
   processingPleaseWait: "Processing, please wait.",
   importingFollowingRecordOrPosition: "Importing the following record(or position).",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: "*Supports KIF, KI2, CSA, USI, SFEN, JKF, and USEN.",
@@ -550,12 +555,13 @@ export const en: Texts = {
   logsRecommendedForCSAProtocol: "Log settings are recommended for CSA protocol.",
   pleaseEnableLogsAndRestart: "Please enable log settings and restart this app.",
   notSendPVOnStandardCSAProtocol: "Client do not send PV on standard CSA protocol.",
-  csaProtocolSendPlaintextPassword: "On CSA protocol, client send plaintext password.",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "Password will saved as plaintext because OS side encryption is not available.",
   pleaseUncheckSaveHistoryIfNotWantSave: "Please uncheck Save History, if you don't want to save.",
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory:
-    "On CSA protocol, client send plaintext password regardless of history.",
+  floodgatePasswordShouldStartWithGameName: "Floodgate's password should start with game name.",
+  thisIsNotFloodgateOfficialGameName: "This is not Floodgate official game name.",
+  yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
+    "Your password does not meet Floodgate's requirements. Do you still want to continue?",
   whenNewVersionIsAvailableItWillBeNotified: "When new version is available, it will be notified.",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     'Please check the message "This is test notification." by above button.',

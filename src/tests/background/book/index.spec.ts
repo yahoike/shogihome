@@ -237,23 +237,10 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
     it("apery", async () => {
       await openBook("src/tests/testdata/book/apery.bin");
       const sfen = "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b - 5";
-      try {
-        updateBookMove(sfen, {
-          usi: "2f2e",
-          usi2: "8d8e",
-          score: 42,
-          depth: 20,
-          count: 123,
-          comment: "yokofu",
-        });
-        throw "should not reach here";
-      } catch (error) {
-        expect(error).toBeInstanceOf(Error);
-      }
-      expect(await searchBookMoves(sfen)).toHaveLength(0);
       updateBookMove(sfen, {
         usi: "2f2e",
         score: 42,
+        depth: 20,
         count: 123,
         comment: "",
       });
@@ -353,13 +340,16 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
           sourceDirectory: "src/tests/testdata/book/source",
         },
         summary: {
-          successFileCount: 3,
+          successFileCount: 4,
           errorFileCount: 0,
-          entryCount: 28,
+          entryCount: 34,
           duplicateCount: 2,
         },
-        includedSFEN: "ln1gk1snl/1rs3gb1/p1ppppppp/9/1p5P1/P8/1PPPPPP1P/1BG3SR1/LNS1KG1NL w - 1",
-        missedSFEN: "ln1gk1snl/1rs3gb1/2ppppppp/p8/1p5P1/P8/1PPPPPP1P/1BG3SR1/LNS1KG1NL b - 1",
+        includedSFEN: [
+          "ln1gk1snl/1rs3gb1/p1ppppppp/9/1p5P1/P8/1PPPPPP1P/1BG3SR1/LNS1KG1NL w - 1",
+          "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P1P4/PP1P1PPPP/1B2R4/LNSGKGSNL w - 1",
+        ],
+        missedSFEN: ["ln1gk1snl/1rs3gb1/2ppppppp/p8/1p5P1/P8/1PPPPPP1P/1BG3SR1/LNS1KG1NL b - 1"],
       },
       {
         title: "directory with ply",
@@ -370,13 +360,16 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
           maxPly: 5,
         },
         summary: {
-          successFileCount: 3,
+          successFileCount: 4,
           errorFileCount: 0,
-          entryCount: 11,
+          entryCount: 15,
           duplicateCount: 1,
         },
-        includedSFEN: "lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1",
-        missedSFEN: "lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL w - 1",
+        includedSFEN: ["lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1"],
+        missedSFEN: [
+          "lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL w - 1",
+          "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P1P4/PP1P1PPPP/1B2R4/LNSGKGSNL w - 1",
+        ],
       },
       {
         title: "directory with player name",
@@ -387,13 +380,16 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
           playerName: "藤井",
         },
         summary: {
-          successFileCount: 3,
+          successFileCount: 4,
           errorFileCount: 0,
           entryCount: 10,
           duplicateCount: 0,
         },
-        includedSFEN: "lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL w - 1",
-        missedSFEN: "lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1",
+        includedSFEN: ["lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL w - 1"],
+        missedSFEN: [
+          "lnsgkgsnl/1r5b1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b - 1",
+          "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P1P4/PP1P1PPPP/1B2R4/LNSGKGSNL w - 1",
+        ],
       },
       {
         title: "single file",
@@ -407,8 +403,8 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
           entryCount: 10,
           duplicateCount: 0,
         },
-        includedSFEN: "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/7R1/LNSGKGSNL b - 1",
-        missedSFEN: "lnsgk1snl/1r4gb1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL b - 1",
+        includedSFEN: ["lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/7R1/LNSGKGSNL b - 1"],
+        missedSFEN: ["lnsgk1snl/1r4gb1/p1ppppppp/9/1p5P1/9/PPPPPPP1P/1BG4R1/LNS1KGSNL b - 1"],
       },
       {
         title: "single file black",
@@ -423,8 +419,8 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
           entryCount: 5,
           duplicateCount: 0,
         },
-        includedSFEN: "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/7R1/LNSGKGSNL b - 1",
-        missedSFEN: "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/1S5R1/LN1GKGSNL w - 1",
+        includedSFEN: ["lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/7R1/LNSGKGSNL b - 1"],
+        missedSFEN: ["lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/1S5R1/LN1GKGSNL w - 1"],
       },
       {
         title: "single file white",
@@ -439,19 +435,23 @@ sfen lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1
           entryCount: 5,
           duplicateCount: 0,
         },
-        includedSFEN: "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/1S5R1/LN1GKGSNL w - 1",
-        missedSFEN: "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/7R1/LNSGKGSNL b - 1",
+        includedSFEN: ["lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/1S5R1/LN1GKGSNL w - 1"],
+        missedSFEN: ["lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2P4P1/PPBPPPP1P/7R1/LNSGKGSNL b - 1"],
       },
     ];
     for (const pattern of patterns) {
-      it("directory", async () => {
+      it(pattern.title, async () => {
         const summary = await importBookMoves({
           ...defaultBookImportSettings(),
           ...pattern.settings,
         });
         expect(summary).toEqual(pattern.summary);
-        expect((await searchBookMoves(pattern.includedSFEN)).length).not.toBe(0);
-        expect((await searchBookMoves(pattern.missedSFEN)).length).toBe(0);
+        for (const sfen of pattern.includedSFEN) {
+          expect((await searchBookMoves(sfen)).length).not.toBe(0);
+        }
+        for (const sfen of pattern.missedSFEN) {
+          expect((await searchBookMoves(sfen)).length).toBe(0);
+        }
       });
     }
   });

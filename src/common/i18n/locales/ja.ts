@@ -111,6 +111,8 @@ export const ja: Texts = {
   gameProgress: "対局の経過",
   allGamesCompleted: "連続対局終了",
   wins: "勝ち数",
+  winsOnBlack: "勝ち数(先手)",
+  winsOnWhite: "勝ち数(後手)",
   draws: "引き分け",
   validGames: "有効対局数",
   invalidGames: "無効対局数",
@@ -318,6 +320,7 @@ export const ja: Texts = {
   byoyomi: "秒読み",
   increments: "増加",
   startEndCriteria: "開始・終了条件",
+  descending: "逆順",
   endCriteria1Move: "局面ごとの終了条件",
   outputSettings: "出力設定",
   noOutputs: "出力しない",
@@ -366,6 +369,7 @@ export const ja: Texts = {
   automaticBackup: "自動バックアップ",
   restore: "復元",
   loadRecordFromWeb: "Webの棋譜を取得",
+  backToMainBranch: "本譜に戻る",
   fetchLatestData: "最新データを取得",
   sourceURL: "ソースURL",
   ok: "OK",
@@ -534,6 +538,7 @@ export const ja: Texts = {
   canOpenLogDirectoryFromMenu:
     "※ログの出力先は「デバッグ」-「ログファイルの場所を開く」で開きます。",
   hasNoOldLogCleanUpFeature: "※現在、古いログファイルの自動削除機能はありません。",
+  shouldRestartToApplyLowLevelSettings: "※低レベルの設定を反映するにはアプリの再起動が必要です。",
   processingPleaseWait: "処理中です。お待ちください。",
   importingFollowingRecordOrPosition: "以下の棋譜(または局面)を取り込みます。",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN:
@@ -550,13 +555,15 @@ export const ja: Texts = {
   logsRecommendedForCSAProtocol: "CSAプロトコルを使用した対局では各種ログの出力を推奨します。",
   pleaseEnableLogsAndRestart: "アプリ設定からログを有効にしてアプリを再起動してください。",
   notSendPVOnStandardCSAProtocol: "標準のCSAプロトコルでは評価値や読み筋が送信されません。",
-  csaProtocolSendPlaintextPassword: "CSAプロトコルの規格上パスワードは平文で送信されます。",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "OSの暗号化機能が利用できないため、入力したパスワードは平文で保存されます。",
   pleaseUncheckSaveHistoryIfNotWantSave:
     "保存したくない場合は「履歴に保存する」のチェックを外してください。",
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory:
-    "なお、履歴の保存に関係なくCSAプロトコルの規格上パスワードは平文で送信されます。",
+  floodgatePasswordShouldStartWithGameName:
+    "Floodgateのパスワードはゲーム名で始まる必要があります。",
+  thisIsNotFloodgateOfficialGameName: "これはFloodgate公式のゲーム名ではありません。",
+  yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
+    "パスワードがFloodgateの要件を満たしていない可能性があります。続行しますか？",
   whenNewVersionIsAvailableItWillBeNotified: "新しいバージョンが利用可能になると通知されます。",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     "上のボタンで「これは通知のテストです。」というメッセージを確認してください。",

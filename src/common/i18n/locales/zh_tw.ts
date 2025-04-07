@@ -108,6 +108,8 @@ export const zh_tw: Texts = {
   gameProgress: "對局過程",
   allGamesCompleted: "連續對局結束",
   wins: "勝利數目",
+  winsOnBlack: "勝ち数(先手)", // TODO: Translate
+  winsOnWhite: "勝ち数(後手)", // TODO: Translate
   draws: "平手數目",
   validGames: "有效對局數",
   invalidGames: "無效對局數",
@@ -315,6 +317,7 @@ export const zh_tw: Texts = {
   byoyomi: "讀秒",
   increments: "增秒",
   startEndCriteria: "開始・結束條件",
+  descending: "逆順", // TODO: Translate
   endCriteria1Move: "局面結束條件",
   outputSettings: "輸出設定",
   noOutputs: "不輸出",
@@ -363,6 +366,7 @@ export const zh_tw: Texts = {
   automaticBackup: "自動備份",
   restore: "復原",
   loadRecordFromWeb: "從網際網路取得棋譜",
+  backToMainBranch: "本譜に戻る", // TODO: Translate
   fetchLatestData: "取得最新資料",
   sourceURL: "來源網址",
   ok: "OK",
@@ -530,6 +534,7 @@ export const zh_tw: Texts = {
   shouldRestartToApplyLogSettings: "※您需要重新啟動本程式以使用變更後的紀錄設定。",
   canOpenLogDirectoryFromMenu: "※紀錄的輸出檔案可以在「偵錯」-「開啟紀錄檔案資料夾」開啟。",
   hasNoOldLogCleanUpFeature: "※現在並沒有舊紀錄的自動刪除機制。",
+  shouldRestartToApplyLowLevelSettings: "※低レベルの設定を反映するにはアプリの再起動が必要です。", // TODO: Translate
   processingPleaseWait: "現在處理中。請稍待一會。",
   importingFollowingRecordOrPosition: "將匯入以下棋譜（局面）。",
   supportsKIF_KI2_CSA_USI_SFEN_JKF_USEN: "※支援KIF/KI2/CSA/USI/SFEN/JKF/USEN形式。",
@@ -545,11 +550,14 @@ export const zh_tw: Texts = {
   logsRecommendedForCSAProtocol: "若使用CSA協定對局，建議輸出各項紀錄。",
   pleaseEnableLogsAndRestart: "請在程式設定中開啟紀錄並重新啟動本程式。",
   notSendPVOnStandardCSAProtocol: "在標準的CSA協定中不會送出評價值以及思考棋步。",
-  csaProtocolSendPlaintextPassword: "在CSA協定中，密碼為明文傳輸。",
   passwordWillSavedPlaintextBecauseOSSideEncryptionNotAvailable:
     "由於無法使用系統的加密機能，輸入的密碼將會以明文保存。",
   pleaseUncheckSaveHistoryIfNotWantSave: "若不想保存密碼，請不要將「保存紀錄」勾選。",
-  csaProtocolSendPlaintextPasswordRegardlessOfHistory: "不過，CSA協定仍會以明文傳輸您的密碼。",
+  floodgatePasswordShouldStartWithGameName:
+    "Floodgateのパスワードはゲーム名で始まる必要があります。", // TODO: Translate
+  thisIsNotFloodgateOfficialGameName: "これはFloodgate公式のゲーム名ではありません。", // TODO: Translate
+  yourPasswordDoesNotMeetFloodgateRequirementsDoYouStillWantToContinue:
+    "パスワードがFloodgateの要件を満たしていない可能性があります。続行しますか？", // TODO: Translate
   whenNewVersionIsAvailableItWillBeNotified: "將會在新版本發布時進行通知。",
   pleaseCheckMessageThisIsTestNotificationByAboveButton:
     "上方按鈕會發送「這是測試用的通知。」的通知訊息。",
